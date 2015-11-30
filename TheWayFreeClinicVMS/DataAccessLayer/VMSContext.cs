@@ -17,14 +17,18 @@ namespace TheWayFreeClinicVMS.DataAccessLayer
             }
 
         //Database table creation
-        public DbSet<ManageVolunteerModels.Volunteer> Volunteers { get; set; }
-        public DbSet<ManageVolunteerModels.Employer> Employers { get; set; }
-        public DbSet<ManageVolunteerModels.Pagroup> Pagroups { get; set; }
-        public DbSet<WorktimeModels.Worktime> Worklog { get; set; }
-        public DbSet<ManageVolunteerModels.Language> Languages { get; set; }
-        public DbSet<ManageVolunteerModels.Speak> Speaks { get; set;}
-        public DbSet<ManageVolunteerModels.Contract> Contracts { get; set; }
-        public DbSet<ManageVolunteerModels.Job> Jobs { get; set; }
+        public DbSet<Volunteer> Volunteers { get; set; }
+        public DbSet<Employer> Employers { get; set; }
+        public DbSet<Pagroup> Pagroups { get; set; }
+        public DbSet<Worktime> Worklog { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<Speak> Speaks { get; set;}
+        public DbSet<Contract> Contracts { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<Specialty> Specialties { get; set; }
+        public DbSet<Availability> Availabilities { get; set; }
+        public DbSet<Econtact> Econtacts { get; set; }
+        public DbSet<License> Licenses { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

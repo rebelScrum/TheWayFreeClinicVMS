@@ -168,6 +168,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DataAccessLayer\VMSContext.cs" />
@@ -176,10 +177,20 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ManageVolunteerModels.cs" />
+    <Compile Include="Models\Availability.cs" />
+    <Compile Include="Models\Contract.cs" />
+    <Compile Include="Models\Econtact.cs" />
+    <Compile Include="Models\Employer.cs" />
+    <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\Language.cs" />
+    <Compile Include="Models\License.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\WorktimeModels.cs" />
+    <Compile Include="Models\Pagroup.cs" />
+    <Compile Include="Models\Speak.cs" />
+    <Compile Include="Models\Specialty.cs" />
+    <Compile Include="Models\Volunteer.cs" />
+    <Compile Include="Models\Worktime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -238,6 +249,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\AdminDashboard\Create.cshtml" />
+    <Content Include="Views\AdminDashboard\Delete.cshtml" />
+    <Content Include="Views\AdminDashboard\Details.cshtml" />
+    <Content Include="Views\AdminDashboard\Edit.cshtml" />
+    <Content Include="Views\AdminDashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

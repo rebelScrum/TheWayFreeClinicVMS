@@ -1,0 +1,123 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Volunteer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Econtact.ecFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.License.volID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Specialty.spcName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.middleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volDOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volStreet1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volStreet2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volState)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volZip)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.volActive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Econtact.ecFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.License.volID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Specialty.spcName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.middleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volDOB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volStreet1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volStreet2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volCity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volState)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volZip)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.volActive)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.volID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.volID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.volID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,146 @@
+﻿@model TheWayFreeClinicVMS.Models.Volunteer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Volunteer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Econtact.ecFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Econtact.ecFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.License.volID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.License.volID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specialty.spcName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specialty.spcName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.middleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.middleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volDOB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volDOB)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volStreet1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volStreet1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volStreet2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volStreet2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volZip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volZip)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volStartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.volActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.volActive)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.volID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

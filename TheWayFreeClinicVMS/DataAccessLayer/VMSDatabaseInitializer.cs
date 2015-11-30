@@ -12,7 +12,7 @@ namespace TheWayFreeClinicVMS.DataAccessLayer
     //populates db with test data
     
     //TODO: change to migrations in production
-    public class VMSDatabaseInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<VMSContext>
+    public class VMSDatabaseInitializer : DropCreateDatabaseIfModelChanges<VMSContext>
     {
         protected override void Seed(VMSContext context)
         {

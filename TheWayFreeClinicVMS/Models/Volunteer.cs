@@ -34,17 +34,19 @@ namespace TheWayFreeClinicVMS.Models
         ErrorMessage = "Numbers and special characters are not allowed in the middle name.")]
         [StringLength(30)]
         [Display(Name = "Middle Name")]
-        public string middleName { get; set; }
+        public string volMiddleName { get; set; }
 
         //date of birthday
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Date of Birth")]
         public DateTime volDOB { get; set; }
 
         //email
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         [StringLength(50)]
+        [Display(Name = "Email")]
         public string volEmail { get; set; }
 
         //phone
@@ -58,41 +60,49 @@ namespace TheWayFreeClinicVMS.Models
         //street1
         [Required]
         [StringLength(30)]
+        [Display(Name = "Street 1")]
         public string volStreet1 { get; set; }
 
         //street2
         [StringLength(30)]
+        [Display(Name = "Street 2")]
         public string volStreet2 { get; set; }
 
         //city
         [Required]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,25}$")]
         [StringLength(25)]
+        [Display(Name = "City")]
         public string volCity { get; set; }
 
         //state
         [Required]
         [RegularExpression(@"^[A-Z\s]{2}$")]
         [StringLength(2)]
+        [Display(Name = "State")]
         public string volState { get; set; }
 
         //zip
         [Required]
         [RegularExpression(@"^(\d{5})$")]
         [StringLength(5)]
+        [Display(Name = "Zip")]
         public string volZip { get; set; }
 
         //start date
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Start Date")]
         public DateTime volStartDate { get; set; }
 
         //active: boolean true - yes, false - no
         [Required]
+        [Display(Name = "Active Volunteer?")]
         public bool volActive { get; set; }
 
         //specialty ID, foreign key from specialty look up table
         [ForeignKey("Specialty")]
+        [Display(Name = "Specialty")]
         public int spcID { get; set; }
 
         // EF navigation relationships

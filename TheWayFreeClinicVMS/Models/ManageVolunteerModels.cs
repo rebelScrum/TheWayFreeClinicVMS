@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -13,7 +14,6 @@ namespace TheWayFreeClinicVMS.Models
         {
             //ID
             [Key]
-            [MaxLength(5)]
             public int volID { get; set; }
 
             // First Name
@@ -90,7 +90,7 @@ namespace TheWayFreeClinicVMS.Models
             public DateTime volStartDate { get; set; }
 
             //specialty ID, foreign key from specialty look up table
-            [MaxLength(2)]
+           
             public int spc_ID { get; set; }
 
             // EF navigation relationships
@@ -115,13 +115,11 @@ namespace TheWayFreeClinicVMS.Models
         public class Econtact
         {
             //emergency contact id
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 0)]
             public int ecID { get; set; }
 
-            //volunteer ID, foreign key
-            [Key]
-            [MaxLength(5)]
+            //volunteer ID
+            [Key, Column(Order = 1)]
             public int volID { get; set; }
 
             //First Name
@@ -158,7 +156,7 @@ namespace TheWayFreeClinicVMS.Models
         {
             //id
             [Key]
-            [MaxLength(5)]
+           
             public int empID { get; set; }
 
             //employer name
@@ -210,13 +208,12 @@ namespace TheWayFreeClinicVMS.Models
         public class Job
         {
             //volunteer id
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 0)]
+
             public int volID { get; set; }
 
             //employer id
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 1)]
             public int empID { get; set; }
 
             //job title
@@ -252,12 +249,12 @@ namespace TheWayFreeClinicVMS.Models
         public class Availability
         {
             //availability ID
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 0)]
+           
             public int avID { get; set; }
-            [Key]
-            [MaxLength(5)]
+
             //volunteer ID, foreign key
+            [Key, Column(Order = 1)]
             public int volID { get; set; }
 
             //days
@@ -288,7 +285,7 @@ namespace TheWayFreeClinicVMS.Models
         {
             //specialty id
             [Key]
-            [MaxLength(2)]
+           
             public int spcID { get; set; }
 
             //specialty name
@@ -305,13 +302,12 @@ namespace TheWayFreeClinicVMS.Models
         public class Speak
         {
             //language
-            [Key]
-            [MaxLength(3)]
+            [Key, Column(Order = 0)]
             public int lngID { get; set; }
 
             //volunteer id
-            [MaxLength(5)]
-            [Key]
+           
+            [Key, Column(Order = 1)]
             public int volID { get; set; }
 
             //navigation Volunteer acts as relationship identifier
@@ -325,7 +321,6 @@ namespace TheWayFreeClinicVMS.Models
         {
             // language id
             [Key]
-            [MaxLength(3)]
             public int lngID { get; set; }
 
             //name
@@ -339,12 +334,12 @@ namespace TheWayFreeClinicVMS.Models
         public class License
         {
             // volunteer ID
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 1)]
+         
             public int volID { get; set; }
 
             //license id
-            [Key]
+            [Key, Column(Order = 0)]
             public int lcNum { get; set; }
 
             // date
@@ -371,7 +366,6 @@ namespace TheWayFreeClinicVMS.Models
         {
             // id
             [Key]
-            [MaxLength(5)]
             public int pgrID { get; set; }
 
             //name
@@ -435,17 +429,16 @@ namespace TheWayFreeClinicVMS.Models
         public class Contract
         {
             //Contract number
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 0)]
             public int ctrNum { get; set; }
 
             // volunteer ID
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 1)]
+           
             public int volID { get; set; }
 
             //PA Group ID
-            [Key]
+            [Key, Column(Order = 2)]
             public int pgrID { get; set; }
 
             //navigation Volunteer acts as relationship identifier

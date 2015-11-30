@@ -22,6 +22,9 @@ namespace TheWayFreeClinicVMS.DataAccessLayer
         public DbSet<ManageVolunteerModels.Pagroup> Pagroups { get; set; }
         public DbSet<WorktimeModels.Worktime> Worklog { get; set; }
         public DbSet<ManageVolunteerModels.Language> Languages { get; set; }
+        public DbSet<ManageVolunteerModels.Speak> Speaks { get; set;}
+        public DbSet<ManageVolunteerModels.Contract> Contracts { get; set; }
+        public DbSet<ManageVolunteerModels.Job> Jobs { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

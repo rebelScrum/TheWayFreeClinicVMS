@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -11,14 +12,12 @@ namespace TheWayFreeClinicVMS.Models
         public class Worktime
         {
             //work log id
-            [Key]
-            [MaxLength()]
+            [Key, Column(Order = 0)]
             public int wrkID { get; set; }
 
 
             //Volunteer ID
-            [Key]
-            [MaxLength(5)]
+            [Key, Column(Order = 1)]
             public int volID { get; set; }
 
             //date

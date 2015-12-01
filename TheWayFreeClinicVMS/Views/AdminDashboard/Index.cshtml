@@ -11,15 +11,8 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Econtact.ecFirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.License.volID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Specialty.spcName)
-        </th>
+        
+       
         <th>
             @Html.DisplayNameFor(model => model.volFirstName)
         </th>
@@ -28,6 +21,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.volMiddleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Specialty.spcName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.volDOB)
@@ -65,15 +61,6 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Econtact.ecFirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.License.volID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Specialty.spcName)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.volFirstName)
         </td>
         <td>
@@ -81,6 +68,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.volMiddleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Specialty.spcName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.volDOB)

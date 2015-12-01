@@ -9,9 +9,9 @@ namespace TheWayFreeClinicVMS.Models
     public class Specialty
     {
         public Specialty()
-            {
-               Volunteers = new List<Volunteer>();
-            }
+        {
+            Volunteers = new List<Volunteer>();
+        }
         //specialty id
         [Key]
         public int spcID { get; set; }

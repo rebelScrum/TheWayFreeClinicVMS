@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -15,6 +16,7 @@ namespace TheWayFreeClinicVMS.DataAccessLayer
             {
 
             }
+     
 
         //Database table creation
         public DbSet<Volunteer> Volunteers { get; set; }

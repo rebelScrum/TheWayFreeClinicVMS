@@ -10,21 +10,31 @@
     <h4>Volunteer</h4>
     <hr />
     <dl class="dl-horizontal">
+        
+       
         <dt>
-            @Html.DisplayNameFor(model => model.Econtact.ecFirstName)
+            Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Econtact.ecFirstName)
+            @Html.DisplayFor(model => model.volLastName), @Html.DisplayFor(model => model.volFirstName) @Html.DisplayFor(model => model.volMiddleName)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.License.volID)
+        @*<dt>
+            @Html.DisplayNameFor(model => model.volLastName)
+        </dt>*@
+
+        @*<dd>
+           
+        </dd>*@
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.volMiddleName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.License.volID)
-        </dd>
+            
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Specialty.spcName)
@@ -32,30 +42,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.Specialty.spcName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volFirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volFirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volLastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volLastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volMiddleName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volMiddleName)
         </dd>
 
         <dt>
@@ -83,44 +69,17 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.volStreet1)
+            Address
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.volStreet1)
+            @Html.DisplayFor(model => model.volStreet1) @Html.DisplayFor(model => model.volStreet2)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volStreet2)
-        </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.volStreet2)
+            @Html.DisplayFor(model => model.volCity), @Html.DisplayFor(model => model.volState) @Html.DisplayFor(model => model.volZip)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.volCity)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volCity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volState)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volState)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volZip)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volZip)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.volStartDate)
@@ -137,6 +96,21 @@
         <dd>
             @Html.DisplayFor(model => model.volActive)
         </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Econtact.ecFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Econtact.ecFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.License.volID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.License.volID)
+        </dd>*@
 
     </dl>
 </div>

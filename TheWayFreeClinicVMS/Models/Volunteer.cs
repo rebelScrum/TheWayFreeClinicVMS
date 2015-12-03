@@ -97,7 +97,7 @@ namespace TheWayFreeClinicVMS.Models
 
         //active: boolean true - yes, false - no
         [Required]
-        [Display(Name = "Active Volunteer?")]
+        [Display(Name = "Active")]
         public bool volActive { get; set; }
 
         //specialty ID, foreign key from specialty look up table

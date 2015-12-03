@@ -13,6 +13,7 @@ namespace TheWayFreeClinicVMS.Models
             Volunteers = new List<Volunteer>();
         }
         //specialty id
+        [Display(Name = "Specialty")]
         [Key]
         public int spcID { get; set; }
 
@@ -20,6 +21,7 @@ namespace TheWayFreeClinicVMS.Models
         [StringLength(20)]
         [Required]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,30}$")]
+        [Display(Name = "Specialty")]
         public string spcName { get; set; }
 
         //many volunteers can have the same specialty

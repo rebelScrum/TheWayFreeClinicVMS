@@ -53,13 +53,19 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Volunteers.Add(volunteer);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Volunteers.Add(volunteer);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
+            }
             ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
             ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);

@@ -40,8 +40,8 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Create
         public ActionResult Create()
         {
-            ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName");
-            ViewBag.volID = new SelectList(db.Licenses, "volID", "volID");
+            //ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName");
+            //ViewBag.volID = new SelectList(db.Licenses, "volID", "volID");
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName");
             return View();
         }
@@ -66,8 +66,8 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
             }
-            ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
-            ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
+            //ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
+            //ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             return View(volunteer);
         }
@@ -84,8 +84,8 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
-            ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
+            //ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
+            //ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             return View(volunteer);
         }
@@ -103,8 +103,8 @@ namespace TheWayFreeClinicVMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
-            ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
+            //ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
+            //ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             return View(volunteer);
         }

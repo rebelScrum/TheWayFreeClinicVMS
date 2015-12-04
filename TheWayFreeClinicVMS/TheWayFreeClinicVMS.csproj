@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AdminDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\VolunteerProfileController.cs" />
     <Compile Include="DataAccessLayer\VMSContext.cs" />
     <Compile Include="DataAccessLayer\VMSDatabaseInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -265,6 +266,8 @@
     <Content Include="Views\AdminDashboard\Edit.cshtml" />
     <Content Include="Views\AdminDashboard\Index.cshtml" />
     <Content Include="Views\Home\_CheckInOutConfirmation.cshtml" />
+    <Content Include="Views\VolunteerProfile\Index.cshtml" />
+    <Content Include="Views\VolunteerProfile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

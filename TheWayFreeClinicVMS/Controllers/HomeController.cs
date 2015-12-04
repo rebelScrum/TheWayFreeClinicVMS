@@ -17,7 +17,6 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -39,30 +38,60 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] Worktime worktime, string email)
         {
+            //get id from email
             var thisVolID = (from i in db.Volunteers  where i.volEmail == email select i.volID).SingleOrDefault();
 
-            try
+            //query will return a Worktime object if startTime and Endtime same. i.e., user made new clock-in. 
+            var query = (from w in db.Worklog where w.volID == thisVolID && w.wrkEndTime == w.wrkStartTime select w).SingleOrDefault();
+            
+            //if not null, user is still clocked in. Update wrkEndTime with timestamp. 
+            //Now user has no worktime record with same start/end time. At next entry query will return null and move to else.
+            if (query !=null )
+            {                
+                query.wrkEndTime = DateTime.UtcNow;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            else
             {
-                if (ModelState.IsValid)
+                try
                 {
-                    worktime.volID = thisVolID;
-                    worktime.wrkID = (int)DateTime.UtcNow.Ticks;
-                    worktime.wrkDate = DateTime.Today;
-                    worktime.wrkStartTime = DateTime.UtcNow;
-                    worktime.wrkEndTime = DateTime.UtcNow;
-                            
-                    db.Worklog.Add(worktime);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    if (ModelState.IsValid)
+                    {
+                        worktime.volID = thisVolID;
+                        worktime.wrkID = (int)DateTime.Now.Ticks;
+                        worktime.wrkDate = DateTime.Today;
+                        worktime.wrkStartTime = DateTime.UtcNow; 
+                        worktime.wrkEndTime = DateTime.UtcNow; //same as startTime, signifying clocked in.
+
+                        db.Worklog.Add(worktime);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
                 }
-            }
-            catch (DataException)
-            {
-                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
-            }
+                catch (DataException)
+                {
+                    ModelState.AddModelError("", "We cannot find your account. Try again, and if the problem persists see your system administrator.");
+                }
+            }           
 
             return View();
         }
+
+
+        public ActionResult Modal()
+        {
+            return PartialView("_CheckInOutConfirmation");
+        }
+
+        [HttpPost]
+        public ActionResult CheckInOutConfirmation()
+        {
+            return RedirectToAction("Index");
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {

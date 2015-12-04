@@ -1,0 +1,46 @@
+﻿@model TheWayFreeClinicVMS.Models.Worktime
+
+<div class="modal-body">
+    <div class="alert alert-warning">
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Donec consequat nisl a nibh tincidunt condimentum.
+        Nullam in augue vitae augue dictum eleifend.
+        Nunc porta fermentum metus, quis efficitur lectus scelerisque ac.
+        Quisque egestas sit amet nunc in interdum.
+        Etiam malesuada maximus nisi, id tempus metus.
+        Vivamus at sapien ut metus aliquet sodales sed id magna.
+        Integer in auctor ex. Phasellus tempor, est vel placerat dapibus,
+        nulla dui tempor ligula, at pulvinar libero nunc gravida metus.
+        Proin non feugiat felis. Proin ut ultrices ex. Morbi aliquet lacinia elit at bibendum.
+        Nunc facilisis, neque a finibus dignissim, turpis felis vulputate diam,
+        a tristique tellus nibh nec nulla. Suspendisse eget augue non turpis
+        dignissim euismod eget eget odio. Donec sit amet nibh cursus, efficitur
+        nibh in, sodales arcu. Pellentesque pulvinar consequat lacus ac porttitor.
+    </div>
+    @using (Html.BeginForm("Lyubomir", "Home", FormMethod.Post))
+    {
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="submit" id="approve-btn"
+                        class="btn btn-danger">
+                    Save
+                </button>
+            </div>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#approve-btn').click(function () {
+            $('#modal-container').modal('hide');
+        });
+    });
+</script>

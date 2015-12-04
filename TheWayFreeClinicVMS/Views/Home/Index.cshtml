@@ -1,16 +1,71 @@
-﻿@{
+﻿@model TheWayFreeClinicVMS.Models.Worktime
+
+@{
     ViewBag.Title = "Volunteer Management System";
 }
 
 <div class="jumbotron">
-    <h1>Volunteer Management System</h1>
-    <p class="lead"></p>
-    <p><a href="http://thewayclinic.org" class="btn btn-info btn-lg">Learn more &raquo;</a></p>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <input type="text" name="email" />
+                @*@Html.LabelFor(model => model.Volunteer.volEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Volunteer.volEmail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Volunteer.volEmail, "", new { @class = "text-danger" })
+                </div>*@
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.wrkID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.wrkID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.wrkID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.volID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.volID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.volID , "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.wrkStartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.wrkStartTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.wrkStartTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.wrkEndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.wrkEndTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.wrkEndTime, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Clock In/Out" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
+
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
         <p>
             Please contact The Way Free Clinic personnel if you wish to volunteer.
         </p>
@@ -27,3 +82,7 @@
         <p><a href="@Url.Action("Index", "VolunteerProfile")" class="btn btn-success"> My Account</a></p>
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

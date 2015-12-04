@@ -31,7 +31,7 @@ namespace TheWayFreeClinicVMS.DataAccessLayer
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Econtact> Econtacts { get; set; }
         public DbSet<License> Licenses { get; set; }
-
+        public object Volunteer { get; internal set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

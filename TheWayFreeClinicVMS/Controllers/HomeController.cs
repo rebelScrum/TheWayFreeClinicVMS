@@ -10,6 +10,7 @@ namespace TheWayFreeClinicVMS.Controllers
     {
         public ActionResult Index()
         {
+
             return View();
         }
 

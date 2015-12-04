@@ -265,10 +265,11 @@
     <Content Include="Views\AdminDashboard\Details.cshtml" />
     <Content Include="Views\AdminDashboard\Edit.cshtml" />
     <Content Include="Views\AdminDashboard\Index.cshtml" />
+    <Content Include="Views\VolunteerAccount\Edit.cshtml" />
+    <Content Include="Views\VolunteerAccount\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\VolunteerAccount\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

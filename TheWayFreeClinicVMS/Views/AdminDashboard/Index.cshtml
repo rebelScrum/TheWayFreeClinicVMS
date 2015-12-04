@@ -12,12 +12,25 @@
         </form>
             <p></p>
         </div>
+        <p></p>
+        <div class="form-group">
+            @using (Html.BeginForm())
+            {
+                <p>
+                    Find by name: @Html.TextBox("SearchString")
+                    <input type="submit" value="Search" />
+                </p>
+            }
+
+        </div>
         <div>
+            <p></p>
             <table class="table table-condensed table-hover table-striped table">
                 <tr>
                                        
                     <th>
-                        @Html.DisplayNameFor(model => model.volLastName)
+                       @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.volFirstName)
@@ -32,7 +45,9 @@
                         @Html.DisplayNameFor(model => model.volPhone)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.volStartDate)
+                       @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes"  aria-hidden="true"></span>
+
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.volActive)

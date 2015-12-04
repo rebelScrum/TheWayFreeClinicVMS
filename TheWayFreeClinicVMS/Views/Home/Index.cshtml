@@ -5,25 +5,65 @@
     ViewBag.Title = "alert mesage";
 }
 
-<div class="jumbotron">
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
 
-        <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-4">
+            <h2>Work log your volunteered time</h2>
+            <p>Simply type your Email and click Clock In button to record your hours. </p>
+            <div>
 
-            <div class="form-group">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="text" name="email" placeholder="Email" class="form-control" />
-                        <br />
-                        <input type="submit" value="Clock In/Out" class="btn btn-success" />
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group>
+
+                        <div class="form-group">
+                            <div>
+                                <input type="text" name="email" placeholder="Email" class="form-control" />
+                                <br />
+                                <input type="submit" value="Clock In/Out" class="btn btn-success" />
+                            </div>
+                        </div>
                     </div>
-                </div>
+            }
+        </div>
+</div>
+        <div class="col-md-4">
 
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
+
+        </div>
+    </div>
+</div>
+   
 
             @*<div class="form-group">
                     @Html.LabelFor(model => model.wrkID, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -56,56 +96,6 @@
                         @Html.ValidationMessageFor(model => model.wrkEndTime, "", new { @class = "text-danger" })
                     </div>
                 </div>*@
-
-
-
-        </div>
-    }
-
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <p>
-            Please contact The Way Free Clinic personnel if you wish to volunteer.
-            
-        </p>
-        <p><a href="@Url.Action("Contact", "Home")" class="btn btn-success"> Contact Us</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Work log your volunteered time</h2>
-        <p>Simply type your Email and Password and click Clock In button to record your hours. </p>
-        <p><a class="btn btn-success" href="http://go.microsoft.com/fwlink/?LinkId=301866">Clock In</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>My Account</h2>
-        <p>Simply follow the link below to log into the system and access your personnal information.</p>
-        <p><a href="@Url.Action("Index", "VolunteerProfile")" class="btn btn-success"> My Account</a></p>
-    </div>
-</div>
-
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
-            </div>
-            <div class="modal-body">
-                <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

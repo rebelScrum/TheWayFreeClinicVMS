@@ -24,7 +24,7 @@ namespace TheWayFreeClinicVMS.Controllers
             //selects volunteer list
             var sorts = from s in volunteers
                         select s;
-            //filtering by first name, last name and specialty
+            //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
             {
                 sorts = sorts.Where(s => s.volLastName.Contains(searchString)
@@ -34,12 +34,19 @@ namespace TheWayFreeClinicVMS.Controllers
             //sorting by last name and the starting date
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
            
            
             switch (sortOrder)
             {
                 case "name_desc":
                     sorts = sorts.OrderByDescending(s => s.volLastName);
+                    break;
+                case "Active":
+                    sorts = sorts.Where(s => s.volActive == true);
+                    break;
+                case "Inactive":
+                    sorts = sorts.Where(s => s.volActive == false);
                     break;
                 case "Date":
                     sorts = sorts.OrderBy(s => s.volStartDate);

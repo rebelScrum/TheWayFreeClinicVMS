@@ -6,11 +6,13 @@
 <div class="container">
     <div class="col-md-12">
         <h2>Manage Volunteers</h2>
+        <hr />
         <div>
         <form>
             <a href="@Url.Action("Create", "AdminDashboard")" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Add Volunteer</a>
         </form>
             <p></p>
+            <hr />
         </div>
         <p></p>
         <div class="form-group">
@@ -21,7 +23,7 @@
                     <input type="submit" value="Search" />
                 </p>
             }
-
+            <hr />
         </div>
         <div>
             <p></p>
@@ -50,7 +52,8 @@
 
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.volActive)
+                        @Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
                     </th>
                     <th></th>
                 </tr>
@@ -81,8 +84,9 @@
                         </td>
                         <td>
                             @*Buttons for CRUD*@
-                            <a href="@Url.Action("Edit", "AdminDashboard",new { id = item.volID })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
+                           
                             <a href="@Url.Action("Details", "AdminDashboard",new { id = item.volID })" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Details</a>
+                            <a href="@Url.Action("Edit", "AdminDashboard",new { id = item.volID })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
                             <a href="@Url.Action("Delete", "AdminDashboard",new { id = item.volID })" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
                         </td>
                     </tr>

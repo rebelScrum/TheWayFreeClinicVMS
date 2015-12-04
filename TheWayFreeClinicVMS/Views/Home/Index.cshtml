@@ -10,19 +10,17 @@
         <div class="col-md-4">
 
         </div>
-        <div class="col-md-4">
-            <h2>Work log your volunteered time</h2>
+        <div class="col-md-4" style="background-color: #e5ffe5;">
+            <h2 class="text-center"><strong>Work Log</strong> <br>your volunteered time</h2>
             <p>Simply type your Email and click Clock In button to record your hours. </p>
             <div>
 
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
-
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group>
+                
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                         <div class="form-group">
                             <div>
@@ -32,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-            }
+                 }
         </div>
 </div>
         <div class="col-md-4">

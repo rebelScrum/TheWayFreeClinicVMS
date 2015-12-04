@@ -79,6 +79,10 @@ namespace TheWayFreeClinicVMS.Controllers
             return View();
         }
 
+        private string alert(string v)
+        {
+            throw new NotImplementedException();
+        }
 
         public ActionResult Modal()
         {

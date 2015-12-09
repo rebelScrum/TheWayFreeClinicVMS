@@ -3,111 +3,96 @@
 @{
     ViewBag.Title = "Index";
 }
+<div class="container">
+    <div class="col-md-12">
+        <h2>Manage Volunteers</h2>
+        <hr />
+        <div>
+        <form>
+            <a href="@Url.Action("Create", "AdminDashboard")" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Add Volunteer</a>
+        </form>
+            <p></p>
+            <hr />
+        </div>
+        <p></p>
+        <div class="form-group">
+            @using (Html.BeginForm())
+            {
+                <p>
+                    Find by name: @Html.TextBox("SearchString")
+                    <input type="submit" value="Search" />
+                </p>
+            }
+            <hr />
+        </div>
+        <div>
+            <p></p>
+            <table class="table table-condensed table-hover table-striped table">
+                <tr>
+                                       
+                    <th>
+                       @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.volFirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Specialty.spcName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.volEmail)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.volPhone)
+                    </th>
+                    <th>
+                       @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes"  aria-hidden="true"></span>
 
-<h2>Index</h2>
+                    </th>
+                    <th>
+                        @Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+            {
+                    <tr>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        
-       
-        <th>
-            @Html.DisplayNameFor(model => model.volFirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volLastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volMiddleName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Specialty.spcName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volDOB)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volEmail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volPhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volStreet1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volStreet2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volCity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volState)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volZip)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volStartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.volActive)
-        </th>
-        <th></th>
-    </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volLastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volFirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialty.spcName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volPhone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volStartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volActive)
+                        </td>
+                        <td>
+                            @*Buttons for CRUD*@
+                           
+                            <a href="@Url.Action("Details", "AdminDashboard",new { id = item.volID })" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Details</a>
+                            <a href="@Url.Action("Edit", "AdminDashboard",new { id = item.volID })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
+                            <a href="@Url.Action("Delete", "AdminDashboard",new { id = item.volID })" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
+                        </td>
+                    </tr>
+                }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.volFirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volLastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volMiddleName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Specialty.spcName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volDOB)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volStreet1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volStreet2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volCity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volState)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volZip)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volStartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.volActive)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.volID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.volID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.volID })
-        </td>
-    </tr>
-}
-
-</table>
+            </table>
+        </div>
+    </div>
+</div>

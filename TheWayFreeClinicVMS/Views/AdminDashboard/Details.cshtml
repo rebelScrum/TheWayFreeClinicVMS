@@ -4,26 +4,22 @@
     ViewBag.Title = "Details";
 }
 
+<div class="container">
+
 <h2>Details</h2>
 
 <div>
     <h4>Volunteer</h4>
     <hr />
     <dl class="dl-horizontal">
+        
+       
         <dt>
-            @Html.DisplayNameFor(model => model.Econtact.ecFirstName)
+            Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Econtact.ecFirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.License.volID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.License.volID)
+            @Html.DisplayFor(model => model.volLastName), @Html.DisplayFor(model => model.volFirstName) @Html.DisplayFor(model => model.volMiddleName)
         </dd>
 
         <dt>
@@ -32,30 +28,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.Specialty.spcName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volFirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volFirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volLastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volLastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volMiddleName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volMiddleName)
         </dd>
 
         <dt>
@@ -83,43 +55,15 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.volStreet1)
+            Address
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.volStreet1)
+            @Html.DisplayFor(model => model.volStreet1) @Html.DisplayFor(model => model.volStreet2)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.volStreet2)
-        </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.volStreet2)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volCity)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volCity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volState)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volState)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.volZip)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.volZip)
+            @Html.DisplayFor(model => model.volCity), @Html.DisplayFor(model => model.volState) @Html.DisplayFor(model => model.volZip)
         </dd>
 
         <dt>
@@ -137,10 +81,11 @@
         <dd>
             @Html.DisplayFor(model => model.volActive)
         </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.volID }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Index", "AdminDashboard")" class="btn btn-info">Back to List</a>
+    <a href="@Url.Action("Edit", "AdminDashboard",new { id = Model.volID })" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
+   
 </p>
+</div>

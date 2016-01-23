@@ -30,7 +30,6 @@ namespace TheWayFreeClinicVMS.Models
         public DateTime wrkStartTime { get; set; }
 
         //end time
-        [Required]
         [DataType(DataType.Time)]
         public DateTime wrkEndTime { get; set; }
 

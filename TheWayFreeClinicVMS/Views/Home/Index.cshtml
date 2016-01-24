@@ -4,15 +4,32 @@
     ViewBag.Title = "Volunteer Management System";
 }
 
+<style>
+    .box {
+        background-color: #e5ffe5; 
+        border-style:double; 
+        border-color:white; 
+        border-width:thick;
+    }
+    
+    .box:hover{
+        border-color:blue;
+    }
+
+</style>
+
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
 
+        <div class="col-md-4 jumbotron box">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center"><strong>Something Else</strong></h2>
+                </div>
+            </div>
         </div>
 
-
-        <div class="col-md-4 jumbotron" style="background-color: #e5ffe5;">
-
+        <div class="col-md-4 jumbotron box">
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="text-center"><strong>Work Log</strong> <br>your volunteered time</h2>
@@ -33,36 +50,21 @@
                             </div>
                         </div>
 
-                        <button type="submit" value="Clock In/Out" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%;">Clock In/Out</button>
-                        <button type="submit" Value="Modal" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="width:100%;">Modal</button>
-
-                        <div id="myModal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Clock In/Out</h4>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        @Html.Partial("ClockConfirm")
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!--end modal-->
+                        <button type="submit" value="Clock In/Out" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%;">Clock In/Out</button>                        
 
                     } <!-- end form-->
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
 
+        <div class="col-md-4 jumbotron box">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center"><strong>Recent Activity</strong></h2>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 

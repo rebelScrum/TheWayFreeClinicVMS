@@ -58,7 +58,7 @@ namespace TheWayFreeClinicVMS.Controllers
                     if (ModelState.IsValid)
                     {
                         worktime.volID = thisVolID;
-                        worktime.wrkID = (int)DateTime.Now.Ticks;
+                        //worktime.wrkID = (int)DateTime.Now.Ticks;
                         worktime.wrkDate = DateTime.Today;
                         worktime.wrkStartTime = DateTime.UtcNow; 
                         worktime.wrkEndTime = DateTime.UtcNow; //same as startTime, signifying clocked in.

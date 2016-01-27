@@ -16,7 +16,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: VolunteerProfile
         public ActionResult Index(int? id)
         {
-            id = 2;
+            id = 3;
 
             if (id == null)
             {

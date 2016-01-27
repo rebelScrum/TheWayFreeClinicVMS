@@ -12,8 +12,8 @@ namespace TheWayFreeClinicVMS.Models
     public class Availability
     {
         //availability ID
-        [Key, Column(Order = 0)]
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int avID { get; set; }
 
         //volunteer ID, foreign key

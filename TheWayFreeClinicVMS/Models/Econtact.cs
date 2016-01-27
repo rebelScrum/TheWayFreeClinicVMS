@@ -10,11 +10,12 @@ namespace TheWayFreeClinicVMS.Models
     public class Econtact
     {
         //emergency contact id
-        //[Key, Column(Order = 0)]
-        //public int ecID { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ecID { get; set; }
 
         //volunteer ID
-        [Key, ForeignKey("Volunteer")]
+        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //First Name

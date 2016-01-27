@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace TheWayFreeClinicVMS.Models
     {
         //ID
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int volID { get; set; }
 
         // First Name
@@ -97,11 +99,13 @@ namespace TheWayFreeClinicVMS.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
+        
         public DateTime volStartDate { get; set; }
 
         //active: boolean true - yes, false - no
         [Required]
         [Display(Name = "Active")]
+        [DefaultValue(true)]
         public bool volActive { get; set; }
 
         //specialty ID, foreign key from specialty look up table
@@ -110,7 +114,7 @@ namespace TheWayFreeClinicVMS.Models
         public int spcID { get; set; }
 
         // EF navigation relationships
-        public virtual Econtact Econtact { get; set; }
+        public virtual ICollection<Econtact> Econtact{ get; set; }
 
         public virtual ICollection<Speak> Speaks { get; set; }
 
@@ -122,7 +126,7 @@ namespace TheWayFreeClinicVMS.Models
 
         public virtual ICollection<Job> Jobs { get; set; }
 
-        public virtual License License { get; set; }
+        public virtual ICollection<License> License{ get; set; }
 
         public virtual ICollection<Worktime> Worklog { get; set; }
     }

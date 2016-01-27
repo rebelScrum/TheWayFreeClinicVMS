@@ -259,7 +259,6 @@
     <Content Include="Views\AdminDashboard\Index.cshtml" />
     <Content Include="Views\VolunteerProfile\Index.cshtml" />
     <Content Include="Views\VolunteerProfile\Edit.cshtml" />
-    <Content Include="Views\Home\ClockConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

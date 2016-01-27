@@ -18,7 +18,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, string volSpecialty)
         {
-            var volunteers = db.Volunteers.Include(v => v.Econtact).Include(v => v.License).Include(v => v.Specialty).Include(v=>v.Speaks).Include(v=>v.Available);
+            var volunteers = db.Volunteers.Include(v => v.Specialty);
 
 
             //selects volunteer list

@@ -1,4 +1,4 @@
-﻿@model TheWayFreeClinicVMS.Models.Worktime
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Worktime>
 
 @{
     ViewBag.Title = "Volunteer Management System";
@@ -6,25 +6,49 @@
 
 <style>
     .box {
-        background-color: #e5ffe5; 
-        border-style:double; 
-        border-color:white; 
-        border-width:thick;
+        background-color: #bcebfe;
+        border-style: double;
+        border-color: white;
+        border-width: thick;
+        padding:20px;
     }
-    
-    .box:hover{
-        border-color:blue;
+
+    .box:hover {
+            border-color: blue;
+        }
+
+    tr:nth-child(n + 20) {
+        visibility: hidden;
+        display:none;
     }
+
 
 </style>
 
 <div class="container">
     <div class="row">
-
-        <div class="col-md-4 jumbotron box">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="text-center"><strong>Something Else</strong></h2>
+        <div class="col-md-4">
+            <a href="http://www.google.com/">
+                <div class="jumbotron box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="text-center"><strong>Something Else</strong></h2>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="jumbotron box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="text-center"><strong>Something Else</strong></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="jumbotron box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="text-center"><strong>Something Else</strong></h2>
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,9 +74,18 @@
                             </div>
                         </div>
 
-                        <button type="submit" value="Clock In/Out" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%;">Clock In/Out</button>                        
+                        <button type="submit" value="Clock In/Out" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Clock In/Out</button>
 
                     } <!-- end form-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="text-center"><strong>Something Else</strong></h2>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -63,45 +96,50 @@
                     <h2 class="text-center"><strong>Recent Activity</strong></h2>
                 </div>
             </div>
+            <div class="row">
+                <div>
+                    <table class="recentTable table table-condensed table-hover table-striped" style="font-size:x-small; font-weight:700;">
+                        <tr>
+                            <th>
+                                Last
+                            </th>
+                            <th>
+                                First
+                            </th>
+                            <th>
+                                In
+                            </th>
+                            <th>
+                                Out
+                            </th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Volunteer.volLastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Volunteer.volFirstName)
+                                </td>                                                             
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.wrkStartTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.wrkEndTime)
+                                </td>
+                            </tr>
+                        }                        
+                    </table>
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
 
 
-@*<div class="form-group">
-        @Html.LabelFor(model => model.wrkID, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.wrkID, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.wrkID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.volID, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.volID, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.volID , "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.wrkStartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.wrkStartTime, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.wrkStartTime, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.wrkEndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.wrkEndTime, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.wrkEndTime, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")    
 }
 

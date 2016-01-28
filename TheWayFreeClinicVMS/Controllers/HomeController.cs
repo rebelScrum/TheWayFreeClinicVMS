@@ -17,7 +17,14 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var wlog = db.Worklog;
+
+            var sorts = from s in wlog
+                        select s;
+
+            sorts = sorts.OrderByDescending(s => s.wrkDate);
+
+            return View(sorts.ToList());
         }
         public ActionResult About()
         {
@@ -31,50 +38,57 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] Worktime worktime, string email)
+        public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
+            var wlog = db.Worklog.Include(v => v.Volunteer);
+            var volunteers = db.Volunteers;
+
             //get id from email
-            var thisVolID = (from i in db.Volunteers  where i.volEmail == email select i.volID).SingleOrDefault();
+            var thisVolID = (from i in volunteers  where i.volEmail == email select i.volID).SingleOrDefault();
 
-            //query will return a Worktime object if startTime and Endtime same. i.e., user made new clock-in. 
-            var query = (from w in db.Worklog where w.volID == thisVolID && w.wrkEndTime == w.wrkStartTime select w).SingleOrDefault();
+            //will set Worktime object if Endtime null. i.e., user clocked-in. 
+            Worktime time = (from w in wlog where w.volID == thisVolID && w.wrkEndTime == null select w).SingleOrDefault();
             
-            //if not null, user is still clocked in. Update wrkEndTime with timestamp. 
-            //Now user has no worktime record with same start/end time. At next entry query will return null and move to else.
-            if (query !=null )
+            //if wrkEndTime null, user is still clocked in. Update wrkEndTime with timestamp. 
+            //Now user has no worktime record with empty end time. At next entry query will return null and move to else.
+            if (time != null)
             {                
-                query.wrkEndTime = DateTime.UtcNow;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                time.wrkDate = DateTime.Now;
+                time.wrkEndTime = DateTime.Now;
 
-            else
+                db.SaveChanges();
+            }
+            else //this user has no record containing null wrkEndTime
             {
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        worktime.volID = thisVolID;
-                        //worktime.wrkID = (int)DateTime.Now.Ticks;
-                        worktime.wrkDate = DateTime.Today;
-                        worktime.wrkStartTime = DateTime.UtcNow; 
-                        worktime.wrkEndTime = DateTime.UtcNow; //same as startTime, signifying clocked in.
+                        Worktime newTime = new Worktime();
 
-                        db.Worklog.Add(worktime);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
+                        newTime.volID = thisVolID;
+                        newTime.wrkDate = DateTime.Now;
+                        newTime.wrkStartTime = DateTime.Now;
+                        newTime.wrkEndTime = null;//same as startTime, signifying clocked in.
+
+                        db.Worklog.Add(newTime);
+                        db.SaveChanges();                        
                     }
                 }
                 catch (DataException)
                 {
-                    ModelState.AddModelError("", "We cannot find your account. Try again, and if the problem persists see your system administrator.");
+                    ModelState.AddModelError("", "We cannot find your account. Try again. If the problem persists, contact your system administrator.");
                 }
-            }           
+            }
 
-            return View();
+            var sorts = from s in wlog
+                        select s;
+
+            sorts = sorts.OrderByDescending(s => s.wrkDate);
+
+            return View(sorts.ToList());
         }       
 
         protected override void Dispose(bool disposing)

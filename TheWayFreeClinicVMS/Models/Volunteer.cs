@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace TheWayFreeClinicVMS.Models
     {
         //ID
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int volID { get; set; }
 
         // First Name
@@ -53,7 +55,8 @@ namespace TheWayFreeClinicVMS.Models
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number")]
         [Required(ErrorMessage = "Phone Number Required!")]
-        [RegularExpression(@"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$", ErrorMessage = "Entered phone format is not valid. Use (999)999-9999 format.")]
+        [RegularExpression(@"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$", 
+        ErrorMessage = "Entered phone format is not valid. Use (999)999-9999 format.")]
         [StringLength(15)]
         public string volPhone { get; set; }
 
@@ -70,21 +73,24 @@ namespace TheWayFreeClinicVMS.Models
 
         //city
         [Required]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,25}$")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,25}$",
+        ErrorMessage = "Numbers and special characters are not allowed in the city name.")]
         [StringLength(25)]
         [Display(Name = "City")]
         public string volCity { get; set; }
 
         //state
         [Required]
-        [RegularExpression(@"^[A-Z\s]{2}$")]
+        [RegularExpression(@"^[A-Z\s]{2}$",
+        ErrorMessage = "Please enter two letter state abbreviation (FL).")]
         [StringLength(2)]
         [Display(Name = "State")]
         public string volState { get; set; }
 
         //zip
         [Required]
-        [RegularExpression(@"^(\d{5})$")]
+        [RegularExpression(@"^(\d{5})$",
+        ErrorMessage = "Please enter 5 digits zip code.")]
         [StringLength(5)]
         [Display(Name = "Zip")]
         public string volZip { get; set; }
@@ -93,11 +99,13 @@ namespace TheWayFreeClinicVMS.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
+        
         public DateTime volStartDate { get; set; }
 
         //active: boolean true - yes, false - no
         [Required]
-        [Display(Name = "Active Volunteer?")]
+        [Display(Name = "Active")]
+        [DefaultValue(true)]
         public bool volActive { get; set; }
 
         //specialty ID, foreign key from specialty look up table
@@ -106,7 +114,7 @@ namespace TheWayFreeClinicVMS.Models
         public int spcID { get; set; }
 
         // EF navigation relationships
-        public virtual Econtact Econtact { get; set; }
+        public virtual ICollection<Econtact> Econtact{ get; set; }
 
         public virtual ICollection<Speak> Speaks { get; set; }
 
@@ -118,7 +126,7 @@ namespace TheWayFreeClinicVMS.Models
 
         public virtual ICollection<Job> Jobs { get; set; }
 
-        public virtual License License { get; set; }
+        public virtual ICollection<License> License{ get; set; }
 
         public virtual ICollection<Worktime> Worklog { get; set; }
     }

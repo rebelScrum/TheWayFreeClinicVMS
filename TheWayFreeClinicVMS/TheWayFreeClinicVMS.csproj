@@ -171,16 +171,12 @@
     <Compile Include="Controllers\AdminDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\VolunteerProfileController.cs" />
     <Compile Include="DataAccessLayer\VMSContext.cs" />
     <Compile Include="DataAccessLayer\VMSDatabaseInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512010437002_InitialCreate.cs" />
-    <Compile Include="Migrations\201512010437002_InitialCreate.Designer.cs">
-      <DependentUpon>201512010437002_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Availability.cs" />
     <Compile Include="Models\Contract.cs" />
@@ -202,6 +198,8 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\ProfilePlaceholder.png" />
+    <Content Include="Content\img\the_way_logo_no-background1.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -259,6 +257,8 @@
     <Content Include="Views\AdminDashboard\Details.cshtml" />
     <Content Include="Views\AdminDashboard\Edit.cshtml" />
     <Content Include="Views\AdminDashboard\Index.cshtml" />
+    <Content Include="Views\VolunteerProfile\Index.cshtml" />
+    <Content Include="Views\VolunteerProfile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -270,11 +270,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201512010437002_InitialCreate.resx">
-      <DependentUpon>201512010437002_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -9,17 +9,21 @@ namespace TheWayFreeClinicVMS.Models
 {
     public class Contract
     {
+        //Contract id
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int contrID { get; set; }
+
         //Contract number
-        [Key, Column(Order = 0)]
-        public int ctrNum { get; set; }
+        [MaxLength(30)]
+        public string ctrNum { get; set; }
 
         // volunteer ID
-        [Key, Column(Order = 1)]
-
+        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //PA Group ID
-        [Key, Column(Order = 2)]
+        [ForeignKey("Pagroup")]
         public int pgrID { get; set; }
 
         //navigation Volunteer acts as relationship identifier

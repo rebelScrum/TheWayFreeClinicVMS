@@ -9,13 +9,17 @@ namespace TheWayFreeClinicVMS.Models
 {
     public class Job
     {
-        //volunteer id
-        [Key, ForeignKey("Volunteer"),Column(Order = 0)]
+        //job id
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int jobID { get; set; }
 
+        //volunteer id
+        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //employer id
-        [Key, ForeignKey("Employer"),Column(Order = 1)]
+        [ForeignKey("Employer")]
         public int empID { get; set; }
 
         //job title
@@ -32,10 +36,9 @@ namespace TheWayFreeClinicVMS.Models
         public DateTime jobStartDate { get; set; }
 
         //job end date
-        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime jobEndDate { get; set; }
+        public DateTime? jobEndDate { get; set; }
 
         //navigation Volunteer acts as relationship identifier
         public virtual Volunteer Volunteer { get; set; }

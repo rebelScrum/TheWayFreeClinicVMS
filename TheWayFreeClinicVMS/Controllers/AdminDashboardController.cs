@@ -16,10 +16,50 @@ namespace TheWayFreeClinicVMS.Controllers
         private VMSContext db = new VMSContext();
 
         // GET: AdminDashboard
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString, string volSpecialty)
         {
-            var volunteers = db.Volunteers.Include(v => v.Econtact).Include(v => v.License).Include(v => v.Specialty);
-            return View(volunteers.ToList());
+            var volunteers = db.Volunteers.Include(v => v.Specialty);
+
+
+            //selects volunteer list
+            var sorts = from s in volunteers
+                        select s;
+            //filtering by first name, last name 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sorts = sorts.Where(s => s.volLastName.Contains(searchString)
+                                       || s.volFirstName.Contains(searchString));
+            }
+
+            //sorting by last name and the starting date
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
+           
+           
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    sorts = sorts.OrderByDescending(s => s.volLastName);
+                    break;
+                case "Active":
+                    sorts = sorts.Where(s => s.volActive == true);
+                    break;
+                case "Inactive":
+                    sorts = sorts.Where(s => s.volActive == false);
+                    break;
+                case "Date":
+                    sorts = sorts.OrderBy(s => s.volStartDate);
+                    break;
+                case "date_desc":
+                    sorts = sorts.OrderByDescending(s => s.volStartDate);
+                    break;
+                default:
+                    sorts = sorts.OrderBy(s => s.volLastName);
+                    break;
+            }
+
+            return View(sorts.ToList());
         }
 
         // GET: AdminDashboard/Details/5
@@ -40,9 +80,9 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Create
         public ActionResult Create()
         {
-            ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName");
-            ViewBag.volID = new SelectList(db.Licenses, "volID", "volID");
+            
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName");
+           
             return View();
         }
 
@@ -53,16 +93,21 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Volunteers.Add(volunteer);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Volunteers.Add(volunteer);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
-            ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
-            ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
+            }
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
+            
             return View(volunteer);
         }
 

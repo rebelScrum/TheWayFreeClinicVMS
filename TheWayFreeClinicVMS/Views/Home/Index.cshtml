@@ -1,31 +1,145 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Worktime>
+
+@{
+    ViewBag.Title = "Volunteer Management System";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<style>
+    .box {
+        background-color: #bcebfe;
+        border-style: double;
+        border-color: white;
+        border-width: thick;
+        padding:20px;
+    }
+
+    .box:hover {
+            border-color: blue;
+        }
+
+    tr:nth-child(n + 20) {
+        visibility: hidden;
+        display:none;
+    }
+
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 jumbotron" style="background-color:transparent;">
+            <a href="http://www.google.com/">
+                <div class="jumbotron box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="text-center"><strong>Something Else</strong></h2>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="jumbotron box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="text-center"><strong>Something Else</strong></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="jumbotron box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="text-center"><strong>Something Else</strong></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 jumbotron box">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center"><strong>Work Log</strong> <br>your volunteered time</h2>
+                    <p>Simply type your Email and click Clock In button to record your hours. </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            <div>
+                                <input type="text" name="email" placeholder="Email" class="form-control" style="max-width:100%" ; />
+                            </div>
+                        </div>
+
+                        <button type="submit" value="Clock In/Out" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Clock In/Out</button>
+
+                    } <!-- end form-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="text-center"><strong>Something Else</strong></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 jumbotron box">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center"><strong>Recent Activity</strong></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <table class="recentTable table table-condensed table-hover table-striped" style="font-size:x-small; font-weight:700;">
+                        <tr>
+                            <th>
+                                Last
+                            </th>
+                            <th>
+                                First
+                            </th>
+                            <th>
+                                In
+                            </th>
+                            <th>
+                                Out
+                            </th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Volunteer.volLastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Volunteer.volFirstName)
+                                </td>                                                             
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.wrkStartTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.wrkEndTime)
+                                </td>
+                            </tr>
+                        }                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")    
+}
+

@@ -10,12 +10,13 @@ namespace TheWayFreeClinicVMS.Models
     public class Worktime
     {
         //work log id
-        [Key, Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int wrkID { get; set; }
 
 
         //Volunteer ID
-        [Key, ForeignKey("Volunteer"),Column(Order = 1)]
+        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //date
@@ -30,9 +31,8 @@ namespace TheWayFreeClinicVMS.Models
         public DateTime wrkStartTime { get; set; }
 
         //end time
-        [Required]
         [DataType(DataType.Time)]
-        public DateTime wrkEndTime { get; set; }
+        public DateTime? wrkEndTime { get; set; }
 
 
         //navigation Volunteer property acts as relationship identifier

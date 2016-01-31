@@ -1,3 +1,12 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"].ToString();
+    string layout = "";
+    if (controller == "AdminDashboard")
+    {
+        layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else {
+        layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    Layout = layout;
 }

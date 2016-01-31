@@ -18,11 +18,19 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, string volSpecialty)
         {
-            var volunteers = db.Volunteers.Include(v => v.Specialty);
-
-
+            var volunteers = new VolunteerDataViewModel();
+            volunteers.Volunteer = db.Volunteers.Include(v => v.Econtact)
+                .Include(v => v.Speaks.Select(c => c.Language))
+                .Include(v => v.Available)
+                .Include(v => v.Contracts.Select(p => p.Pagroup))
+                .Include(v => v.Specialty)
+                .Include(v => v.Jobs.Select(e => e.Employer))
+                .Include(v => v.License)
+                .Include(v => v.Worklog);
+           
             //selects volunteer list
-            var sorts = from s in volunteers
+
+            var sorts = from s in volunteers.Volunteer
                         select s;
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))

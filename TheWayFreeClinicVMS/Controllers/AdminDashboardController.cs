@@ -18,19 +18,11 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, string volSpecialty)
         {
-            var volunteers = new VolunteerDataViewModel();
-            volunteers.Volunteer = db.Volunteers.Include(v => v.Econtact)
-                .Include(v => v.Speaks.Select(c => c.Language))
-                .Include(v => v.Available)
-                .Include(v => v.Contracts.Select(p => p.Pagroup))
-                .Include(v => v.Specialty)
-                .Include(v => v.Jobs.Select(e => e.Employer))
-                .Include(v => v.License)
-                .Include(v => v.Worklog);
-           
+            var volunteers = db.Volunteers.Include(v => v.Specialty);
+
             //selects volunteer list
 
-            var sorts = from s in volunteers.Volunteer
+            var sorts = from s in volunteers
                         select s;
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -171,16 +163,47 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(volunteer);
         }
 
-        // POST: AdminDashboard/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        // GET: AdminDashboard/AddSpecialty
+        public ActionResult AddSpecialty()
         {
-            Volunteer volunteer = db.Volunteers.Find(id);
-            db.Volunteers.Remove(volunteer);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            return View("_AddSpecialty");
         }
+
+        // POST: AdminDashboard/AddSpecialty
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddSpecialty([Bind(Include = "spcID, spcName")] Specialty specialty)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Specialties.Add(specialty);
+                    db.SaveChanges();
+                    return RedirectToAction("Create");
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
+            }
+
+            return View("_AddSpecialty");
+        }
+
+
+        // POST: AdminDashboard/Delete/5
+        // [HttpPost, ActionName("Delete")]
+        // [ValidateAntiForgeryToken]
+        // public ActionResult DeleteConfirmed(int id)
+        // {
+        //    Volunteer volunteer = db.Volunteers.Find(id);
+        //    db.Volunteers.Remove(volunteer);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
 
         protected override void Dispose(bool disposing)
         {

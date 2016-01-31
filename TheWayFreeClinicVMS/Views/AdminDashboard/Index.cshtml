@@ -21,9 +21,13 @@
                 <p>
                     Find by name: @Html.TextBox("SearchString")
                     <input type="submit" value="Search" />
-                </p>
+                    Specialty: @Html.DropDownList("specialtySearch", "All") 
+                    <input type="submit" value="Filter" />
+                    <br />
+               </p>
+            
             }
-            <hr />
+            
         </div>
         <div>
             <p></p>

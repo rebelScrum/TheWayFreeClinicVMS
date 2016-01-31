@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -The Way Free Management System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    
+
+</head>
+<body>
+    <div class="container" style="position:relative; z-index:1040;">
+        <nav class="navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header" style="height:50px;">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img src="~/Content/img/the_way_logo_no-background1.png"/>
+                </div>
+                <div class="navbar-collapse collapse" style="margin-top:10px;">
+                    <ul class="nav navbar-nav" style="font-size:large; margin:0;">
+                        <li>@Html.ActionLink("The Way Volunteer Management System", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("Dashboard", "Index", "AdminDashboard")</li>
+                        <li>@Html.ActionLink("Profile", "Index", "VolunteerProfile")</li>
+                        <li></li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+    <div class="container body-content" style="padding-top:0px;">
+
+        <div class="row">
+            <div class="col-sm-2" style="width:180px; padding-right:0px; padding-top:20px; background-color:aliceblue; min-height:1000px;">
+                <!-- Left column -->
+                <a href="#"><strong><span class="glyphicon glyphicon-wrench"></span> Dashboard</strong></a>
+                <hr>
+                <ul class="nav nav-stacked">
+                    <li class="nav-header">
+                        <a id="m1" href="#" data-toggle="collapse" data-target="#menu1"> View <span id="chev1" class="glyphicon glyphicon-chevron-right"></span></a>
+                        <ul class="nav nav-stacked collapse" id="menu1">
+                            <li class="active"> <a href="#"><i class="glyphicon glyphicon-circle"></i> Volunteers</a></li>
+                            <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info">4</span></a></li>
+                            <li><a href="#"><i class="glyphicon glyphicon-comment"></i> Work Log Data</a></li>
+                            <li><a href="#"><i class="glyphicon glyphicon-comment"></i> Schedules</a></li>                            
+                        </ul>
+                    </li>
+
+                    <hr />
+
+                    <li class="nav-header">
+                        <a id="m2" href="#" data-toggle="collapse" data-target="#menu2"> Create <span id="chev2" class="glyphicon glyphicon-chevron-right"></span></a>
+                        <ul class="nav nav-stacked collapse" id="menu2">
+                            <li>
+                                <a href="@Url.Action("Create", "AdminDashboard")">New Volunteer</a>
+                            </li>
+                            <li>
+                                <a href="#">Report</a>
+                            </li>                            
+                        </ul>
+                    </li>
+
+                    <hr />
+
+                    <li class="nav-header">
+                        <a id="m3" href="#" data-toggle="collapse" data-target="#menu3"> Update <span id="chev3" class="glyphicon glyphicon-chevron-right"></span></a>
+                        <ul class="nav nav-stacked collapse" id="menu3">
+                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Employer Data</a></li>
+                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Volunteer Data</a></li>
+                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Work Log Data</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <hr>               
+
+            </div>
+            <!-- /col-3 -->
+
+            <div class="col-lg-10" style="">
+                @RenderBody()
+            </div>
+
+        </div>
+
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - RebelScrum</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById("m1").addEventListener("click", chevDwn1);
+        document.getElementById("m2").addEventListener("click", chevDwn2);
+        document.getElementById("m3").addEventListener("click", chevDwn3);
+
+        function chevDwn1() {
+            if (document.getElementById("chev1").className == "glyphicon glyphicon-chevron-right") {
+                document.getElementById("chev1").className = "glyphicon glyphicon-chevron-down"
+            }
+            else {
+                document.getElementById("chev1").className = "glyphicon glyphicon-chevron-right"
+            }
+        }
+
+        function chevDwn2() {
+            if (document.getElementById("chev2").className == "glyphicon glyphicon-chevron-right") {
+                document.getElementById("chev2").className = "glyphicon glyphicon-chevron-down"
+            }
+            else {
+                document.getElementById("chev2").className = "glyphicon glyphicon-chevron-right"
+            }
+        }
+
+        function chevDwn3() {
+            if (document.getElementById("chev3").className == "glyphicon glyphicon-chevron-right") {
+                document.getElementById("chev3").className = "glyphicon glyphicon-chevron-down"
+            }
+            else {
+                document.getElementById("chev3").className = "glyphicon glyphicon-chevron-right"
+            }
+        }
+    </script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+   
+</body>
+</html>

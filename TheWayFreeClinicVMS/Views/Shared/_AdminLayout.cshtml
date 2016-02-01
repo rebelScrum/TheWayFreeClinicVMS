@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -The Way Free Management System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    
+
+</head>
+<body>
+    <div class="container" style="position:relative; z-index:1040;">
+        <nav class="navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header" style="height:50px;">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img src="~/Content/img/the_way_logo_no-background1.png"/>
+                </div>
+                <div class="navbar-collapse collapse" style="margin-top:10px;">
+                    <ul class="nav navbar-nav" style="font-size:large; margin:0;">
+                        <li>@Html.ActionLink("The Way Volunteer Management System", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("Dashboard", "Index", "AdminDashboard")</li>
+                    </ul>
+                    <ul class="nav navbar-nav" style="font-size:large; margin:0; float:right;">
+
+                        <li><div>@Html.Partial("_LoginPartial")</div></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+    <div class="container body-content" style="padding-top:10px;">
+
+        <div class="row" style="margin-top: 10px;" >
+            <div class="col-md-2" style="margin-top:20px;">
+                <!-- Left column -->
+               
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active">
+                        <a href="#"><strong><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Dashboard</strong></a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> View <span class="caret" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"> <a href="#"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span> Volunteers</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Messages <span class="badge badge-info">4</span></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Work Log Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Schedules</a></li>
+                        </ul>
+
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Create <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"> <a href="#"><i class="glyphicon glyphicon-circle"></i> Volunteers</a></li>
+                            <li><a href="@Url.Action("Create", "AdminDashboard")"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Volunteer</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Report</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Update <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
+                        </ul>
+                    </li>
+                    <li id="test1" class="dropdown hidden">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Test1 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
+                        </ul>
+                    </li> 
+                    <li id="test2" class="dropdown hidden">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Test2 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
+                        </ul>
+                    </li>
+
+                </ul>              
+            </div>
+            <!-- /col-3 -->
+
+            <div class="col-lg-10" style="">
+                @RenderBody()
+            </div>
+
+        </div>
+
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - RebelScrum</p>
+        </footer>
+    </div>
+
+    <script>
+        
+        $(document).ready(function () {
+
+            switch ("@ViewBag.viewName") {
+                case "index":
+                    document.getElementById('test1').className = "show";
+                    break;
+                case "create":
+                    document.getElementById('test2').className = "show";
+                    break;
+            }
+        });
+
+    </script>
+
+
+    @RenderSection("scripts", required: false)
+   
+</body>
+</html>

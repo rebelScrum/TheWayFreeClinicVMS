@@ -191,6 +191,7 @@
     <Compile Include="Models\Speak.cs" />
     <Compile Include="Models\Specialty.cs" />
     <Compile Include="Models\Volunteer.cs" />
+    <Compile Include="Models\VolunteerDataViewModel.cs" />
     <Compile Include="Models\Worktime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -259,6 +260,8 @@
     <Content Include="Views\AdminDashboard\Index.cshtml" />
     <Content Include="Views\VolunteerProfile\Index.cshtml" />
     <Content Include="Views\VolunteerProfile\Edit.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\AdminDashboard\_AddSpecialty.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

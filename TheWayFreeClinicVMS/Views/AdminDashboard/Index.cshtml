@@ -21,9 +21,13 @@
                 <p>
                     Find by name: @Html.TextBox("SearchString")
                     <input type="submit" value="Search" />
-                </p>
+                    Specialty: @Html.DropDownList("specialtySearch", "All") 
+                    <input type="submit" value="Filter" />
+                    <br />
+               </p>
+            
             }
-            <hr />
+            
         </div>
         <div>
             <p></p>
@@ -55,10 +59,7 @@
                         @Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm })
                         <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
                     </th>
-                    <th>
-                        Worklog
-                    </th>
-                        
+                                           
                     <th></th>
                 </tr>
                 @foreach (var item in Model)

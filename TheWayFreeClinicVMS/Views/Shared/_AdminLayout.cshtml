@@ -6,7 +6,8 @@
     <title>@ViewBag.Title -The Way Free Management System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     
 
 </head>
@@ -40,52 +41,60 @@
 
 
 
-    <div class="container body-content" style="padding-top:0px;">
+    <div class="container body-content" style="padding-top:10px;">
 
-        <div class="row">
-            <div class="col-sm-2" style="width:180px; padding-right:0px; padding-top:20px; background-color:aliceblue; min-height:1000px;">
+        <div class="row" style="margin-top: 10px;" >
+            <div class="col-md-2" style="margin-top:20px;">
                 <!-- Left column -->
-                <a href="#"><strong><span class="glyphicon glyphicon-wrench"></span> Dashboard</strong></a>
-                <hr>
-                <ul class="nav nav-stacked">
-                    <li class="nav-header">
-                        <a id="m1" href="#" data-toggle="collapse" data-target="#menu1"> View <span id="chev1" class="glyphicon glyphicon-chevron-right"></span></a>
-                        <ul class="nav nav-stacked collapse" id="menu1">
+               
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active">
+                        <a href="#"><strong><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Dashboard</strong></a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> View <span class="caret" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"> <a href="#"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span> Volunteers</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Messages <span class="badge badge-info">4</span></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Work Log Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Schedules</a></li>
+                        </ul>
+
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Create <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
                             <li class="active"> <a href="#"><i class="glyphicon glyphicon-circle"></i> Volunteers</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info">4</span></a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-comment"></i> Work Log Data</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-comment"></i> Schedules</a></li>                            
+                            <li><a href="@Url.Action("Create", "AdminDashboard")"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Volunteer</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Report</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Update <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
+                        </ul>
+                    </li>
+                    <li id="test1" class="dropdown hidden">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Test1 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
+                        </ul>
+                    </li> 
+                    <li id="test2" class="dropdown hidden">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Test2 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
                         </ul>
                     </li>
 
-                    <hr />
-
-                    <li class="nav-header">
-                        <a id="m2" href="#" data-toggle="collapse" data-target="#menu2"> Create <span id="chev2" class="glyphicon glyphicon-chevron-right"></span></a>
-                        <ul class="nav nav-stacked collapse" id="menu2">
-                            <li>
-                                <a href="@Url.Action("Create", "AdminDashboard")">New Volunteer</a>
-                            </li>
-                            <li>
-                                <a href="#">Report</a>
-                            </li>                            
-                        </ul>
-                    </li>
-
-                    <hr />
-
-                    <li class="nav-header">
-                        <a id="m3" href="#" data-toggle="collapse" data-target="#menu3"> Update <span id="chev3" class="glyphicon glyphicon-chevron-right"></span></a>
-                        <ul class="nav nav-stacked collapse" id="menu3">
-                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Employer Data</a></li>
-                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Volunteer Data</a></li>
-                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Work Log Data</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <hr>               
-
+                </ul>              
             </div>
             <!-- /col-3 -->
 
@@ -103,42 +112,23 @@
     </div>
 
     <script>
-        document.getElementById("m1").addEventListener("click", chevDwn1);
-        document.getElementById("m2").addEventListener("click", chevDwn2);
-        document.getElementById("m3").addEventListener("click", chevDwn3);
+        
+        $(document).ready(function () {
 
-        function chevDwn1() {
-            if (document.getElementById("chev1").className == "glyphicon glyphicon-chevron-right") {
-                document.getElementById("chev1").className = "glyphicon glyphicon-chevron-down"
+            switch ("@ViewBag.viewName") {
+                case "index":
+                    document.getElementById('test1').className = "show";
+                    break;
+                case "create":
+                    document.getElementById('test2').className = "show";
+                    break;
             }
-            else {
-                document.getElementById("chev1").className = "glyphicon glyphicon-chevron-right"
-            }
-        }
+        });
 
-        function chevDwn2() {
-            if (document.getElementById("chev2").className == "glyphicon glyphicon-chevron-right") {
-                document.getElementById("chev2").className = "glyphicon glyphicon-chevron-down"
-            }
-            else {
-                document.getElementById("chev2").className = "glyphicon glyphicon-chevron-right"
-            }
-        }
-
-        function chevDwn3() {
-            if (document.getElementById("chev3").className == "glyphicon glyphicon-chevron-right") {
-                document.getElementById("chev3").className = "glyphicon glyphicon-chevron-down"
-            }
-            else {
-                document.getElementById("chev3").className = "glyphicon glyphicon-chevron-right"
-            }
-        }
     </script>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 
+    @RenderSection("scripts", required: false)
    
 </body>
 </html>

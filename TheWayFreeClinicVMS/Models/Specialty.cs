@@ -24,8 +24,9 @@ namespace TheWayFreeClinicVMS.Models
         //specialty name
         [StringLength(20)]
         [Required]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,30}$")]
-        [Display(Name = "Specialty")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,30}$",
+         ErrorMessage = "Numbers and special characters are not allowed in the specialty name.")]
+        [Display(Name = "Specialty Name")]
         public string spcName { get; set; }
 
         //many volunteers can have the same specialty

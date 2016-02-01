@@ -10,26 +10,24 @@
         border-style: double;
         border-color: white;
         border-width: thick;
-        padding:20px;
+        padding: 20px;
     }
 
-    .box:hover {
+        .box:hover {
             border-color: blue;
         }
 
     tr:nth-child(n + 20) {
         visibility: hidden;
-        display:none;
+        display: none;
     }
-
-
 </style>
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4 jumbotron" style="background-color:transparent;">
+        <div class="col-md-4" style="background-color:transparent; padding:0; margin-bottom:30px;">
             <a href="http://www.google.com/">
-                <div class="jumbotron box">
+                <div class=" box">
                     <div class="row">
                         <div class="col-md-12">
                             <h2 class="text-center"><strong>Something Else</strong></h2>
@@ -37,14 +35,14 @@
                     </div>
                 </div>
             </a>
-            <div class="jumbotron box">
+            <div class=" box">
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="text-center"><strong>Something Else</strong></h2>
                     </div>
                 </div>
             </div>
-            <div class="jumbotron box">
+            <div class=" box">
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="text-center"><strong>Something Else</strong></h2>
@@ -53,44 +51,44 @@
             </div>
         </div>
 
-        <div class="col-md-4 jumbotron box">
+        <div class="col-md-3 jumbotron box">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="text-center"><strong>Work Log</strong> <br>your volunteered time</h2>
-                    <p>Simply type your Email and click Clock In button to record your hours. </p>
+                    <h2 class="text-center"><strong>Work Log</strong> <br /></h2>
+                    <p class="text-center" style="margin-top:20px;">Log your volunteered time.</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     @using (Html.BeginForm())
                     {
-                        @Html.AntiForgeryToken()
-
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.AntiForgeryToken()                        
 
                         <div class="form-group">
                             <div>
-                                <input type="text" name="email" placeholder="Email" class="form-control" style="max-width:100%" ; />
+                                <input id="email" type="text" name="email" placeholder="Email" class="form-control" style="max-width:100%" ; />
                             </div>
                         </div>
 
-                        <button type="submit" value="Clock In/Out" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Clock In/Out</button>
 
+                        <button type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
+                        <span style="font-size:small">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</span>
+                        
                     } <!-- end form-->
                 </div>
             </div>
             <div class="row">
-                <div class="jumbotron">
+                <div class="">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 class="text-center"><strong>Something Else</strong></h2>
+                                                        
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 jumbotron box">
+        <div class="col-md-5 jumbotron box">
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="text-center"><strong>Recent Activity</strong></h2>
@@ -121,7 +119,7 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Volunteer.volFirstName)
-                                </td>                                                             
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.wrkStartTime)
                                 </td>
@@ -129,7 +127,7 @@
                                     @Html.DisplayFor(modelItem => item.wrkEndTime)
                                 </td>
                             </tr>
-                        }                        
+                        }
                     </table>
                 </div>
             </div>
@@ -137,9 +135,13 @@
     </div>
 </div>
 
+<script>
 
+
+
+</script>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")    
+    @Scripts.Render("~/bundles/jqueryval")
 }
 

@@ -14,11 +14,12 @@ namespace TheWayFreeClinicVMS.Controllers
     {
         private VMSContext db = new VMSContext();
         // GET: VolunteerProfile
-        public ActionResult Index(int? id)
+        public ActionResult Index(string email)
         {
-            id = 3;
+            var vol = db.Volunteers;
+            var id = (from i in vol where i.volEmail == email select i.volID).SingleOrDefault();
 
-            if (id == null)
+            if (email == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

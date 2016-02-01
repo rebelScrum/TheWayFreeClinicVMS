@@ -6,7 +6,8 @@
     <title>@ViewBag.Title -The Way Free Management System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     
 
 </head>
@@ -82,6 +83,16 @@
                             <li><a href=""><i class="glyphicon glyphicon-circle"></i> Work Log Data</a></li>
                         </ul>
                     </li>
+
+                    <li id="test" class="nav-header hidden">
+                        <a id="m4" href="#" data-toggle="collapse" data-target="#menu4"> Update <span id="chev4" class="glyphicon glyphicon-chevron-right"></span></a>
+                        <ul class="nav nav-stacked collapse" id="menu4">
+                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Employer Data</a></li>
+                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Volunteer Data</a></li>
+                            <li><a href=""><i class="glyphicon glyphicon-circle"></i> Work Log Data</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
 
                 <hr>               
@@ -133,12 +144,20 @@
                 document.getElementById("chev3").className = "glyphicon glyphicon-chevron-right"
             }
         }
+
+        $(document).ready(function () {
+            if ("@ViewBag.test" == "testing") {
+                document.getElementById('test').className = "show";
+            }
+        });
+
     </script>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
 
+
+    
    
 </body>
 </html>

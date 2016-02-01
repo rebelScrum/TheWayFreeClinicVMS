@@ -43,6 +43,7 @@ namespace TheWayFreeClinicVMS.Controllers
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
+            ViewBag.viewName = "index";
            
            
             switch (sortOrder)
@@ -91,7 +92,7 @@ namespace TheWayFreeClinicVMS.Controllers
         {
             
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName");
-           
+            ViewBag.viewName = "create";
             return View();
         }
 

@@ -16,14 +16,19 @@ namespace TheWayFreeClinicVMS.Controllers
         private VMSContext db = new VMSContext();
 
         // GET: AdminDashboard
-        public ActionResult Index(string sortOrder, string searchString, string volSpecialty)
+        public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
             var volunteers = db.Volunteers.Include(v => v.Specialty);
 
-
             //selects volunteer list
+
             var sorts = from s in volunteers
                         select s;
+
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();
+
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -31,6 +36,9 @@ namespace TheWayFreeClinicVMS.Controllers
                                        || s.volFirstName.Contains(searchString));
             }
 
+            if (specialtySearch.HasValue) { 
+            sorts = sorts.Where(s => s.spcID == specialtyID);
+            }
             //sorting by last name and the starting date
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
@@ -59,6 +67,7 @@ namespace TheWayFreeClinicVMS.Controllers
                     break;
             }
 
+           
             return View(sorts.ToList());
         }
 
@@ -87,26 +96,25 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // POST: AdminDashboard/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
+            ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             try
             {
                 if (ModelState.IsValid)
                 {
                     db.Volunteers.Add(volunteer);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    
+                    return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });
                 }
             }
             catch (DataException)
             {
                 ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
             }
-            ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             
             return View(volunteer);
         }
@@ -130,8 +138,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // POST: AdminDashboard/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
@@ -149,30 +156,61 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: AdminDashboard/Delete/5
-        public ActionResult Delete(int? id)
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Volunteer volunteer = db.Volunteers.Find(id);
+        //    if (volunteer == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(volunteer);
+        //}
+
+        // GET: AdminDashboard/AddSpecialty
+        public ActionResult AddSpecialty()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Volunteer volunteer = db.Volunteers.Find(id);
-            if (volunteer == null)
-            {
-                return HttpNotFound();
-            }
-            return View(volunteer);
+            return View("_AddSpecialty");
         }
 
-        // POST: AdminDashboard/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: AdminDashboard/AddSpecialty
+        
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult AddSpecialty([Bind(Include = "spcID, spcName")] Specialty specialty)
         {
-            Volunteer volunteer = db.Volunteers.Find(id);
-            db.Volunteers.Remove(volunteer);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Specialties.Add(specialty);
+                    db.SaveChanges();
+                    return RedirectToAction("Create");
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
+            }
+
+            return RedirectToAction("Create", "AdminDashboard");
         }
+
+
+        // POST: AdminDashboard/Delete/5
+        // [HttpPost, ActionName("Delete")]
+        // [ValidateAntiForgeryToken]
+        // public ActionResult DeleteConfirmed(int id)
+        // {
+        //    Volunteer volunteer = db.Volunteers.Find(id);
+        //    db.Volunteers.Remove(volunteer);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
 
         protected override void Dispose(bool disposing)
         {

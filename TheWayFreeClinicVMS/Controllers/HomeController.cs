@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using TheWayFreeClinicVMS.DataAccessLayer;
 using TheWayFreeClinicVMS.Models;
 
+
 namespace TheWayFreeClinicVMS.Controllers
 {
     public class HomeController : Controller
@@ -17,6 +18,8 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult Index()
         {
+            string text = System.IO.File.ReadAllText(@"I:\GitHub Desktop\TheWayFreeClinicVMS\TheWayFreeClinicVMS\Content\docs\message1.txt");
+            ViewBag.message = text;
             var wlog = db.Worklog;
 
             var sorts = from s in wlog
@@ -26,12 +29,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return View(sorts.ToList());
         }
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
 
-            return View();
-        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -42,7 +40,11 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
+            string text = System.IO.File.ReadAllText(@"I:\GitHub Desktop\TheWayFreeClinicVMS\TheWayFreeClinicVMS\Content\docs\message1.txt");
+            ViewBag.message = text;
             ViewBag.confirm = "you are now...";
+            ViewBag.clock = "";
+            
 
             var wlog = db.Worklog.Include(v => v.Volunteer);
             var volunteers = db.Volunteers;
@@ -59,7 +61,7 @@ namespace TheWayFreeClinicVMS.Controllers
             {                
                 time.wrkDate = DateTime.Now;
                 time.wrkEndTime = DateTime.Now;
-
+                ViewBag.clock = "Clocked Out!";
                 db.SaveChanges();
             }
             else //this user has no record containing null wrkEndTime
@@ -74,7 +76,7 @@ namespace TheWayFreeClinicVMS.Controllers
                         newTime.wrkDate = DateTime.Now;
                         newTime.wrkStartTime = DateTime.Now;
                         newTime.wrkEndTime = null;//same as startTime, signifying clocked in.
-
+                        ViewBag.clock = "Clocked In!";
                         db.Worklog.Add(newTime);
                         db.SaveChanges();                        
                     }
@@ -92,6 +94,12 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return View(sorts.ToList());
         }       
+
+        public ActionResult AddHomeMessage()
+        {
+
+            return View("Index", "Home");
+        }
 
         protected override void Dispose(bool disposing)
         {

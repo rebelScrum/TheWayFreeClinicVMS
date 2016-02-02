@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "AddHomeMessage";
+}
+
+<h2>AddHomeMessage</h2>
+
+<div class="col-md-12">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <div>
+                <input id="homeMessage" type="text" name="homeMessage" placeholder="text" class="form-control" style="max-width:100%" ; />
+            </div>
+        </div>
+
+                            <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
+                            <span style="font-size:small">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</span>
+    }
+    <!-- end form-->
+</div>

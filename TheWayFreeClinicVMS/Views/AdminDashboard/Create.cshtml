@@ -4,6 +4,13 @@
     ViewBag.Title = "Create";
 }
 
+                   
+@*<script>
+    function showDiv() {
+        document.getElementById('addSpec').style.display = "block";
+    }
+</script>*@
+
 <div class="container-fluid">
     <h2>Create New Volunteer</h2>
     <hr />
@@ -123,10 +130,12 @@
                     @*ToDO// Make this button look good in responsive layout
                           // Add partial view with JQuery instead of separate page view*@
                     <div class="col-md-2">                       
-                         <a href="@Url.Action("AddSpecialty", "AdminDashboard")" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Specialty</a>
-                       
-                    </div>
+                         <a href="@Url.Action("AddSpecialty", "AdminDashboard")" class="btn btn-primary btn-sm" id="specButton" onclick="showDiv()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Specialty</a>
+                         </div>
                 </div>
+                @*<div id="addSpec" class="col-md-5" style="display: none">
+                    @{Html.RenderAction("AddSpecialty"); }
+                </div>*@
                 
                 <div class="form-group">
                     <div class="col-md-offset-1 col-md-8">

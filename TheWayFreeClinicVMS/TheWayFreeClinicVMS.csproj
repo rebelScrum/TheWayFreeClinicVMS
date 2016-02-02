@@ -262,6 +262,8 @@
     <Content Include="Views\VolunteerProfile\Edit.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\AdminDashboard\_AddSpecialty.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerAvailable.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -42,6 +42,8 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
+            ViewBag.confirm = "you are now...";
+
             var wlog = db.Worklog.Include(v => v.Volunteer);
             var volunteers = db.Volunteers;
 

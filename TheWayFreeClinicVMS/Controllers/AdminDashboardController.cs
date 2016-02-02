@@ -196,6 +196,14 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerAvailable", schedule);
         }
 
+        public ActionResult VolunteerTimesheet(int? id)
+        {
+            var volunteerID = id;
+            var timesheet = db.Worklog.Where(s => s.volID == volunteerID).ToList();
+
+            return PartialView("_VolunteerTimesheet", timesheet);
+        }
+
         // GET: AdminDashboard/Delete/5
         //public ActionResult Delete(int? id)
         //{

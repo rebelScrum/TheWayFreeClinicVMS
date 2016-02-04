@@ -221,5 +221,11 @@ namespace TheWayFreeClinicVMS.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //This may not be needed
+        public ActionResult Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

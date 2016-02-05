@@ -265,10 +265,11 @@
     <Content Include="Views\AdminDashboard\_AddSpecialty.cshtml" />
     <Content Include="Views\AdminDashboard\_VolunteerAvailable.cshtml" />
     <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
-    <Content Include="Views\Home\AddHomeMessage.cshtml" />
+    <Content Include="Views\Home\homeMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\img\homePageImg\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -22,16 +22,19 @@ namespace TheWayFreeClinicVMS.Models
 
         //days
         [Required]
+        [Display(Name = "Day")]
         public DaysAvailable avDay { get; set; }
 
         //from time
         [Required]
         [DataType(DataType.Time)]
+        [Display(Name = "From")]
         public DateTime avFrom { get; set; }
 
         //until time
         [Required]
         [DataType(DataType.Time)]
+        [Display(Name = "Until")]
         public DateTime avUntil { get; set; }
 
 

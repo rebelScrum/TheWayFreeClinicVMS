@@ -94,6 +94,15 @@
                         </ul>
                     </li>
 
+                    <li id="addMessage" class="dropdown hidden">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Add Message to Homepage <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="@Url.Action("homeMessage", "Home")"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Box 1</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Box 2</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Box 3</a></li>
+                        </ul>
+                    </li>
+
                 </ul>              
             </div>
             <!-- /col-3 -->
@@ -118,6 +127,7 @@
             switch ("@ViewBag.viewName") {
                 case "index":
                     document.getElementById('test1').className = "show";
+                    document.getElementById('addMessage').className = "show";
                     break;
                 case "create":
                     document.getElementById('test2').className = "show";

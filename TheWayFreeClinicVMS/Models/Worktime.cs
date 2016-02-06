@@ -20,17 +20,23 @@ namespace TheWayFreeClinicVMS.Models
         public int volID { get; set; }
 
         //date
+
+        [Display(Name = "Date")]
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime wrkDate { get; set; }
 
         //start time
+
+        [Display(Name = "Clocked In")]
         [Required]
         [DataType(DataType.Time)]
         public DateTime wrkStartTime { get; set; }
 
         //end time
+
+        [Display(Name = "Clocked Out")]
         [DataType(DataType.Time)]
         public DateTime? wrkEndTime { get; set; }
 

@@ -79,11 +79,13 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+                  
             Volunteer volunteer = db.Volunteers.Find(id);
             if (volunteer == null)
             {
                 return HttpNotFound();
             }
+            var schedule = db.Availabilities.Where(s => s.volID == volunteer.volID).ToList();
             return View(volunteer);
         }
 
@@ -156,21 +158,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(volunteer);
         }
 
-        // GET: AdminDashboard/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Volunteer volunteer = db.Volunteers.Find(id);
-        //    if (volunteer == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(volunteer);
-        //}
-
+       
         // GET: AdminDashboard/AddSpecialty
         public ActionResult AddSpecialty()
         {
@@ -178,7 +166,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // POST: AdminDashboard/AddSpecialty
-        
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddSpecialty([Bind(Include = "spcID, spcName")] Specialty specialty)
@@ -199,6 +187,37 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return RedirectToAction("Create", "AdminDashboard");
         }
+
+        public ActionResult VolunteerAvailable(int? id)
+        {
+            var volunteerID = id;
+            var schedule = db.Availabilities.Where(s => s.volID == volunteerID).ToList();
+            
+            return PartialView("_VolunteerAvailable", schedule);
+        }
+
+        public ActionResult VolunteerTimesheet(int? id)
+        {
+            var volunteerID = id;
+            var timesheet = db.Worklog.Where(s => s.volID == volunteerID).ToList();
+
+            return PartialView("_VolunteerTimesheet", timesheet);
+        }
+
+        // GET: AdminDashboard/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Volunteer volunteer = db.Volunteers.Find(id);
+        //    if (volunteer == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(volunteer);
+        //}
 
 
         // POST: AdminDashboard/Delete/5

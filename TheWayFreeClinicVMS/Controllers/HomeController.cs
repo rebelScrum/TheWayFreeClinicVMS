@@ -133,14 +133,18 @@ namespace TheWayFreeClinicVMS.Controllers
 
                     string extension = Path.GetExtension(file.FileName);
                     string imagePath = null;
+
                     imagePath = Server.MapPath("~/Content/img/homePageImg/" + "img" + extension);
                     file.SaveAs(imagePath);
 
                     string renamedImagePath = Server.MapPath("~/Content/img/homePageImg/" + "img");
                     System.Drawing.Image image = System.Drawing.Image.FromFile(imagePath);
-                    image.Save(renamedImagePath + ".png", System.Drawing.Imaging.ImageFormat.Png);
-
+                    if (extension != ".png")
+                    {
+                        image.Save(renamedImagePath + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                    }
                     image.Dispose();                   
+                    
                 }
                 else
                 {

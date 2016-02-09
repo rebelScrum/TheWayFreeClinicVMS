@@ -211,6 +211,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\docs\message1.txt" />
     <Content Include="Content\img\ProfilePlaceholder.png" />
     <Content Include="Content\img\the_way_logo_no-background1.png" />
     <Content Include="favicon.ico" />
@@ -274,10 +275,17 @@
     <Content Include="Views\VolunteerProfile\Edit.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\AdminDashboard\_AddSpecialty.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Home\Help.cshtml" />
+=======
+    <Content Include="Views\AdminDashboard\_VolunteerAvailable.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
+    <Content Include="Views\Home\homeMessage.cshtml" />
+>>>>>>> refs/remotes/origin/Home-Page
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\img\homePageImg\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

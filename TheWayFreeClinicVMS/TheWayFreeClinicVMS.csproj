@@ -275,13 +275,13 @@
     <Content Include="Views\VolunteerProfile\Edit.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\AdminDashboard\_AddSpecialty.cshtml" />
-<<<<<<< HEAD
+
     <Content Include="Views\AdminDashboard\_VolunteerAvailable.cshtml" />
     <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
     <Content Include="Views\Home\homeMessage.cshtml" />
-=======
+
     <Content Include="Views\Home\Help.cshtml" />
->>>>>>> refs/remotes/origin/Static-Content
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

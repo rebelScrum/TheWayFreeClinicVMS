@@ -277,11 +277,16 @@
     <Content Include="Views\AdminDashboard\_AddSpecialty.cshtml" />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/Home-Page
     <Content Include="Views\AdminDashboard\_VolunteerAvailable.cshtml" />
     <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
     <Content Include="Views\Home\homeMessage.cshtml" />
-=======
+
     <Content Include="Views\Home\Help.cshtml" />
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/Static-Content
 =======
     <Content Include="Views\Home\Help.cshtml" />
@@ -291,6 +296,9 @@
     <Content Include="Views\Home\homeMessage.cshtml" />
 >>>>>>> refs/remotes/origin/Home-Page
 >>>>>>> origin/Development
+=======
+
+>>>>>>> refs/remotes/origin/Home-Page
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

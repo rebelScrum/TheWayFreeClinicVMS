@@ -39,17 +39,12 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return View();
         }
-
-<<<<<<< HEAD
-=======
         public ActionResult Help()
         {
             ViewBag.Message = "The help page.";
 
             return View();
         }
-
->>>>>>> refs/remotes/origin/Static-Content
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)

@@ -140,9 +140,6 @@
 
 <script>
 
-    if(@ViewBag.error != null){
-        alert(@ViewBag.error);
-    }
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("confirm").innerHTML = "@ViewBag.confirm @ViewBag.clock";
         $('#confirm').delay(3000).fadeOut();

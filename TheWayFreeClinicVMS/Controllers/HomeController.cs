@@ -83,14 +83,16 @@ namespace TheWayFreeClinicVMS.Controllers
                         newTime.volID = thisVolID;
                         newTime.wrkDate = DateTime.Now;
                         newTime.wrkStartTime = DateTime.Now;
-                        newTime.wrkEndTime = null;//same as startTime, signifying clocked in.
-                        ViewBag.clock = "Clocked In!";
+                        newTime.wrkEndTime = null;//same as startTime, signifying clocked in.                        
                         db.Worklog.Add(newTime);
-                        db.SaveChanges();                        
+                        db.SaveChanges();
+                        ViewBag.clock = "Clocked In!";                      
                     }
                 }
                 catch (DataException)
                 {
+                    ViewBag.clock = "";
+                    ViewBag.confirm = "";
                     ModelState.AddModelError("", "We cannot find your account. Try again. If the problem persists, contact your system administrator.");
                 }
             }

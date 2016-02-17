@@ -232,6 +232,67 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
 
+        public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
+        {
+            var volunteers = db.Volunteers.Include(v => v.Specialty);
+
+            //selects volunteer list
+
+            var sorts = from s in volunteers
+                        select s;
+
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();
+
+            var langs = db.Languages.ToList();
+            ViewBag.langSearch = new SelectList(langs, "lngID", "lngName", langSearch);
+            int langID = langSearch.GetValueOrDefault();
+
+            //filtering by first name, last name 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sorts = sorts.Where(s => s.volLastName.Contains(searchString)
+                                       || s.volFirstName.Contains(searchString));
+            }
+
+            if (specialtySearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.spcID == specialtyID);
+            }
+            //sorting by last name and the starting date
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
+            ViewBag.viewName = "index";
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    sorts = sorts.OrderByDescending(s => s.volLastName);
+                    break;
+                case "Active":
+                    sorts = sorts.Where(s => s.volActive == true);
+                    break;
+                case "Inactive":
+                    sorts = sorts.Where(s => s.volActive == false);
+                    break;
+                case "Date":
+                    sorts = sorts.OrderBy(s => s.volStartDate);
+                    break;
+                case "date_desc":
+                    sorts = sorts.OrderByDescending(s => s.volStartDate);
+                    break;
+                default:
+                    sorts = sorts.OrderBy(s => s.volLastName);
+                    break;
+            }
+
+
+            return View(sorts.ToList());
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

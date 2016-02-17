@@ -1,0 +1,95 @@
+﻿@model System.Collections.Generic.IEnumerable<TheWayFreeClinicVMS.Models.Volunteer>
+
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Report</h2>
+
+
+<div class="container">
+    <div class="col-md-12">
+        <div>
+            <div class="form-group">
+                @using (Html.BeginForm())
+            {
+                    <p>                        
+                        Specialty: @Html.DropDownList("specialtySearch", "All")
+                        <input type="submit" value="Filter" />
+                        <br />
+                        Language: @Html.DropDownList("langSearch", "All")
+                        <input type="submit" value="Filter" />
+                        <br />
+                    </p>
+
+                }
+            </div>
+            <table class="table table-condensed table-hover table-striped table">
+                <tr>
+                    <th>
+                        @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.volFirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Specialty.spcName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.volEmail)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.volPhone)
+                    </th>
+                    <th>
+                        @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+
+                    </th>
+                    <th>
+                        @Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm })
+                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                    </th>
+
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+            {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volLastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volFirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialty.spcName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volPhone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volStartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volActive)
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                           
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

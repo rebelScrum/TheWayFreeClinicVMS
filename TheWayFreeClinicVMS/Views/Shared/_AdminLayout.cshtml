@@ -29,6 +29,7 @@
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         <li>@Html.ActionLink("Dashboard", "Index", "AdminDashboard")</li>
+                        <li>@Html.ActionLink("Help", "Help", "Home")</li>
                     </ul>
                     <ul class="nav navbar-nav" style="font-size:large; margin:0; float:right;">
 
@@ -54,7 +55,7 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"> View <span class="caret" aria-hidden="true"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="active"> <a href="#"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span> Volunteers</a></li>
+                            <li><a href="@Url.Action("Index", "AdminDashboard")"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Volunteers</a></li>
                             <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Messages <span class="badge badge-info">4</span></a></li>
                             <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Work Log Data</a></li>
                             <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Schedules</a></li>
@@ -64,9 +65,8 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Create <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="active"> <a href="#"><i class="glyphicon glyphicon-circle"></i> Volunteers</a></li>
                             <li><a href="@Url.Action("Create", "AdminDashboard")"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Volunteer</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Report</a></li>
+                            <li><a href="@Url.Action("Report", "AdminDashboard")"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> New Report</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

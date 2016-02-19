@@ -284,6 +284,7 @@
     <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
     <Content Include="Views\Home\homeMessage.cshtml" />
     <Content Include="Views\AdminDashboard\Report.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerLanguages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

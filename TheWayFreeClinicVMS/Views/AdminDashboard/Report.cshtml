@@ -14,13 +14,11 @@
             <div class="form-group">
                 @using (Html.BeginForm())
             {
-                    <p>                        
+                    <p>
                         Specialty: @Html.DropDownList("specialtySearch", "All")
-                        <input type="submit" value="Filter" />
-                        <br />
                         Language: @Html.DropDownList("langSearch", "All")
                         <input type="submit" value="Filter" />
-                        <br />
+                        <br />                                               
                     </p>
 
                 }
@@ -80,12 +78,8 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.volActive)
                         </td>
-                        <td>
-
-                        </td>
-                        <td>
-                           
-                        </td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 }
 

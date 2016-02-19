@@ -203,6 +203,52 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return PartialView("_VolunteerTimesheet", timesheet);
         }
+        public ActionResult VolunteerLanguages(int? id)
+        {
+            var volunteerID = id;
+            var speaks = db.Speaks.Where(sp => sp.volID == volunteerID).ToList();
+
+            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName");
+
+            return PartialView("_VolunteerLanguages", speaks);
+        }
+
+        [HttpPost]
+        public ActionResult VolunteerLanguages([Bind(Include = "speakID, lngID, volID")] int? id, int? langSearch)
+        {
+            var thisID = id;
+            Speak spks = new Speak();
+            bool alreadySpeaks = false;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+                    ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
+                    int lngID = langSearch.GetValueOrDefault();
+
+                    spks.lngID = lngID;
+                    spks.volID = id.GetValueOrDefault();
+
+                    alreadySpeaks = db.Speaks.Any(u => u.lngID == lngID && u.volID == id);
+
+                    if (!alreadySpeaks) {
+                        db.Speaks.Add(spks);
+                        db.SaveChanges();
+                    }                 
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
+            }
+            var speaks = db.Speaks.Where(sp => sp.volID == id).ToList();
+
+            return PartialView("_VolunteerLanguages", speaks);
+        }
+
 
         // GET: AdminDashboard/Delete/5
         //public ActionResult Delete(int? id)
@@ -234,20 +280,23 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
         {
-            var volunteers = db.Volunteers.Include(v => v.Specialty);
+            var volunteers = db.Volunteers;
+            var speaks = db.Speaks;                     
 
-            //selects volunteer list
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();            
+
+            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
+            int lngID = langSearch.GetValueOrDefault();
 
             var sorts = from s in volunteers
                         select s;
 
-            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
-            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
-            int specialtyID = specialtySearch.GetValueOrDefault();
-
-            var langs = db.Languages.ToList();
-            ViewBag.langSearch = new SelectList(langs, "lngID", "lngName", langSearch);
-            int langID = langSearch.GetValueOrDefault();
+            var spks = (from sp in speaks                        
+                        where sp.lngID == lngID
+                       select sp.volID).FirstOrDefault();
 
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -259,6 +308,11 @@ namespace TheWayFreeClinicVMS.Controllers
             if (specialtySearch.HasValue)
             {
                 sorts = sorts.Where(s => s.spcID == specialtyID);
+            }
+
+            if (langSearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.volID == spks);
             }
             //sorting by last name and the starting date
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -288,9 +342,7 @@ namespace TheWayFreeClinicVMS.Controllers
                     sorts = sorts.OrderBy(s => s.volLastName);
                     break;
             }
-
-
-            return View(sorts.ToList());
+            return View(sorts.ToList().Distinct());
         }
 
         protected override void Dispose(bool disposing)

@@ -9,6 +9,10 @@ namespace TheWayFreeClinicVMS.Models
 {
     public class Employer
     {
+        public Employer()
+        {
+            Jobs = new List<Job>();
+        }
         //id
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

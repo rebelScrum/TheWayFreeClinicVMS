@@ -3,7 +3,7 @@
 
 <table class="table table-condensed table-hover table-striped">
     <tr>
-       
+
         <th>
             @Html.DisplayNameFor(model => model.wrkDate)
         </th>
@@ -15,18 +15,20 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.wrkDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.wrkStartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.wrkEndTime)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.wrkDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wrkStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wrkEndTime)
+            </td>
+        </tr>
+    }
 
 </table>
+

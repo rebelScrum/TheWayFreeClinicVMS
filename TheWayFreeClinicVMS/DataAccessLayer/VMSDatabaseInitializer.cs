@@ -1,20 +1,21 @@
-namespace TheWayFreeClinicVMS.Migrations
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data.Entity;
+using TheWayFreeClinicVMS.Models;
+using System.Data.Entity.Migrations;
+
+namespace TheWayFreeClinicVMS.DataAccessLayer
 {
-    using Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<TheWayFreeClinicVMS.Models.ApplicationDbContext>
+    //drops database if model changes
+    //recreates it to reflect changes
+    //populates db with test data
+    
+    //TODO: change to migrations in production
+    public class VMSDatabaseInitializer : DropCreateDatabaseIfModelChanges<VMSContext>
     {
-        public Configuration()
-        {
-            AutomaticMigrationsEnabled = false;
-        }
-
-        protected override void Seed(TheWayFreeClinicVMS.Models.ApplicationDbContext context)
+        protected override void Seed(VMSContext context)
         {
             var specialty = new List<Specialty>
             {
@@ -23,7 +24,7 @@ namespace TheWayFreeClinicVMS.Migrations
                 new Specialty {spcID=3, spcName="Support Staff" },
                 new Specialty {spcID=4, spcName="Chiropractor" },
             };
-            specialty.ForEach(sp => context.Specialties.AddOrUpdate(sp));
+            specialty.ForEach(sp => context.Specialties.Add(sp));
             context.SaveChanges();
 
             var volunteers = new List<Volunteer>
@@ -38,9 +39,8 @@ namespace TheWayFreeClinicVMS.Migrations
                 volZip="32267", volActive=true,spcID=1}
             };
 
-            volunteers.ForEach(v => context.Volunteers.AddOrUpdate(v));
+            volunteers.ForEach(v => context.Volunteers.Add(v));
             context.SaveChanges();
-
 
             var languages = new List<Language>
             {
@@ -49,7 +49,7 @@ namespace TheWayFreeClinicVMS.Migrations
                 new Language {lngName = "Cantonese"}
             };
 
-            languages.ForEach(l => context.Languages.AddOrUpdate(l));
+            languages.ForEach(l => context.Languages.Add(l));
             context.SaveChanges();
 
             var speaks = new List<Speak>
@@ -58,7 +58,7 @@ namespace TheWayFreeClinicVMS.Migrations
                 new Speak {lngID=3, volID = 2},
                 new Speak {lngID=2, volID = 3},
             };
-            speaks.ForEach(s => context.Speaks.AddOrUpdate(s));
+            speaks.ForEach(s => context.Speaks.Add(s));
             context.SaveChanges();
 
             var worklog = new List<Worktime>
@@ -68,14 +68,14 @@ namespace TheWayFreeClinicVMS.Migrations
                 new Worktime {volID=3, wrkDate=DateTime.Parse("11-21-2015"), wrkEndTime=DateTime.UtcNow, wrkStartTime = DateTime.UtcNow },
                 new Worktime {volID=2, wrkDate=DateTime.Parse("11-22-2015"), wrkEndTime=DateTime.UtcNow, wrkStartTime = DateTime.UtcNow }
             };
-            worklog.ForEach(w => context.Worklog.AddOrUpdate(w));
+            worklog.ForEach(w => context.Worklog.Add(w));
             context.SaveChanges();
 
             var employer = new List<Employer>
             {
                 new Employer {empName="Medical Hospital", empPhone="(904)347-7823", empStreet1="7896 Nice Street", empCity="Jacksonville", empState="FL", empZip="32224" }
             };
-            employer.ForEach(e => context.Employers.AddOrUpdate(e));
+            employer.ForEach(e => context.Employers.Add(e));
             context.SaveChanges();
 
             var job = new List<Job>
@@ -84,7 +84,7 @@ namespace TheWayFreeClinicVMS.Migrations
                 new Job {empID=1, volID=2, jobTitle="Physiologist", jobStartDate=DateTime.Parse("11-25-2015") },
                 new Job {empID=1, volID=2, jobTitle="Dentist", jobStartDate=DateTime.Parse("11-23-2015") }
             };
-            job.ForEach(j => context.Jobs.AddOrUpdate(j));
+            job.ForEach(j => context.Jobs.Add(j));
             context.SaveChanges();
 
             var pagroup = new List<Pagroup>
@@ -92,7 +92,7 @@ namespace TheWayFreeClinicVMS.Migrations
                  new Pagroup {pgrID=1, pgrName="Group Name", pgrOfcFirstName="Jack", pgrOfcLastName="Sparrow", pgrPhone="(904)789-4564", pgrStreet1="765 1st Street", pgrCity="Jacksonville", pgrState="FL", pgrZip="34452"},
                  new Pagroup {pgrID=2, pgrName="Group Name2", pgrOfcFirstName="Nick", pgrOfcLastName="Nickolson", pgrPhone="(904)789-4567", pgrStreet1="7705 1st Street", pgrCity="Jacksonville", pgrState="FL", pgrZip="32225"}
             };
-            pagroup.ForEach(p => context.Pagroups.AddOrUpdate(p));
+            pagroup.ForEach(p => context.Pagroups.Add(p));
             context.SaveChanges();
 
             var contract = new List<Contract>
@@ -100,19 +100,19 @@ namespace TheWayFreeClinicVMS.Migrations
                 new Contract {volID=1, ctrNum="190787", pgrID=1 },
                 new Contract {volID=2, ctrNum="684569", pgrID=2 }
             };
-            contract.ForEach(c => context.Contracts.AddOrUpdate(c));
+            contract.ForEach(c => context.Contracts.Add(c));
             context.SaveChanges();
 
 
 
             var econtact = new List<Econtact>
             {
-                new Econtact {volID=1, ecFirstName="Mark", ecLastName="Hamill", ecPhone="(904)675-6745" },
-                new Econtact {volID=2, ecFirstName="Maria", ecLastName="Fisher", ecPhone="(904)897-7856" },
+                new Econtact {volID=1, ecFirstName="Mark", ecLastName="Hamill", ecPhone="(904)675-56745" },
+                new Econtact {volID=2, ecFirstName="Maria", ecLastName="Fisher", ecPhone="(904)897-67856" },
                 new Econtact {volID=3, ecFirstName="David", ecLastName="Gabriel", ecPhone="(904)567-3564" },
                 new Econtact {volID=4, ecFirstName="John", ecLastName="Gilmour", ecPhone="(904)456-3424" }
             };
-            econtact.ForEach(ec => context.Econtacts.AddOrUpdate(ec));
+            econtact.ForEach(ec => context.Econtacts.Add(ec));
             context.SaveChanges();
 
             var availability = new List<Availability>
@@ -124,7 +124,7 @@ namespace TheWayFreeClinicVMS.Migrations
                 new Availability {avID=5, volID=4, avDay=DaysAvailable.Tuesday, avFrom=DateTime.Parse("10:00"), avUntil=DateTime.Parse("3:00") },
                 new Availability {avID=6, volID=4, avDay=DaysAvailable.Thursday, avFrom=DateTime.Parse("10:00"), avUntil=DateTime.Parse("3:00") },
             };
-            availability.ForEach(av => context.Availabilities.AddOrUpdate(av));
+            availability.ForEach(av => context.Availabilities.Add(av));
             context.SaveChanges();
 
             var license = new List<License>
@@ -132,8 +132,8 @@ namespace TheWayFreeClinicVMS.Migrations
                 new License {volID=2, lcDate=DateTime.Parse("09-12-2015"),lcExpire=DateTime.Parse("09-12-2020"), lcClear=true },
                 new License {volID=4, lcDate=DateTime.Parse("07-04-2015"),lcExpire=DateTime.Parse("07-04-2027"), lcClear=true }
             };
-            license.ForEach(lc => context.Licenses.AddOrUpdate(lc));
+            license.ForEach(lc => context.Licenses.Add(lc));
             context.SaveChanges();
-        }
+        } 
     }
 }

@@ -17,7 +17,7 @@ namespace TheWayFreeClinicVMS.Models
         public int licenceID { get; set; }
        
         // volunteer ID
-
+        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //number/code

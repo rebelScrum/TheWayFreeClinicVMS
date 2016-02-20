@@ -2,40 +2,37 @@
 
 
 <table class="table table-condensed table-hover table-striped">
-    <tr>
+    <tr>       
         <th>
-
-            @Html.DisplayNameFor(model => model.avDay)
+            
+           @Html.DisplayNameFor(model => model.avDay) 
         </th>
         <th>
-
+            
             @Html.DisplayNameFor(model => model.avFrom)
         </th>
         <th>
-
-            @Html.DisplayNameFor(model => model.avUntil)
-
+            
+             @Html.DisplayNameFor(model => model.avUntil)
+          
         </th>
-
+        
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.avDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.avFrom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.avUntil)
-            </td>
-
-        </tr>
-    }
+@foreach (var item in Model) {
+    <tr>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.avDay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.avFrom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.avUntil)
+        </td>
+       
+    </tr>
+}
 
 </table>
-
-

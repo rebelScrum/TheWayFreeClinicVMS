@@ -15,9 +15,11 @@ namespace TheWayFreeClinicVMS.Models
         public int jobID { get; set; }
 
         //volunteer id
+        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //employer id
+        [ForeignKey("Employer")]
         public int empID { get; set; }
 
         //job title

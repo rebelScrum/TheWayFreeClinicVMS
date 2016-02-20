@@ -9,10 +9,6 @@ namespace TheWayFreeClinicVMS.Models
 {
     public class Pagroup
     {
-        public Pagroup()
-        {
-            Contracts = new List<Contract>();
-        }
         // id
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

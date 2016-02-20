@@ -6,13 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using TheWayFreeClinicVMS.DataAccessLayer;
 using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
     public class AdminDashboardController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private VMSContext db = new VMSContext();
 
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)

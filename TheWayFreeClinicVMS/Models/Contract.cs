@@ -19,9 +19,11 @@ namespace TheWayFreeClinicVMS.Models
         public string ctrNum { get; set; }
 
         // volunteer ID
+        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //PA Group ID
+        [ForeignKey("Pagroup")]
         public int pgrID { get; set; }
 
         //navigation Volunteer acts as relationship identifier

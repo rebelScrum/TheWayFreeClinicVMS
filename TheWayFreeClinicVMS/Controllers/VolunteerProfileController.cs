@@ -5,13 +5,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using TheWayFreeClinicVMS.DataAccessLayer;
 using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
     public class VolunteerProfileController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private VMSContext db = new VMSContext();
         // GET: VolunteerProfile
         public ActionResult Index(string email)
         {

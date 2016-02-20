@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using TheWayFreeClinicVMS.DataAccessLayer;
 using TheWayFreeClinicVMS.Models;
 
 
@@ -17,7 +16,7 @@ namespace TheWayFreeClinicVMS.Controllers
 {
     public class HomeController : Controller
     {
-        private VMSContext db = new VMSContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {
@@ -31,6 +30,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
             sorts = sorts.OrderByDescending(s => s.wrkDate);
             return View(sorts.ToList());
+          
         }
 
         public ActionResult Contact()

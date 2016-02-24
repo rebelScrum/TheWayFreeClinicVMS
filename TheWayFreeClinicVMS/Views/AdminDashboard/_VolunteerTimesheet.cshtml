@@ -1,0 +1,34 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Worktime>
+
+
+<table class="table table-condensed table-hover table-striped">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.wrkDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.wrkStartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.wrkEndTime)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.wrkDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wrkStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wrkEndTime)
+            </td>
+        </tr>
+    }
+
+</table>
+

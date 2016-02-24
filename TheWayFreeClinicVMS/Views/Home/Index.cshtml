@@ -27,25 +27,28 @@
     <div class="row">
         <div class="col-md-4" style="background-color:transparent; padding:0; margin-bottom:30px;">
             <a href="http://www.google.com/">
-                <div class=" box">
+                <div class="box">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 class="text-center"><strong>Something Else</strong></h2>
+                            <h2 class="text-center"><strong>Message from Admin</strong></h2>
+                            <p>@ViewBag.message</p>
                         </div>
                     </div>
                 </div>
             </a>
-            <div class=" box">
+            <div class="box">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2 class="text-center"><strong>Something Else</strong></h2>
+                        <h2 class="text-center"><strong>Image from Admin</strong></h2>
+                        <img class="img-responsive" src="~/Content/img/homePageImg/img.png" alt="" />
                     </div>
                 </div>
             </div>
-            <div class=" box">
+            <div class="box">
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="text-center"><strong>Something Else</strong></h2>
+                        @Html.ActionLink("Report View", "Report", "AdminDashboard");
                     </div>
                 </div>
             </div>
@@ -62,26 +65,27 @@
                 <div class="col-md-12">
                     @using (Html.BeginForm())
                     {
-                        @Html.AntiForgeryToken()                        
+                        @Html.AntiForgeryToken()
 
                         <div class="form-group">
                             <div>
-                                <input id="email" type="text" name="email" placeholder="Email" class="form-control" style="max-width:100%" ; />
+                                <input type="text" name="email" placeholder="Email" class="form-control" style="max-width:100%" ; />
                             </div>
                         </div>
 
-
-                        <button type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
+                        <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
                         <span style="font-size:small">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</span>
-                        
-                    } <!-- end form-->
+                            <p id="confirm"></p>
+                    }
+                    <!-- end form-->
                 </div>
+
             </div>
             <div class="row">
                 <div class="">
                     <div class="row">
                         <div class="col-md-12">
-                                                        
+
                         </div>
                     </div>
                 </div>
@@ -136,8 +140,10 @@
 </div>
 
 <script>
-
-
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById("confirm").innerHTML = "@ViewBag.confirm @ViewBag.clock";
+        $('#confirm').delay(3000).fadeOut();
+    });
 
 </script>
 

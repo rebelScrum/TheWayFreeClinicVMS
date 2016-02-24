@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "homeMessage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<h2>Edit Message Box 1</h2>
+
+@using (Html.BeginForm("textBoxAction", "Home"))
+{
+    <div class="form-group">
+        <div>
+            <textarea name="message" placeholder="Message" class="form-control" style="max-width:50%;"></textarea>
+            @*<input type="text" name="message" placeholder="Message" class="form-control" style="max-width:100%" ; />*@
+        </div>
+    </div>
+
+    <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
+    @Html.AntiForgeryToken()
+}
+
+@using (Html.BeginForm("homeMessage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <input type="submit" value="OK" />
+    @Html.AntiForgeryToken()
+}
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <div>
+            <picture name="pic" placeholder="Picture" class="form-control" style="max-width:50%;"></picture>
+        </div>
+    </div>
+
+    <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
+    @Html.AntiForgeryToken()
+}

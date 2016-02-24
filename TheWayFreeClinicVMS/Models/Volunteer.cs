@@ -10,6 +10,17 @@ namespace TheWayFreeClinicVMS.Models
 {
     public class Volunteer
     {
+        public Volunteer()
+        {
+            ApplicationUser = new List<ApplicationUser>();
+            Speaks = new List<Speak>();
+            Econtact = new List<Econtact>();
+            Contracts = new List<Contract>();
+            Available = new List<Availability>();
+            Jobs = new List<Job>();
+            License = new List<License>();
+            Worklog = new List<Worktime>();
+        }
         //ID
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -119,6 +130,8 @@ namespace TheWayFreeClinicVMS.Models
         public virtual ICollection<Speak> Speaks { get; set; }
 
         public virtual Specialty Specialty { get; set; }
+
+        public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
 
         public virtual ICollection<Contract> Contracts { get; set; }
 

@@ -15,7 +15,6 @@ namespace TheWayFreeClinicVMS.Models
         public int ecID { get; set; }
 
         //volunteer ID
-        [ForeignKey("Volunteer")]
         public int volID { get; set; }
 
         //First Name

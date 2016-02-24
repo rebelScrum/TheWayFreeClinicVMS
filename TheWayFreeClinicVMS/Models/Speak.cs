@@ -14,12 +14,12 @@ namespace TheWayFreeClinicVMS.Models
         public int speakID{ get; set; }
         
         //language
-       [ForeignKey("Language")]
+    
        public int lngID { get; set; }
 
         //volunteer id
 
-        [ForeignKey("Volunteer")]
+      
         public int volID { get; set; }
 
         //navigation Volunteer acts as relationship identifier

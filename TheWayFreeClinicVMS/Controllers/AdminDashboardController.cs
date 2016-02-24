@@ -6,14 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using TheWayFreeClinicVMS.DataAccessLayer;
 using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
     public class AdminDashboardController : Controller
     {
-        private VMSContext db = new VMSContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
@@ -203,6 +202,52 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return PartialView("_VolunteerTimesheet", timesheet);
         }
+        public ActionResult VolunteerLanguages(int? id)
+        {
+            var volunteerID = id;
+            var speaks = db.Speaks.Where(sp => sp.volID == volunteerID).ToList();
+
+            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName");
+
+            return PartialView("_VolunteerLanguages", speaks);
+        }
+
+        [HttpPost]
+        public ActionResult VolunteerLanguages([Bind(Include = "speakID, lngID, volID")] int? id, int? langSearch)
+        {
+            var thisID = id;
+            Speak spks = new Speak();
+            bool alreadySpeaks = false;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+                    ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
+                    int lngID = langSearch.GetValueOrDefault();
+
+                    spks.lngID = lngID;
+                    spks.volID = id.GetValueOrDefault();
+
+                    alreadySpeaks = db.Speaks.Any(u => u.lngID == lngID && u.volID == id);
+
+                    if (!alreadySpeaks) {
+                        db.Speaks.Add(spks);
+                        db.SaveChanges();
+                    }                 
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
+            }
+            var speaks = db.Speaks.Where(sp => sp.volID == id).ToList();
+
+            return PartialView("_VolunteerLanguages", speaks);
+        }
+
 
         // GET: AdminDashboard/Delete/5
         //public ActionResult Delete(int? id)
@@ -231,6 +276,73 @@ namespace TheWayFreeClinicVMS.Controllers
         //    return RedirectToAction("Index");
         //}
 
+
+        public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
+        {
+            var volunteers = db.Volunteers;
+            var speaks = db.Speaks;                     
+
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();            
+
+            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
+            int lngID = langSearch.GetValueOrDefault();
+
+            var sorts = from s in volunteers
+                        select s;
+
+            var spks = (from sp in speaks                        
+                        where sp.lngID == lngID
+                       select sp.volID).FirstOrDefault();
+
+            //filtering by first name, last name 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sorts = sorts.Where(s => s.volLastName.Contains(searchString)
+                                       || s.volFirstName.Contains(searchString));
+            }
+
+            if (specialtySearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.spcID == specialtyID);
+            }
+
+            if (langSearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.volID == spks);
+            }
+            //sorting by last name and the starting date
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
+            ViewBag.viewName = "index";
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    sorts = sorts.OrderByDescending(s => s.volLastName);
+                    break;
+                case "Active":
+                    sorts = sorts.Where(s => s.volActive == true);
+                    break;
+                case "Inactive":
+                    sorts = sorts.Where(s => s.volActive == false);
+                    break;
+                case "Date":
+                    sorts = sorts.OrderBy(s => s.volStartDate);
+                    break;
+                case "date_desc":
+                    sorts = sorts.OrderByDescending(s => s.volStartDate);
+                    break;
+                default:
+                    sorts = sorts.OrderBy(s => s.volLastName);
+                    break;
+            }
+            return View(sorts.ToList().Distinct());
+        }
 
         protected override void Dispose(bool disposing)
         {

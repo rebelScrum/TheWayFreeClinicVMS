@@ -9,6 +9,10 @@ namespace TheWayFreeClinicVMS.Models
 {
     public class Language
     {
+        public Language()
+        {
+            Speaks = new List<Speak>();
+        }
         // language id
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

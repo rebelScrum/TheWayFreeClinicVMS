@@ -4,10 +4,9 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
-
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "VolunteerProfile", new { email = User.Identity.GetUserName()}, null)
+            @Html.ActionLink("Hello " + (string)ViewBag.FullName + "!", "Index", "VolunteerProfile", new { email = User.Identity.GetUserName()}, null)
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>

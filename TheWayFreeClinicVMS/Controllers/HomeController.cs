@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using TheWayFreeClinicVMS.DataAccessLayer;
 using TheWayFreeClinicVMS.Models;
 
 
@@ -17,39 +16,36 @@ namespace TheWayFreeClinicVMS.Controllers
 {
     public class HomeController : Controller
     {
-        private VMSContext db = new VMSContext();
+        private ApplicationDbContext db = new ApplicationDbContext();        
 
         public ActionResult Index()
         {
             string text = System.IO.File.ReadAllText(Server.MapPath("~/Content/docs/") + ("message1.txt"));
             ViewBag.message = text;
             ViewBag.error = TempData["error"];
+            ViewBag.FullName = getUserName();
             var wlog = db.Worklog;
 
             var sorts = from s in wlog
-                        select s;
+                        select s;                          
 
             sorts = sorts.OrderByDescending(s => s.wrkDate);
             return View(sorts.ToList());
+          
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
+            ViewBag.FullName = getUserName();
             return View();
         }
-
-<<<<<<< HEAD
         public ActionResult Help()
         {
             ViewBag.Message = "The help page.";
-
+            ViewBag.FullName = getUserName();
             return View();
         }
-
-=======
->>>>>>> refs/remotes/origin/Home-Page
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
@@ -88,14 +84,16 @@ namespace TheWayFreeClinicVMS.Controllers
                         newTime.volID = thisVolID;
                         newTime.wrkDate = DateTime.Now;
                         newTime.wrkStartTime = DateTime.Now;
-                        newTime.wrkEndTime = null;//same as startTime, signifying clocked in.
-                        ViewBag.clock = "Clocked In!";
+                        newTime.wrkEndTime = null;//same as startTime, signifying clocked in.                        
                         db.Worklog.Add(newTime);
-                        db.SaveChanges();                        
+                        db.SaveChanges();
+                        ViewBag.clock = "Clocked In!";                      
                     }
                 }
                 catch (DataException)
                 {
+                    ViewBag.clock = "";
+                    ViewBag.confirm = "";
                     ModelState.AddModelError("", "We cannot find your account. Try again. If the problem persists, contact your system administrator.");
                 }
             }
@@ -110,6 +108,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult homeMessage()
         {
+            ViewBag.FullName = getUserName();
             return View();
         }
 
@@ -117,6 +116,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult homeMessage(string message)
         {
+            ViewBag.FullName = getUserName();
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/") + ("message1.txt"), true))
             {
                 file.WriteLine(message);
@@ -129,6 +129,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult homeMessage(HttpPostedFileBase file)
         {
+            ViewBag.FullName = getUserName();
             if (ModelState.IsValid)
             {
                 if (file != null && file.ContentLength > 0)
@@ -172,6 +173,17 @@ namespace TheWayFreeClinicVMS.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public string getUserName()
+        {
+            var vols = db.Volunteers;
+            string fullName = (from v in vols
+                               where v.volEmail == User.Identity.Name
+                               select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
+
+            
+            return fullName;
         }
     }
 }

@@ -5,17 +5,17 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using TheWayFreeClinicVMS.DataAccessLayer;
 using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
     public class VolunteerProfileController : Controller
     {
-        private VMSContext db = new VMSContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
         // GET: VolunteerProfile
         public ActionResult Index(string email)
         {
+            ViewBag.FullName = getUserName();
             var vol = db.Volunteers;
             var id = (from i in vol where i.volEmail == email select i.volID).SingleOrDefault();
 
@@ -35,6 +35,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: VolunteerProfile/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -55,6 +56,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
+            ViewBag.FullName = getUserName();
             if (ModelState.IsValid)
             {
                 db.Entry(volunteer).State = EntityState.Modified;
@@ -63,6 +65,17 @@ namespace TheWayFreeClinicVMS.Controllers
             }
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             return View(volunteer);
+        }
+
+        public string getUserName()
+        {
+            var vols = db.Volunteers;
+            string fullName = (from v in vols
+                               where v.volEmail == User.Identity.Name
+                               select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
+
+
+            return fullName;
         }
     }
 }

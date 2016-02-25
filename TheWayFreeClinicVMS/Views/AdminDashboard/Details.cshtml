@@ -91,6 +91,9 @@
      <div class="col-md-5">
          <h4 class="text-center" style="color: #4CAF50;"><strong>Available for Volunteering</strong></h4>
          @{Html.RenderAction("VolunteerAvailable", new { id = Model.volID }); }
+
+         <h4 class="text-center" style="color: #4CAF50;"><strong>Languages</strong></h4>
+         @{Html.RenderAction("VolunteerLanguages", new { id = Model.volID }); }
      </div>
 </div>
 </div>

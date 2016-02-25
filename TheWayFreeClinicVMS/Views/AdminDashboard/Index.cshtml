@@ -24,8 +24,7 @@
                     Specialty: @Html.DropDownList("specialtySearch", "All") 
                     <input type="submit" value="Filter" />
                     <br />
-               </p>
-            
+               </p>            
             }
             
         </div>
@@ -58,8 +57,8 @@
                     <th>
                         @Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm })
                         <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
-                    </th>
-                                           
+                    </th>                                           
+                    <th></th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model)

@@ -17,6 +17,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
+            ViewBag.FullName = getUserName();
             var volunteers = db.Volunteers.Include(v => v.Specialty);
 
             //selects volunteer list
@@ -74,6 +75,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Details/5
         public ActionResult Details(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -91,7 +93,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Create
         public ActionResult Create()
         {
-            
+            ViewBag.FullName = getUserName();
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName");
             ViewBag.viewName = "create";
             return View();
@@ -102,6 +104,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
+            ViewBag.FullName = getUserName();
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             try
             {
@@ -124,6 +127,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -145,6 +149,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
+            ViewBag.FullName = getUserName();
             if (ModelState.IsValid)
             {
                 db.Entry(volunteer).State = EntityState.Modified;
@@ -161,6 +166,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/AddSpecialty
         public ActionResult AddSpecialty()
         {
+            ViewBag.FullName = getUserName();
             return View("_AddSpecialty");
         }
 
@@ -170,6 +176,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddSpecialty([Bind(Include = "spcID, spcName")] Specialty specialty)
         {
+            ViewBag.FullName = getUserName();
             try
             {
                 if (ModelState.IsValid)
@@ -279,6 +286,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
         {
+            ViewBag.FullName = getUserName();
             var volunteers = db.Volunteers;
             var speaks = db.Speaks;                     
 
@@ -351,6 +359,17 @@ namespace TheWayFreeClinicVMS.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public string getUserName()
+        {
+            var vols = db.Volunteers;
+            string fullName = (from v in vols
+                               where v.volEmail == User.Identity.Name
+                               select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
+
+
+            return fullName;
         }
 
         //This may not be needed

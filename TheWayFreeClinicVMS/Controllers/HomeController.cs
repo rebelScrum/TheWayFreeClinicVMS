@@ -116,6 +116,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult homeMessage(string message)
         {
+            ViewBag.FullName = getUserName();
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/") + ("message1.txt"), true))
             {
                 file.WriteLine(message);
@@ -128,6 +129,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult homeMessage(HttpPostedFileBase file)
         {
+            ViewBag.FullName = getUserName();
             if (ModelState.IsValid)
             {
                 if (file != null && file.ContentLength > 0)

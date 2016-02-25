@@ -17,6 +17,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
+            ViewBag.FullName = getUserName();
             var volunteers = db.Volunteers.Include(v => v.Specialty);
 
             //selects volunteer list
@@ -74,6 +75,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Details/5
         public ActionResult Details(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -91,7 +93,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Create
         public ActionResult Create()
         {
-            
+            ViewBag.FullName = getUserName();
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName");
             ViewBag.viewName = "create";
             return View();
@@ -102,6 +104,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
+            ViewBag.FullName = getUserName();
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             try
             {
@@ -124,6 +127,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -145,6 +149,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
         {
+            ViewBag.FullName = getUserName();
             if (ModelState.IsValid)
             {
                 db.Entry(volunteer).State = EntityState.Modified;
@@ -161,6 +166,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: AdminDashboard/AddSpecialty
         public ActionResult AddSpecialty()
         {
+            ViewBag.FullName = getUserName();
             return View("_AddSpecialty");
         }
 
@@ -170,6 +176,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddSpecialty([Bind(Include = "spcID, spcName")] Specialty specialty)
         {
+            ViewBag.FullName = getUserName();
             try
             {
                 if (ModelState.IsValid)
@@ -202,6 +209,52 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return PartialView("_VolunteerTimesheet", timesheet);
         }
+        public ActionResult VolunteerLanguages(int? id)
+        {
+            var volunteerID = id;
+            var speaks = db.Speaks.Where(sp => sp.volID == volunteerID).ToList();
+
+            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName");
+
+            return PartialView("_VolunteerLanguages", speaks);
+        }
+
+        [HttpPost]
+        public ActionResult VolunteerLanguages([Bind(Include = "speakID, lngID, volID")] int? id, int? langSearch)
+        {
+            var thisID = id;
+            Speak spks = new Speak();
+            bool alreadySpeaks = false;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+                    ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
+                    int lngID = langSearch.GetValueOrDefault();
+
+                    spks.lngID = lngID;
+                    spks.volID = id.GetValueOrDefault();
+
+                    alreadySpeaks = db.Speaks.Any(u => u.lngID == lngID && u.volID == id);
+
+                    if (!alreadySpeaks) {
+                        db.Speaks.Add(spks);
+                        db.SaveChanges();
+                    }                 
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes.Try again, and if the problem persists see your system administrator.");
+            }
+            var speaks = db.Speaks.Where(sp => sp.volID == id).ToList();
+
+            return PartialView("_VolunteerLanguages", speaks);
+        }
+
 
         // GET: AdminDashboard/Delete/5
         //public ActionResult Delete(int? id)
@@ -231,6 +284,74 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
 
+        public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
+        {
+            ViewBag.FullName = getUserName();
+            var volunteers = db.Volunteers;
+            var speaks = db.Speaks;                     
+
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();            
+
+            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
+            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
+            int lngID = langSearch.GetValueOrDefault();
+
+            var sorts = from s in volunteers
+                        select s;
+
+            var spks = (from sp in speaks                        
+                        where sp.lngID == lngID
+                       select sp.volID).FirstOrDefault();
+
+            //filtering by first name, last name 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sorts = sorts.Where(s => s.volLastName.Contains(searchString)
+                                       || s.volFirstName.Contains(searchString));
+            }
+
+            if (specialtySearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.spcID == specialtyID);
+            }
+
+            if (langSearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.volID == spks);
+            }
+            //sorting by last name and the starting date
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
+            ViewBag.viewName = "index";
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    sorts = sorts.OrderByDescending(s => s.volLastName);
+                    break;
+                case "Active":
+                    sorts = sorts.Where(s => s.volActive == true);
+                    break;
+                case "Inactive":
+                    sorts = sorts.Where(s => s.volActive == false);
+                    break;
+                case "Date":
+                    sorts = sorts.OrderBy(s => s.volStartDate);
+                    break;
+                case "date_desc":
+                    sorts = sorts.OrderByDescending(s => s.volStartDate);
+                    break;
+                default:
+                    sorts = sorts.OrderBy(s => s.volLastName);
+                    break;
+            }
+            return View(sorts.ToList().Distinct());
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -238,6 +359,17 @@ namespace TheWayFreeClinicVMS.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public string getUserName()
+        {
+            var vols = db.Volunteers;
+            string fullName = (from v in vols
+                               where v.volEmail == User.Identity.Name
+                               select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
+
+
+            return fullName;
         }
 
         //This may not be needed

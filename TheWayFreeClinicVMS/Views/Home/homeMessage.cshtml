@@ -3,38 +3,54 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
-
-<h2>Edit Message Box 1</h2>
-
 @using (Html.BeginForm("textBoxAction", "Home"))
 {
-    <div class="form-group">
-        <div>
-            <textarea name="message" placeholder="Message" class="form-control" style="max-width:50%;"></textarea>
-            @*<input type="text" name="message" placeholder="Message" class="form-control" style="max-width:100%" ; />*@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Edit Message Box 1</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div>
+                    <textarea name="message" placeholder="Message" class="form-control" style="min-width:100%;"></textarea>
+                    @*<input type="text" name="message" placeholder="Message" class="form-control" style="max-width:100%" ; />*@
+                    <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; margin-top:20px; float:right;">Submit</button>
+                    @Html.AntiForgeryToken()
+                </div>
+            </div>
         </div>
     </div>
-
-    <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
-    @Html.AntiForgeryToken()
 }
 
 @using (Html.BeginForm("homeMessage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <input type="file" name="file" />
-    <input type="submit" value="OK" />
-    @Html.AntiForgeryToken()
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Edit Message Box 2 (Image)</h3>
+        </div>
+        <div class="panel-body">
+            <div class="">
+                <input type="file" name="file" />
+                <input type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; margin-top:20px; float:right;" />
+                @Html.AntiForgeryToken()
+            </div>
+        </div>
+    </div>
+
+
+    
 }
 
 @using (Html.BeginForm())
 {
     <div class="form-group">
         <div>
-            <picture name="pic" placeholder="Picture" class="form-control" style="max-width:50%;"></picture>
+            <textarea name="pic" placeholder="" class="form-control" style="max-width:50%;"></textarea>
+            <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen;">Submit</button>
+            @Html.AntiForgeryToken()
         </div>
     </div>
 
-    <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
-    @Html.AntiForgeryToken()
+
 }

@@ -47,30 +47,30 @@
             <div class="col-lg-2" style="min-height:100vh; background-color:#f8f8f8; padding-left:inherit;">
                 <!-- Left column -->
 
-                <div id="MainMenu" class="affix col-lg-2" style="">
+                <div id="MainMenu" class="affix col-lg-2" style="margin-top: 30px;">
                     <div class="list-group panel">
 
-                        <a href="#viewList" class="list-group-item list-group-item-success strong" data-toggle="collapse" data-parent="#MainMenu">View...<i class="fa fa-caret-down"></i></a>
+                        <a href="#viewList" class="list-group-item active strong" data-toggle="collapse" data-parent="#MainMenu">View <span class="caret" aria-hidden="true"></span></a>
                         <div class="collapse" id="viewList">
                             <a href="@Url.Action("Index", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Volunteers</a>
                             <a href="#" class="list-group-item"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Work Log Data</a>
                             <a href="#" class="list-group-item"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Schedules</a>
                         </div>
 
-                        <a href="#createList" class="list-group-item list-group-item-success strong" data-toggle="collapse" data-parent="#MainMenu">Create...<i class="fa fa-caret-down"></i></a>
+                        <a href="#createList" class="list-group-item active strong" data-toggle="collapse" data-parent="#MainMenu">Create <span class="caret" aria-hidden="true"></span></a>
                         <div class="collapse" id="createList">
                             <a href="@Url.Action("Create", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Volunteer</a>
                             <a href="@Url.Action("Report", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> New Report</a>
                         </div>
 
-                        <a href="#updateList" class="list-group-item list-group-item-success strong" data-toggle="collapse" data-parent="#MainMenu">Update...<i class="fa fa-caret-down"></i></a>
+                        <a href="#updateList" class="list-group-item active strong" data-toggle="collapse" data-parent="#MainMenu">Update <span class="caret" aria-hidden="true"></span></a>
                         <div class="collapse" id="updateList">
                             <a href="#" class="list-group-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a>
                             <a href="@Url.Action("homeMessage", "Home")" class="list-group-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Home Page Messages</a>
                             <a href="#" class="list-group-item"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a>
                         </div>
 
-                        <a href="#test" class="list-group-item list-group-item-success strong" data-toggle="collapse" data-parent="#MainMenu">Test Menu <i class="fa fa-caret-down"></i></a>
+                        <a href="#test" class="list-group-item active strong" data-toggle="collapse" data-parent="#MainMenu">Test Menu <span class="caret" aria-hidden="true"></span></a>
                         <div class="collapse" id="test">
                             <a href="#" class="list-group-item">Subitem 1</a>
                             <a href="#SubSubMenuTest" class="list-group-item strong" data-toggle="collapse" data-parent="#SubSubMenuTest"><i class="glyphicon glyphicon-thumbs-up"></i> Subitem <i class="fa fa-caret-down"></i></a>

@@ -12,7 +12,7 @@
 
 </head>
 <body>
-    <div class="container" style="position:relative; z-index:1040;">
+    <div class="container" style="position:relative; z-index:1040; padding-right:0px; margin-right:0px;">
         <nav class="navbar-default navbar-fixed-top" style="padding-bottom:10px;">
             <div class="container-fluid">
                 <div class="navbar-header" style="height:50px;">
@@ -44,10 +44,10 @@
     <div class="container body-content" style="padding-top:10px; width:100%;">
 
         <div class="row" style="margin-top: 10px;">
-            <div class="col-lg-2" style="min-height:100vh; background-color:#f8f8f8; padding-left:inherit;">
+            <div class="col-md-2" style="min-height:100vh; background-color:#f8f8f8; padding-left:inherit;">
                 <!-- Left column -->
 
-                <div id="MainMenu" class="affix col-lg-2" style="margin-top: 30px;">
+                <div id="MainMenu" class="affix col-md-2" style="margin-top: 30px;">
                     <div class="list-group panel">
 
                         <a href="#viewList" class="list-group-item active strong" data-toggle="collapse" data-parent="#MainMenu">View <span class="caret" aria-hidden="true"></span></a>
@@ -81,86 +81,14 @@
                             <a href="#" class="list-group-item">Subitem 3</a>
                         </div>
 
-                        @*<a href="#SubMenu1" class="list-group-item strong" data-toggle="collapse" data-parent="#SubMenu1">Volunteers<i class="fa fa-caret-down"></i></a>
-                        <div class="collapse list-group-submenu" id="SubMenu1">
-                            <a href="#" class="list-group-item" data-parent="#SubMenu1">Messages</a>
-                            <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 2 b</a>
-                            <a href="#SubSubMenu1" class="list-group-item strong" data-toggle="collapse" data-parent="#SubSubMenu1"><i class="glyphicon glyphicon-user"></i> Subitem 3 c <i class="fa fa-caret-down"></i></a>
-                            <div class="collapse list-group-submenu list-group-submenu-1" id="SubSubMenu1">
-                                <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 1</a>
-                                <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 2</a>
-                            </div>
-                            <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 4 d</a>
-                            <a href="#SubSubMenu3" class="list-group-item strong" data-toggle="collapse" data-parent="#SubSubMenu3"><i class="glyphicon glyphicon-dashboard"></i> Subitem 5 e <i class="fa fa-caret-down"></i></a>
-                            <div class="collapse list-group-submenu list-group-submenu-1" id="SubSubMenu3">
-                                <a href="#" class="list-group-item" data-parent="#SubSubMenu3">Sub sub item 5.1</a>
-                                <a href="#" class="list-group-item" data-parent="#SubSubMenu3">Sub sub item 5.2</a>
-                            </div>
-                        </div>*@
+                       
 
                     </div>
                 </div>
-                <!--      -->
-                @*<ul class="nav nav-pills nav-stacked">
-                        <li class="active">
-                            <a href="#"><strong><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Dashboard</strong></a>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> View <span class="caret" aria-hidden="true"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="@Url.Action("Index", "AdminDashboard")"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Volunteers</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Messages <span class="badge badge-info">4</span></a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Work Log Data</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Schedules</a></li>
-                            </ul>
-
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Create <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="@Url.Action("Create", "AdminDashboard")"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Volunteer</a></li>
-                                <li><a href="@Url.Action("Report", "AdminDashboard")"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> New Report</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Update <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
-                            </ul>
-                        </li>
-                        <li id="test1" class="dropdown hidden">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Test1 <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
-                            </ul>
-                        </li>
-                        <li id="test2" class="dropdown hidden">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Test2 <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li class="active"><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Employer Data</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Volunteer Data</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Work Log Data</a></li>
-                            </ul>
-                        </li>
-
-                        <li id="addMessage" class="dropdown hidden">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Add Message to Homepage <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li class="active"><a href="@Url.Action("homeMessage", "Home")"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Box 1</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Box 2</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Box 3</a></li>
-                            </ul>
-                        </li>
-
-                    </ul>*@
+                
             </div>
-            <!-- /col-3 -->
 
-            <div class="col-lg-10" style="">
+            <div class="col-md-10" style="margin-left:0px; padding-left:0px;">
                 @RenderBody()
             </div>
 

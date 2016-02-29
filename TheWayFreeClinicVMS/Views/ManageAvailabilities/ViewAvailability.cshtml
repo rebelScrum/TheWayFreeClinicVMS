@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Availability>
+
+@{
+    ViewBag.Title = "UpdateAvailability";
+}
+
+<h2>Availability</h2>
+
+<p>
+    <a href="@Url.Action("AddAvailability", "ManageAvailabilities", new { id = ViewBag.volID })" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New</a>
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.avDay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.avFrom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.avUntil)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.avDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.avFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.avUntil)
+            </td>
+            <td>
+
+                <a href="@Url.Action("EditAvailability", "ManageAvailabilities", new { id = item.avID })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
+                <a href="@Url.Action("DeleteAvailability", "ManageAvailabilities",new { id = item.avID })" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>

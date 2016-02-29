@@ -108,7 +108,8 @@ namespace TheWayFreeClinicVMS.Controllers
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             try
             {
-                if (ModelState.IsValid)
+                var alreadyExists = db.Volunteers.Any(v => v.volEmail == volunteer.volEmail);
+                if ((ModelState.IsValid) && !(alreadyExists))
                 {
                     db.Volunteers.Add(volunteer);
                     db.SaveChanges();
@@ -156,13 +157,11 @@ namespace TheWayFreeClinicVMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.volID = new SelectList(db.Econtacts, "volID", "ecFirstName", volunteer.volID);
-            ViewBag.volID = new SelectList(db.Licenses, "volID", "volID", volunteer.volID);
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName", volunteer.spcID);
             return View(volunteer);
         }
 
-       
+       //**************************************************************************************
         // GET: AdminDashboard/AddSpecialty
         public ActionResult AddSpecialty()
         {
@@ -170,8 +169,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View("_AddSpecialty");
         }
 
-        // POST: AdminDashboard/AddSpecialty
-       
+        // POST: AdminDashboard/AddSpecialty     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddSpecialty([Bind(Include = "spcID, spcName")] Specialty specialty)
@@ -179,12 +177,16 @@ namespace TheWayFreeClinicVMS.Controllers
             ViewBag.FullName = getUserName();
             try
             {
-                if (ModelState.IsValid)
+                var alreadyExists = db.Specialties.Any(u => u.spcName == specialty.spcName);
+
+
+                if ((ModelState.IsValid) && !(alreadyExists))
                 {
                     db.Specialties.Add(specialty);
                     db.SaveChanges();
                     return RedirectToAction("Create");
                 }
+
             }
             catch (DataException)
             {
@@ -194,14 +196,16 @@ namespace TheWayFreeClinicVMS.Controllers
             return RedirectToAction("Create", "AdminDashboard");
         }
 
+        //**************************************************************************************
+        //Get Availability
         public ActionResult VolunteerAvailable(int? id)
         {
             var volunteerID = id;
             var schedule = db.Availabilities.Where(s => s.volID == volunteerID).ToList();
-            
             return PartialView("_VolunteerAvailable", schedule);
         }
-
+        //***********************************************************************************
+        //Get Timesheet
         public ActionResult VolunteerTimesheet(int? id)
         {
             var volunteerID = id;
@@ -209,10 +213,15 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return PartialView("_VolunteerTimesheet", timesheet);
         }
+
+        //************************************************************************************
+        //Get Languages
+        [HttpGet]
         public ActionResult VolunteerLanguages(int? id)
         {
             var volunteerID = id;
             var speaks = db.Speaks.Where(sp => sp.volID == volunteerID).ToList();
+            //var volLang = string.Join(", ", speaks);  
 
             var lng = db.Languages.OrderBy(q => q.lngName).ToList();
             ViewBag.langSearch = new SelectList(lng, "lngID", "lngName");
@@ -220,7 +229,9 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerLanguages", speaks);
         }
 
+        //Add Languages
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult VolunteerLanguages([Bind(Include = "speakID, lngID, volID")] int? id, int? langSearch)
         {
             var thisID = id;
@@ -283,7 +294,7 @@ namespace TheWayFreeClinicVMS.Controllers
         //    return RedirectToAction("Index");
         //}
 
-
+        //***********************************************************************************************
         public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
         {
             ViewBag.FullName = getUserName();

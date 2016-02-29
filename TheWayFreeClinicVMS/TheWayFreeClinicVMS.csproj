@@ -173,6 +173,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageAvailabilitiesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\VolunteerProfileController.cs" />
     <Compile Include="Global.asax.cs">
@@ -283,6 +284,12 @@
     <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
     <Content Include="Views\Home\homeMessage.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerLanguages.cshtml" />
+    <Content Include="Views\AdminDashboard\Report.cshtml" />
+    <Content Include="Views\ManageAvailabilities\AddAvailability.cshtml" />
+    <Content Include="Views\ManageAvailabilities\DeleteAvailability.cshtml" />
+    <Content Include="Views\ManageAvailabilities\EditAvailability.cshtml" />
+    <Content Include="Views\ManageAvailabilities\ViewAvailability.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

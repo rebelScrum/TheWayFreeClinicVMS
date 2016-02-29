@@ -90,7 +90,14 @@
              <dt> Languages:</dt>
              <dd>@{Html.RenderAction("VolunteerLanguages", new { id = Model.volID }); }</dd>
              
-</dl>
+@*</dl>
+         <dl class="dl-horizontal" style="margin-left:0px;padding-right:0px;">*@
+             <dt> Emergency contact:</dt>
+             <dd>@{Html.RenderAction("VolunteerEcontact", new { id = Model.volID }); }
+                 <a href="@Url.Action("Index", "ManageEcontacts", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+             </dd>
+
+         </dl>
 
 </div>
 </div>

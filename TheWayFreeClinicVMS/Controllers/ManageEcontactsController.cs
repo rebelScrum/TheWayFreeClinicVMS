@@ -10,114 +10,113 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
-    public class ManageAvailabilitiesController : Controller
+    public class ManageEcontactsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: ManageAvailabilities/
-        public ActionResult ViewAvailability(int? id)
+        // GET: ManageEcontacts
+        public ActionResult Index(int? id)
         {
             ViewBag.FullName = getUserName();
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var volunteer = id;
             ViewBag.volID = volunteer;
-            var schedule = db.Availabilities.Where(s => s.volID == volunteer).ToList();
-
-            return View(schedule);
+            var econtacts = db.Econtacts.Where(e => e.volID == volunteer);
+            
+            return View(econtacts.ToList());
         }
-        // Get: ManageAvailabilities/Create
-        [HttpGet]
-        public ActionResult AddAvailability(int? id)
+
+
+        // GET: ManageEcontacts/Create
+        public ActionResult Create(int? id)
         {
             ViewBag.FullName = getUserName();
             var volunteerID = id;
-            ViewBag.days = new SelectList(db.Availabilities, "DaysAvailable");
-            Availability availability = new Availability();
-            availability.volID = db.Volunteers.Where(s => s.volID == volunteerID).Select(v => v.volID).Single();
-            return View(availability);
+            Econtact econtact = new Econtact();
+            econtact.volID = db.Volunteers.Where(s => s.volID == volunteerID).Select(v => v.volID).Single();
+            return View(econtact);
+          
+
         }
 
-        // POST: ManageAvailabilities/Create
+        // POST: ManageEcontacts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddAvailability([Bind(Include = "volID,avDay,avFrom,avUntil")] Availability availability)
+        public ActionResult Create([Bind(Include = "volID,ecFirstName,ecLastName,ecPhone")] Econtact econtact)
         {
-            
             if (ModelState.IsValid)
             {
-                
-                db.Availabilities.Add(availability);
+                db.Econtacts.Add(econtact);
                 db.SaveChanges();
-                return RedirectToAction("ViewAvailability", new { id = availability.volID });
+                return RedirectToAction("Index", new { id = econtact.volID});
             }
-            return View(availability);
+
+            
+            return View(econtact);
         }
 
-        // GET: ManageAvailabilities/Edit/5
-        public ActionResult EditAvailability(int? id)
+        // GET: ManageEcontacts/Edit/5
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Availability availability = db.Availabilities.Find(id);
-            
-            if (availability == null)
+            Econtact econtact = db.Econtacts.Find(id);
+            if (econtact == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.volID = new SelectList(db.Volunteers, "volID", "volFirstName", availability.volID);
-            return View(availability);
+            ViewBag.volID = new SelectList(db.Volunteers, "volID", "volFirstName", econtact.volID);
+            return View(econtact);
         }
 
-        // POST: ManageAvailabilities/Edit/5
+        // POST: ManageEcontacts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "avID,volID,avDay,avFrom,avUntil")] Availability availability)
+        public ActionResult Edit([Bind(Include = "ecID,volID,ecFirstName,ecLastName,ecPhone")] Econtact econtact)
         {
-            
             if (ModelState.IsValid)
             {
-                db.Entry(availability).State = EntityState.Modified;
+                db.Entry(econtact).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("ViewAvailability", new { id = availability.volID });
+                return RedirectToAction("Index", new { id = econtact.volID});
             }
-            
-            return View(availability);
+            ViewBag.volID = new SelectList(db.Volunteers, "volID", "volFirstName", econtact.volID);
+            return View(econtact);
         }
 
-        // GET: ManageAvailabilities/Delete/5
-        public ActionResult DeleteAvailability(int? id)
+        // GET: ManageEcontacts/Delete/5
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Availability availability = db.Availabilities.Find(id);
-            if (availability == null)
+            Econtact econtact = db.Econtacts.Find(id);
+            if (econtact == null)
             {
                 return HttpNotFound();
             }
-            return View(availability);
+            return View(econtact);
         }
 
-        // POST: AdminDashboard/DeleteAvailability
+        // POST: ManageEcontacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Availability availability = db.Availabilities.Find(id);
-            db.Availabilities.Remove(availability);
+            Econtact econtact = db.Econtacts.Find(id);
+            db.Econtacts.Remove(econtact);
             db.SaveChanges();
-            return RedirectToAction("UpdateAvailability", new { id = availability.volID});
+            return RedirectToAction("Index", new { id = econtact.volID});
         }
 
         public string getUserName()

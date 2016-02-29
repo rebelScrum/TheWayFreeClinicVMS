@@ -215,6 +215,18 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         //************************************************************************************
+
+        //***********************************************************************************
+        //Get Econtact
+        public ActionResult VolunteerEcontact(int? id)
+        {
+            var volunteerID = id;
+            
+                var emergency = db.Econtacts.Where(e => e.volID == volunteerID).ToList();
+                return PartialView("_VolunteerEcontact", emergency);
+        }
+
+        //************************************************************************************
         //Get Languages
         [HttpGet]
         public ActionResult VolunteerLanguages(int? id)

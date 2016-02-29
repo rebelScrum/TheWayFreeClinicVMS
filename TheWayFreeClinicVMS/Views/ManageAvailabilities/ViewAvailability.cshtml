@@ -5,6 +5,7 @@
 }
 
 <h2>Availability</h2>
+<hr />
 
 <p>
     <a href="@Url.Action("AddAvailability", "ManageAvailabilities", new { id = ViewBag.volID })" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New</a>
@@ -45,3 +46,4 @@
     }
 
 </table>
+<a href="@Url.Action("Details", "AdminDashboard", new { id= ViewBag.volID})" class="btn btn-success btn-sm">Back to Detais</a>

@@ -243,7 +243,6 @@ namespace TheWayFreeClinicVMS.Controllers
 
         //Add Languages
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult VolunteerLanguages([Bind(Include = "speakID, lngID, volID")] int? id, int? langSearch)
         {
             var thisID = id;
@@ -307,26 +306,39 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
-        public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
+        public ActionResult Report(string sortOrder, string searchString, int? availSearch, int? contractSearch, int? employerSearch, int? jobSearch, int? langSearch, int? licenseSearch, int? paGroupSearch, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();
             var volunteers = db.Volunteers;
-            var speaks = db.Speaks;                     
+            var speaks = db.Speaks;
+            var contracts = db.Contracts;
 
-            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
-            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
-            int specialtyID = specialtySearch.GetValueOrDefault();            
+            var con = db.Contracts.GroupBy(x => x.ctrNum).Select(x => x.FirstOrDefault()).OrderBy(x => x.ctrNum).ToList();
+            ViewBag.contractSearch = new SelectList(con, "contrID", "ctrNum", contractSearch);
+            int conID = contractSearch.GetValueOrDefault();
+
+            var emp = db.Employers.GroupBy(x => x.empName).Select(x => x.FirstOrDefault()).OrderBy(x => x.empName).ToList();
+            ViewBag.employerSearch = new SelectList(emp, "empID", "empName", employerSearch);
+            int empID = employerSearch.GetValueOrDefault();
+
+            var job = db.Jobs.GroupBy(x => x.jobTitle).Select(x => x.FirstOrDefault()).OrderBy(x => x.jobTitle).ToList();
+            ViewBag.jobSearch = new SelectList(job, "jobID", "jobTitle", jobSearch);
+            int jobID = jobSearch.GetValueOrDefault();
 
             var lng = db.Languages.OrderBy(q => q.lngName).ToList();
             ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
             int lngID = langSearch.GetValueOrDefault();
 
-            var sorts = from s in volunteers
-                        select s;
+            var pag = db.Pagroups.GroupBy(x => x.pgrName).Select(x => x.FirstOrDefault()).OrderBy(x => x.pgrName).ToList();
+            ViewBag.paGroupSearch = new SelectList(pag, "pgrID", "pgrName", paGroupSearch);
+            int pagID = paGroupSearch.GetValueOrDefault();
 
-            var spks = (from sp in speaks                        
-                        where sp.lngID == lngID
-                       select sp.volID).FirstOrDefault();
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();            
+
+            var sorts = from v in volunteers
+                        select v;
 
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -334,16 +346,42 @@ namespace TheWayFreeClinicVMS.Controllers
                 sorts = sorts.Where(s => s.volLastName.Contains(searchString)
                                        || s.volFirstName.Contains(searchString));
             }
-
+            if (contractSearch.HasValue)
+            {
+                sorts = from v in sorts
+                        join s in contracts on v.volID equals s.volID
+                        where s.contrID == conID
+                        select v;
+            }
+            if (employerSearch.HasValue)
+            {
+                sorts = from v in sorts
+                        join s in db.Jobs on v.volID equals s.volID
+                        where s.empID == empID
+                        select v;
+            }
             if (specialtySearch.HasValue)
             {
                 sorts = sorts.Where(s => s.spcID == specialtyID);
             }
-
             if (langSearch.HasValue)
             {
-                sorts = sorts.Where(s => s.volID == spks);
+                sorts = from v in sorts
+                        join s in speaks on v.volID equals s.volID
+                        where s.lngID == lngID
+                        select v;
             }
+            if (jobSearch != null)
+            {
+                sorts = from v in sorts
+                        join s in db.Jobs on v.volID equals s.volID
+                        where s.jobID == jobID
+                        select v;
+            }
+
+
+
+
             //sorting by last name and the starting date
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";

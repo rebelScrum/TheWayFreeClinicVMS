@@ -15,8 +15,14 @@
                 @using (Html.BeginForm())
             {
                     <p>
-                        Specialty: @Html.DropDownList("specialtySearch", "All")
+                        @*Availability: @Html.DropDownList("availSearch", "All")*@
+                        Contract#: @Html.DropDownList("contractSearch", "All")
+                        Employer: @Html.DropDownList("employerSearch", "All")
+                        Job: @Html.DropDownList("jobSearch", "All")                        
                         Language: @Html.DropDownList("langSearch", "All")
+                        @*License: @Html.DropDownList("licenseSearch", "All")*@
+                        PA Group: @Html.DropDownList("paGroupSearch", "All")
+                        Specialty: @Html.DropDownList("specialtySearch", "All")
                         <input type="submit" value="Filter" />
                         <br />                                               
                     </p>

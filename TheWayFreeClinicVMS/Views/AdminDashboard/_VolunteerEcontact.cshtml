@@ -1,0 +1,7 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Econtact>
+
+@foreach (var item in Model)
+{
+    @Html.DisplayFor(modelItem => item.ecFirstName) <br />
+    @Html.DisplayFor(modelItem => item.ecPhone);
+}

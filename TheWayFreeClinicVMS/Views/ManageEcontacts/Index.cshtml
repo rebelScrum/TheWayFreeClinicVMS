@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Econtact>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4>Emergency Contacts</h4>
+<hr />
+
+<p>
+    <a href="@Url.Action("Create", "ManageEcontacts", new { id=ViewBag.volID })" class="btn btn-info btn-sm">Add New</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ecFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ecLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ecPhone)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+      
+        <td>
+            @Html.DisplayFor(modelItem => item.ecFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ecLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ecPhone)
+        </td>
+        <td>
+           
+            <a href="@Url.Action("Edit", "ManageEcontacts", new { id=item.ecID })" class="btn btn-primary btn-sm">Edit</a>
+            <a href="@Url.Action("Delete", "ManageEcontacts", new { id = item.ecID })" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+        
+    </tr>
+}
+</table>
+<a href="@Url.Action("Details", "AdminDashboard", new { id= ViewBag.volID})" class="btn btn-success btn-sm">Back to Detais</a>

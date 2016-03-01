@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ManageAvailabilitiesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManageEcontactsController.cs" />
+    <Compile Include="Controllers\ManageJobsController.cs" />
     <Compile Include="Controllers\VolunteerProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -296,6 +297,14 @@
     <Content Include="Views\ManageEcontacts\Delete.cshtml" />
     <Content Include="Views\ManageEcontacts\Edit.cshtml" />
     <Content Include="Views\ManageEcontacts\Index.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\Create.cshtml" />
+    <Content Include="Views\ManageJobs\Edit.cshtml" />
+    <Content Include="Views\ManageJobs\Index.cshtml" />
+    <Content Include="Views\ManageJobs\CreateEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\IndexEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\DetailsEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\EditEmployer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

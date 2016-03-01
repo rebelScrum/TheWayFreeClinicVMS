@@ -1,0 +1,14 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Job>
+
+
+
+@foreach (var item in Model)
+{
+    @:Company:  
+    @Html.DisplayFor(modelItem => item.Employer.empName) <br />
+    @:Title: 
+    @Html.DisplayFor(modelItem => item.jobTitle) <br />
+
+}
+
+

@@ -215,7 +215,16 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         //************************************************************************************
-
+        //Get Employment
+        
+        public ActionResult VolunteerEmployer(int? id)
+        {
+            var volunteerID = id;
+            var jobs = db.Jobs.Where(e => e.volID == volunteerID).ToList();
+            var employer = db.Employers.OrderBy(o => o.empName).ToList();
+            ViewBag.empList = new SelectList(employer, "empID", "empName");
+            return PartialView("_VolunteerEmployer", jobs);
+        }
         //***********************************************************************************
         //Get Econtact
         public ActionResult VolunteerEcontact(int? id)

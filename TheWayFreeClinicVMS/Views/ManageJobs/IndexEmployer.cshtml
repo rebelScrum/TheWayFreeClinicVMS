@@ -1,0 +1,70 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Employer>
+
+@{
+    ViewBag.Title = "IndexEmployer";
+}
+
+<h3>Employers</h3>
+
+<p>
+    <a href=@Url.Action("CreateEmployer", "ManageJobs") class="btn btn-info btn-sm">Add Employer</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.empName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.empPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.empStreet1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.empStreet2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.empCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.empState)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.empZip)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.empName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.empPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.empStreet1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.empStreet2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.empCity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.empState)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.empZip)
+        </td>
+        <td>
+           
+            <a href=@Url.Action("EditEmployer", "ManageJobs", new { id=item.empID }) class="btn btn-primary btn-sm">Edit</a>
+            <a href=@Url.Action("DetailsEmployer", "ManageJobs", new { id=item.empID }) class="btn btn-success btn-sm">Details</a>
+
+        </td>
+    </tr>
+}
+
+</table>

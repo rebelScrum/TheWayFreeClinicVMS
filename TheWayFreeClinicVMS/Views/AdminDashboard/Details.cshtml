@@ -97,6 +97,11 @@
                  <a href="@Url.Action("Index", "ManageEcontacts", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
              </dd>
 
+             <dt> Employment:</dt>
+             <dd>
+                 @{Html.RenderAction("VolunteerEmployer", new { id = Model.volID }); }
+             <a href="@Url.Action("Index", "ManageJobs", new { id = Model.volID })" class="btn btn-primary btn-sm">Details</a>
+         </dd>
          </dl>
 
 </div>

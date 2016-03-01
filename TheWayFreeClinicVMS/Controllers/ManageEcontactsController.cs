@@ -63,6 +63,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: ManageEcontacts/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -96,6 +97,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: ManageEcontacts/Delete/5
         public ActionResult Delete(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

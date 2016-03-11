@@ -21,7 +21,7 @@ namespace TheWayFreeClinicVMS.Controllers
         public ActionResult Index()
         {
             string text = System.IO.File.ReadAllText(Server.MapPath("~/Content/docs/") + ("message1.txt"));
-            ViewBag.message = text;
+            ViewBag.message = text.Replace(Environment.NewLine, "<br />");
             ViewBag.error = TempData["error"];
             ViewBag.FullName = getUserName();
             var wlog = db.Worklog;

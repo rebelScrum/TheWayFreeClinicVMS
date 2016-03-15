@@ -1,6 +1,4 @@
-﻿@model System.Collections.Generic.IEnumerable<TheWayFreeClinicVMS.Models.Volunteer>
-
-@{
+﻿@{
     ViewBag.Title = "Report";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -16,12 +14,7 @@
             {
                     <p>
                         @*Availability: @Html.DropDownList("availSearch", "All")*@
-                        Contract#: @Html.DropDownList("contractSearch", "All")
-                        Employer: @Html.DropDownList("employerSearch", "All")
-                        Job: @Html.DropDownList("jobSearch", "All")                        
-                        Language: @Html.DropDownList("langSearch", "All")
                         @*License: @Html.DropDownList("licenseSearch", "All")*@
-                        PA Group: @Html.DropDownList("paGroupSearch", "All")
                         Specialty: @Html.DropDownList("specialtySearch", "All")
                         <input type="submit" value="Filter" />
                         <br />                                               
@@ -32,28 +25,24 @@
             <table class="table table-condensed table-hover table-striped table">
                 <tr>
                     <th>
-                        @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                        @Html.ActionLink("Last Name", "Report", new { sortOrder = ViewBag.NameSortParm })
                         <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.volFirstName)
+                        First Name
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Specialty.spcName)
+                        Specialty
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.volEmail)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.volPhone)
-                    </th>
-                    <th>
-                        @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+                        @Html.ActionLink("Active", "Report", new { sortOrder = ViewBag.ActiveSortParm })
                         <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
-
                     </th>
                     <th>
-                        @Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm })
+                        Email
+                    </th>                    
+                    <th>
+                        @Html.ActionLink("Accumulated Hours", "Report", new { sortOrder = ViewBag.HoursSortParam })
                         <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
                     </th>
 
@@ -64,32 +53,29 @@
                     <tr>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.volLastName)
+                            @item.volunteer.volLastName
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volFirstName)
+                            @item.volunteer.volFirstName
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Specialty.spcName)
+                            @item.volunteer.Specialty.spcName
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volEmail)
+                            @item.volunteer.volActive
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volPhone)
+                            @item.volunteer.volEmail
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volStartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.volActive)
+                            @item.hours
                         </td>
                         <td></td>
                         <td></td>
                     </tr>
                 }
-
             </table>
+            
         </div>
     </div>
 </div>

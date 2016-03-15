@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -12,13 +13,19 @@ namespace TheWayFreeClinicVMS.Controllers
 {
     public class AdminDashboardController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        public class HoursReportVol
+        {
+            public int id { get; set; }
+            public double hours { get; set; }
+            public Volunteer volunteer { get; set; }
+        }
+        private ApplicationDbContext db = new ApplicationDbContext();        
 
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();
-            var volunteers = db.Volunteers.Include(v => v.Specialty);
+            var volunteers = db.Volunteers.Include(v => v.Specialty);                      
 
             //selects volunteer list
 
@@ -315,39 +322,24 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
-        public ActionResult Report(string sortOrder, string searchString, int? availSearch, int? contractSearch, int? employerSearch, int? jobSearch, int? langSearch, int? licenseSearch, int? paGroupSearch, int? specialtySearch)
+        public ActionResult Report(string sortOrder, string searchString, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();
+
             var volunteers = db.Volunteers;
-            var speaks = db.Speaks;
-            var contracts = db.Contracts;
+            var times = db.Worklog;
 
-            var con = db.Contracts.GroupBy(x => x.ctrNum).Select(x => x.FirstOrDefault()).OrderBy(x => x.ctrNum).ToList();
-            ViewBag.contractSearch = new SelectList(con, "contrID", "ctrNum", contractSearch);
-            int conID = contractSearch.GetValueOrDefault();
-
-            var emp = db.Employers.GroupBy(x => x.empName).Select(x => x.FirstOrDefault()).OrderBy(x => x.empName).ToList();
-            ViewBag.employerSearch = new SelectList(emp, "empID", "empName", employerSearch);
-            int empID = employerSearch.GetValueOrDefault();
-
-            var job = db.Jobs.GroupBy(x => x.jobTitle).Select(x => x.FirstOrDefault()).OrderBy(x => x.jobTitle).ToList();
-            ViewBag.jobSearch = new SelectList(job, "jobID", "jobTitle", jobSearch);
-            int jobID = jobSearch.GetValueOrDefault();
-
-            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
-            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
-            int lngID = langSearch.GetValueOrDefault();
-
-            var pag = db.Pagroups.GroupBy(x => x.pgrName).Select(x => x.FirstOrDefault()).OrderBy(x => x.pgrName).ToList();
-            ViewBag.paGroupSearch = new SelectList(pag, "pgrID", "pgrName", paGroupSearch);
-            int pagID = paGroupSearch.GetValueOrDefault();
+            List<HoursReportVol> HoursReportVolList = new List<HoursReportVol> { };
+            HoursReportVol vol = new HoursReportVol();
+            long tempTotal = 0000000000;
+            var volHours = 0.0;
 
             var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
             ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
-            int specialtyID = specialtySearch.GetValueOrDefault();            
+            int specialtyID = specialtySearch.GetValueOrDefault();
 
             var sorts = from v in volunteers
-                        select v;
+                       select v;
 
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -355,71 +347,73 @@ namespace TheWayFreeClinicVMS.Controllers
                 sorts = sorts.Where(s => s.volLastName.Contains(searchString)
                                        || s.volFirstName.Contains(searchString));
             }
-            if (contractSearch.HasValue)
-            {
-                sorts = from v in sorts
-                        join s in contracts on v.volID equals s.volID
-                        where s.contrID == conID
-                        select v;
-            }
-            if (employerSearch.HasValue)
-            {
-                sorts = from v in sorts
-                        join s in db.Jobs on v.volID equals s.volID
-                        where s.empID == empID
-                        select v;
-            }
+
             if (specialtySearch.HasValue)
             {
                 sorts = sorts.Where(s => s.spcID == specialtyID);
             }
-            if (langSearch.HasValue)
-            {
-                sorts = from v in sorts
-                        join s in speaks on v.volID equals s.volID
-                        where s.lngID == lngID
-                        select v;
-            }
-            if (jobSearch != null)
-            {
-                sorts = from v in sorts
-                        join s in db.Jobs on v.volID equals s.volID
-                        where s.jobID == jobID
-                        select v;
-            }
 
+            //create new object for each vol in sorts including properties for hours and exposing volID; adds to list of new objects
+            foreach (var item in sorts)
+            {
+                vol = new HoursReportVol();
+                vol.id = item.volID;
+                vol.volunteer = item;
+                HoursReportVolList.Add(vol);
+            }
+           
+
+            foreach (var item in HoursReportVolList)
+            { 
+                foreach (var log in times.ToList())
+                {
+                    if (log.volID == item.id)
+                    {
+                        var end = log.wrkEndTime.Value.Ticks;
+                        var beg = log.wrkStartTime.Ticks;
+                        tempTotal += ( end - beg );
+                    }
+                }
+
+                volHours = TimeSpan.FromTicks(tempTotal).TotalHours;
+                                
+                if (volHours == 0)
+                {
+                    item.hours = 0;
+                }
+                else
+                {
+                    item.hours = volHours;
+                }
+                tempTotal = 000000000;
+            }
 
 
 
             //sorting by last name and the starting date
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
+            ViewBag.HoursSortParam = String.IsNullOrEmpty(sortOrder) ? "hours_desc" : "";
             ViewBag.viewName = "index";
 
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    sorts = sorts.OrderByDescending(s => s.volLastName);
+                    HoursReportVolList = HoursReportVolList.OrderByDescending(s => s.volunteer.volLastName).ToList();
                     break;
                 case "Active":
-                    sorts = sorts.Where(s => s.volActive == true);
+                    HoursReportVolList = HoursReportVolList.Where(s => s.volunteer.volActive == true).ToList();
                     break;
                 case "Inactive":
-                    sorts = sorts.Where(s => s.volActive == false);
+                    HoursReportVolList = HoursReportVolList.Where(s => s.volunteer.volActive == false).ToList();
                     break;
-                case "Date":
-                    sorts = sorts.OrderBy(s => s.volStartDate);
-                    break;
-                case "date_desc":
-                    sorts = sorts.OrderByDescending(s => s.volStartDate);
-                    break;
-                default:
-                    sorts = sorts.OrderBy(s => s.volLastName);
+                case "hours_desc":
+                    HoursReportVolList = HoursReportVolList.OrderByDescending(s => s.hours).ToList();
                     break;
             }
-            return View(sorts.ToList().Distinct());
+
+            return View(HoursReportVolList);
         }
 
         protected override void Dispose(bool disposing)
@@ -437,8 +431,6 @@ namespace TheWayFreeClinicVMS.Controllers
             string fullName = (from v in vols
                                where v.volEmail == User.Identity.Name
                                select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
-
-
             return fullName;
         }
 

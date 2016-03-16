@@ -322,9 +322,10 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
-        public ActionResult Report(string sortOrder, string searchString, int? specialtySearch)
+        public ActionResult Report(string sortOrder, string searchString, string hiddenDateRange, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();
+            ViewBag.dateRange = hiddenDateRange;
 
             var volunteers = db.Volunteers;
             var times = db.Worklog;
@@ -340,6 +341,15 @@ namespace TheWayFreeClinicVMS.Controllers
 
             var sorts = from v in volunteers
                        select v;
+
+            //sorting by last name and the starting date
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
+            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
+            ViewBag.HoursSortParam = String.IsNullOrEmpty(sortOrder) ? "hours_asc" : "";
+            ViewBag.viewName = "index";
+
+
+           
 
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -389,18 +399,10 @@ namespace TheWayFreeClinicVMS.Controllers
             }
 
 
-
-            //sorting by last name and the starting date
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
-            ViewBag.HoursSortParam = String.IsNullOrEmpty(sortOrder) ? "hours_desc" : "";
-            ViewBag.viewName = "index";
-
-
             switch (sortOrder)
             {
-                case "name_desc":
-                    HoursReportVolList = HoursReportVolList.OrderByDescending(s => s.volunteer.volLastName).ToList();
+                case "name_asc":
+                    HoursReportVolList = HoursReportVolList.OrderBy(s => s.volunteer.volLastName).ToList();
                     break;
                 case "Active":
                     HoursReportVolList = HoursReportVolList.Where(s => s.volunteer.volActive == true).ToList();
@@ -408,10 +410,14 @@ namespace TheWayFreeClinicVMS.Controllers
                 case "Inactive":
                     HoursReportVolList = HoursReportVolList.Where(s => s.volunteer.volActive == false).ToList();
                     break;
-                case "hours_desc":
+                case "hours_asc":
+                    HoursReportVolList = HoursReportVolList.OrderBy(s => s.hours).ToList();
+                    break;
+                default:
                     HoursReportVolList = HoursReportVolList.OrderByDescending(s => s.hours).ToList();
                     break;
             }
+
 
             return View(HoursReportVolList);
         }

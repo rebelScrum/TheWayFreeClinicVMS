@@ -322,34 +322,46 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
-        public ActionResult Report(string sortOrder, string searchString, string hiddenDateRange, int? specialtySearch)
+        public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch)
         {
+            ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
             ViewBag.dateRange = hiddenDateRange;
+            ViewBag.start = hiddenDateRange;
+            string[] tokens = new string[] {" - "};
+            string[] dateRange;
+            long begDateTicks = 0000000000;
+            long endDateTicks = 0000000000;      
+            long tempTotal = 0000000000;
+            var volHours = 0.0;
+
+            List<HoursReportVol> HoursReportFullList = new List<HoursReportVol> { };
+            List<HoursReportVol> HoursReportFilteredList = new List<HoursReportVol> { };
+            HoursReportVol vol = new HoursReportVol();
 
             var volunteers = db.Volunteers;
             var times = db.Worklog;
 
-            List<HoursReportVol> HoursReportVolList = new List<HoursReportVol> { };
-            HoursReportVol vol = new HoursReportVol();
-            long tempTotal = 0000000000;
-            var volHours = 0.0;
+            var sorts = from v in volunteers
+                        select v;
 
             var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
             ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
             int specialtyID = specialtySearch.GetValueOrDefault();
 
-            var sorts = from v in volunteers
-                       select v;
-
-            //sorting by last name and the starting date
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
-            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
-            ViewBag.HoursSortParam = String.IsNullOrEmpty(sortOrder) ? "hours_asc" : "";
-            ViewBag.viewName = "index";
-
-
-           
+            //parse date range, convert to ticks
+            if (hiddenDateRange != null && hiddenDateRange != "")
+            {
+                dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
+                ViewBag.startDate = dateRange[0];
+                ViewBag.endDate = dateRange[1];
+                begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
+                endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
+            }
+            else if (hiddenDateRange == "")
+            {                
+                return View(HoursReportFilteredList);
+            }
 
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -369,19 +381,22 @@ namespace TheWayFreeClinicVMS.Controllers
                 vol = new HoursReportVol();
                 vol.id = item.volID;
                 vol.volunteer = item;
-                HoursReportVolList.Add(vol);
-            }
-           
+                HoursReportFullList.Add(vol);
+            }           
 
-            foreach (var item in HoursReportVolList)
+            foreach (var item in HoursReportFullList)
             { 
                 foreach (var log in times.ToList())
                 {
-                    if (log.volID == item.id)
+                    if (log.volID == item.id && log.wrkEndTime.HasValue)
                     {
-                        var end = log.wrkEndTime.Value.Ticks;
                         var beg = log.wrkStartTime.Ticks;
-                        tempTotal += ( end - beg );
+                        var end = log.wrkEndTime.Value.Ticks;                          
+
+                        if (beg >= begDateTicks && end <= endDateTicks  )
+                        {
+                            tempTotal += (end - beg);
+                        }
                     }
                 }
 
@@ -393,33 +408,28 @@ namespace TheWayFreeClinicVMS.Controllers
                 }
                 else
                 {
-                    item.hours = volHours;
+                    item.hours = Math.Round(volHours, 3);
+                    HoursReportFilteredList.Add(item);
                 }
                 tempTotal = 000000000;
             }
 
 
-            switch (sortOrder)
-            {
-                case "name_asc":
-                    HoursReportVolList = HoursReportVolList.OrderBy(s => s.volunteer.volLastName).ToList();
-                    break;
-                case "Active":
-                    HoursReportVolList = HoursReportVolList.Where(s => s.volunteer.volActive == true).ToList();
-                    break;
-                case "Inactive":
-                    HoursReportVolList = HoursReportVolList.Where(s => s.volunteer.volActive == false).ToList();
-                    break;
-                case "hours_asc":
-                    HoursReportVolList = HoursReportVolList.OrderBy(s => s.hours).ToList();
-                    break;
-                default:
-                    HoursReportVolList = HoursReportVolList.OrderByDescending(s => s.hours).ToList();
-                    break;
-            }
+            //switch (sortBy)
+            //{
+            //    case "Name Asc":
+            //        HoursReportFilteredList = HoursReportFilteredList.OrderBy(s => s.volunteer.volLastName).ToList();
+            //        break;                
+            //    case "Name Desc":
+            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.volunteer.volLastName).ToList();
+            //        break;
+            //    default:
+            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.hours).ToList();
+            //        break;
+            //}
 
 
-            return View(HoursReportVolList);
+            return View(HoursReportFilteredList);
         }
 
         protected override void Dispose(bool disposing)

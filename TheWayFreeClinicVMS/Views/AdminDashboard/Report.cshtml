@@ -21,25 +21,22 @@
                 @using (Html.BeginForm())
             {
                     <div>
-                        Specialty: @Html.DropDownList("specialtySearch", "All")
+                        Specialty: @Html.DropDownList("specialtySearch", "All")                     
 
-                        <div id="reportrange" class="" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:30%; float:right;">
+                        <div id="reportrange" class="btn btn-default" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:30%; float:right;">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                            <span id="dateRange"></span> <b class="caret"></b>
+                            <span id="dateRange">@ViewBag.dateRange</span> <b class="caret"></b>
                         </div>
                         <input name="hiddenDateRange" type="hidden" id="hiddenDateRange" value="" />
                         <input id="submit" type="submit" value="Filter" />
                     </div>
-
                 }
             </div>
             @ViewBag.dateRange
-
             <table class="table table-condensed table-hover table-striped table">
                 <tr>
                     <th>
-                        @Html.ActionLink("Last Name", "Report", new { sortOrder = ViewBag.NameSortParm })
-                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                        Last Name
                     </th>
                     <th>
                         First Name
@@ -48,18 +45,14 @@
                         Specialty
                     </th>
                     <th>
-                        @Html.ActionLink("Active", "Report", new { sortOrder = ViewBag.ActiveSortParm })
-                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                        Active
                     </th>
                     <th>
                         Email
                     </th>
                     <th>
-                        @Html.ActionLink("Accumulated Hours", "Report", new { sortOrder = ViewBag.HoursSortParam })
-                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                       Accumulated Hours
                     </th>
-
-                    <th></th>
                 </tr>
                 @foreach (var item in Model)
             {
@@ -83,8 +76,6 @@
                         <td>
                             @item.hours
                         </td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 }
             </table>
@@ -94,34 +85,38 @@
 </div>
 
 
+
+
 <script type="text/javascript">
 
     $('#submit').click(function () {
+        //put date range in hidded input element for form submission
         var range = $('#dateRange').html();
         $('#hiddenDateRange').attr("value", range);
-        alert(range);
     })
-   
+
     $(function () {
 
-        
-
         function cb(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));            
         }
-        cb(moment(), moment());
+
+        //cb(moment(), moment());
 
         $('#reportrange').daterangepicker({
             ranges: {
-                'Today': [moment(), moment()],
+                'Today': [moment().startOf('day'), moment()],
                 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                 'Year to Date': [moment().startOf('year'), moment()]
-            }
+            },
+            "timePicker": true,
+            "timePicker24Hour": true,
+            "alwaysShowCalendars": true,
+            "autoUpdateInput": false,
+            "opens": "left",
         }, cb);
-
-
     });
 </script>

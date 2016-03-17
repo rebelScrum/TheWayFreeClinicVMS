@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -12,13 +13,19 @@ namespace TheWayFreeClinicVMS.Controllers
 {
     public class AdminDashboardController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        public class HoursReportVol
+        {
+            public int id { get; set; }
+            public double hours { get; set; }
+            public Volunteer volunteer { get; set; }
+        }
+        private ApplicationDbContext db = new ApplicationDbContext();        
 
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();
-            var volunteers = db.Volunteers.Include(v => v.Specialty);
+            var volunteers = db.Volunteers.Include(v => v.Specialty);                      
 
             //selects volunteer list
 
@@ -252,7 +259,6 @@ namespace TheWayFreeClinicVMS.Controllers
 
         //Add Languages
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult VolunteerLanguages([Bind(Include = "speakID, lngID, volID")] int? id, int? langSearch)
         {
             var thisID = id;
@@ -316,26 +322,46 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
-        public ActionResult Report(string sortOrder, string searchString, int? specialtySearch, int? langSearch)
+        public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch)
         {
+            ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
+            ViewBag.dateRange = hiddenDateRange;
+            ViewBag.start = hiddenDateRange;
+            string[] tokens = new string[] {" - "};
+            string[] dateRange;
+            long begDateTicks = 0000000000;
+            long endDateTicks = 0000000000;      
+            long tempTotal = 0000000000;
+            var volHours = 0.0;
+
+            List<HoursReportVol> HoursReportFullList = new List<HoursReportVol> { };
+            List<HoursReportVol> HoursReportFilteredList = new List<HoursReportVol> { };
+            HoursReportVol vol = new HoursReportVol();
+
             var volunteers = db.Volunteers;
-            var speaks = db.Speaks;                     
+            var times = db.Worklog;
+
+            var sorts = from v in volunteers
+                        select v;
 
             var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
             ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
-            int specialtyID = specialtySearch.GetValueOrDefault();            
+            int specialtyID = specialtySearch.GetValueOrDefault();
 
-            var lng = db.Languages.OrderBy(q => q.lngName).ToList();
-            ViewBag.langSearch = new SelectList(lng, "lngID", "lngName", langSearch);
-            int lngID = langSearch.GetValueOrDefault();
-
-            var sorts = from s in volunteers
-                        select s;
-
-            var spks = (from sp in speaks                        
-                        where sp.lngID == lngID
-                       select sp.volID).FirstOrDefault();
+            //parse date range, convert to ticks
+            if (hiddenDateRange != null && hiddenDateRange != "")
+            {
+                dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
+                ViewBag.startDate = dateRange[0];
+                ViewBag.endDate = dateRange[1];
+                begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
+                endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
+            }
+            else if (hiddenDateRange == "")
+            {                
+                return View(HoursReportFilteredList);
+            }
 
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -349,39 +375,61 @@ namespace TheWayFreeClinicVMS.Controllers
                 sorts = sorts.Where(s => s.spcID == specialtyID);
             }
 
-            if (langSearch.HasValue)
+            //create new object for each vol in sorts including properties for hours and exposing volID; adds to list of new objects
+            foreach (var item in sorts)
             {
-                sorts = sorts.Where(s => s.volID == spks);
+                vol = new HoursReportVol();
+                vol.id = item.volID;
+                vol.volunteer = item;
+                HoursReportFullList.Add(vol);
+            }           
+
+            foreach (var item in HoursReportFullList)
+            { 
+                foreach (var log in times.ToList())
+                {
+                    if (log.volID == item.id && log.wrkEndTime.HasValue)
+                    {
+                        var beg = log.wrkStartTime.Ticks;
+                        var end = log.wrkEndTime.Value.Ticks;                          
+
+                        if (beg >= begDateTicks && end <= endDateTicks  )
+                        {
+                            tempTotal += (end - beg);
+                        }
+                    }
+                }
+
+                volHours = TimeSpan.FromTicks(tempTotal).TotalHours;
+                                
+                if (volHours == 0)
+                {
+                    item.hours = 0;
+                }
+                else
+                {
+                    item.hours = Math.Round(volHours, 3);
+                    HoursReportFilteredList.Add(item);
+                }
+                tempTotal = 000000000;
             }
-            //sorting by last name and the starting date
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewBag.ActiveSortParm = sortOrder == "Active" ? "Inactive" : "Active";
-            ViewBag.viewName = "index";
 
 
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    sorts = sorts.OrderByDescending(s => s.volLastName);
-                    break;
-                case "Active":
-                    sorts = sorts.Where(s => s.volActive == true);
-                    break;
-                case "Inactive":
-                    sorts = sorts.Where(s => s.volActive == false);
-                    break;
-                case "Date":
-                    sorts = sorts.OrderBy(s => s.volStartDate);
-                    break;
-                case "date_desc":
-                    sorts = sorts.OrderByDescending(s => s.volStartDate);
-                    break;
-                default:
-                    sorts = sorts.OrderBy(s => s.volLastName);
-                    break;
-            }
-            return View(sorts.ToList().Distinct());
+            //switch (sortBy)
+            //{
+            //    case "Name Asc":
+            //        HoursReportFilteredList = HoursReportFilteredList.OrderBy(s => s.volunteer.volLastName).ToList();
+            //        break;                
+            //    case "Name Desc":
+            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.volunteer.volLastName).ToList();
+            //        break;
+            //    default:
+            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.hours).ToList();
+            //        break;
+            //}
+
+
+            return View(HoursReportFilteredList);
         }
 
         protected override void Dispose(bool disposing)
@@ -399,8 +447,6 @@ namespace TheWayFreeClinicVMS.Controllers
             string fullName = (from v in vols
                                where v.volEmail == User.Identity.Name
                                select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
-
-
             return fullName;
         }
 

@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "ExportHoursReport";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>ExportHoursReport</h2>
+
+<div class="container">
+    <div class="col-md-12">
+        <div>
+
+
+            <div class="jumbotron">
+                <div class="container">
+                    
+                </div>
+            </div>
+
+            @*<div style="text-align:center">
+                @ViewBag.dateRange
+                <br />
+                Grand Total: @ViewBag.grandTotalHours
+            </div>*@
+
+            <table class="table table-condensed table-hover table-striped table">
+                <tr>
+                    <th>
+                        Last Name
+                    </th>
+                    <th>
+                        First Name
+                    </th>
+                    <th>
+                        Specialty
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Accumulated Hours
+                    </th>
+                </tr>
+                @foreach (var item in Model)
+            {
+                    <tr>
+
+                        <td>
+                            @item.volunteer.volLastName
+                        </td>
+                        <td>
+                            @item.volunteer.volFirstName
+                        </td>
+                        <td>
+                            @item.volunteer.Specialty.spcName
+                        </td>
+                        <td>
+                            @item.volunteer.volActive
+                        </td>
+                        <td>
+                            @item.volunteer.volEmail
+                        </td>
+                        <td>
+                            @item.hours
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+</div>

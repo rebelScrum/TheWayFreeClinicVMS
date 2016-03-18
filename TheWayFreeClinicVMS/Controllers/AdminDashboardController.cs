@@ -329,6 +329,7 @@ namespace TheWayFreeClinicVMS.Controllers
             ViewBag.FullName = getUserName();
             ViewBag.dateRange = hiddenDateRange;
             ViewBag.start = hiddenDateRange;
+            ViewBag.spcSearch = specialtySearch;
             string[] tokens = new string[] {" - "};
             string[] dateRange;
             long begDateTicks = 0000000000;

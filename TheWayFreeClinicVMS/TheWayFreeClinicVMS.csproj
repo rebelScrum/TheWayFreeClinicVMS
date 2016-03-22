@@ -212,6 +212,15 @@
     <Content Include="Content\img\Help2_ClockIn.png" />
     <Content Include="Content\img\Help3_RecentActivityClockIn.png" />
     <Content Include="Content\img\Help_ClickLogIn.png" />
+    <Content Include="Content\img\Help_HomePageAnnouncements.png" />
+    <Content Include="Content\img\Help_LogInEnterCreds.png" />
+    <Content Include="Content\img\Help_LogInOverview.png" />
+    <Content Include="Content\img\Help_LogIn_CheckRememberMe.png" />
+    <Content Include="Content\img\Help_LogIn_ClickLogInButton.png" />
+    <Content Include="Content\img\Help_LogIn_InvalidLogInAttempt.png" />
+    <Content Include="Content\img\Help_LogIn_NowLoggedIn.png" />
+    <Content Include="Content\img\Help_Profile_ClickEdit.png" />
+    <Content Include="Content\img\Help_Profile_Overview.png" />
     <Content Include="Content\img\Help_RecentActivityClockOut.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\ProfilePlaceholder.png" />

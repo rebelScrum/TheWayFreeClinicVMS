@@ -1,0 +1,18 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Contract>
+
+@if (!Model.Any())
+{
+    @: None
+}
+else
+{
+
+foreach (var item in Model)
+{
+    @:PA Group:
+    @Html.DisplayFor(modelItem => item.Pagroup.pgrName) <br />
+    @:Contact:
+    @Html.DisplayFor(modelItem => item.ctrNum) <br />
+
+}
+}

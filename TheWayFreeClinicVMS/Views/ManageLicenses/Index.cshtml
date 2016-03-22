@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.License>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    <a href="@Url.Action("Create", "ManageLicenses", new { id=ViewBag.volID })" class="btn btn-info btn-sm">Add New License</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.lcNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lcDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lcClear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lcExpire)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.lcNum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lcDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lcClear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lcExpire)
+        </td>
+        <td>
+            <a href="@Url.Action("Edit", "ManageLicenses", new { id=item.licenceID })" class="btn btn-primary btn-sm">Edit</a>
+           
+        </td>
+    </tr>
+}
+
+</table>
+<a href="@Url.Action("Details", "AdminDashboard", new { id= ViewBag.volID})" class="btn btn-success btn-sm">Back to Detais</a>

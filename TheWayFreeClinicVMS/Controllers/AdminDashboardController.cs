@@ -13,13 +13,16 @@ namespace TheWayFreeClinicVMS.Controllers
 {
     public class AdminDashboardController : Controller
     {
+
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public class HoursReportVol
         {
             public int id { get; set; }
             public double hours { get; set; }
             public Volunteer volunteer { get; set; }
         }
-        private ApplicationDbContext db = new ApplicationDbContext();        
+       
 
         // GET: AdminDashboard
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
@@ -103,8 +106,11 @@ namespace TheWayFreeClinicVMS.Controllers
             ViewBag.FullName = getUserName();
             ViewBag.spcID = new SelectList(db.Specialties, "spcID", "spcName");
             ViewBag.viewName = "create";
-            return View();
-        }
+            Volunteer volunteer = new Volunteer();
+            //sets every newly created volunteer to active as default
+            volunteer.volActive = true;
+            return View(volunteer);
+        } 
 
         // POST: AdminDashboard/Create
         [HttpPost]
@@ -210,6 +216,24 @@ namespace TheWayFreeClinicVMS.Controllers
             var volunteerID = id;
             var schedule = db.Availabilities.Where(s => s.volID == volunteerID).ToList();
             return PartialView("_VolunteerAvailable", schedule);
+        }
+        //**************************************************************************************
+        //Get License
+        public ActionResult VolunteerLicense(int? id)
+        {
+            var volunteerID = id;
+            var license = db.Licenses.Where(s => s.volID == volunteerID).ToList();
+            return PartialView("_VolunteerLicense", license);
+        }
+        //*************************************************************************************
+        //Get Contract
+        public ActionResult VolunteerContract(int? id)
+        {
+            var volunteerID = id;
+            var contract = db.Contracts.Where(s => s.volID == volunteerID).ToList();
+            var groups = db.Pagroups.OrderBy(o => o.pgrName).ToList();
+            ViewBag.grpList = new SelectList(groups, "pgrID", "pgrName");
+            return PartialView("_VolunteerContract", contract);
         }
         //***********************************************************************************
         //Get Timesheet

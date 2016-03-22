@@ -174,9 +174,11 @@
     <Compile Include="Controllers\AdminDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageAvailabilitiesController.cs" />
+    <Compile Include="Controllers\ManageContractsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManageEcontactsController.cs" />
     <Compile Include="Controllers\ManageJobsController.cs" />
+    <Compile Include="Controllers\ManageLicensesController.cs" />
     <Compile Include="Controllers\VolunteerProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -305,6 +307,17 @@
     <Content Include="Views\ManageJobs\IndexEmployer.cshtml" />
     <Content Include="Views\ManageJobs\DetailsEmployer.cshtml" />
     <Content Include="Views\ManageJobs\EditEmployer.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerLicense.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerContract.cshtml" />
+    <Content Include="Views\ManageLicenses\Create.cshtml" />
+    <Content Include="Views\ManageLicenses\Edit.cshtml" />
+    <Content Include="Views\ManageLicenses\Index.cshtml" />
+    <Content Include="Views\ManageContracts\Create.cshtml" />
+    <Content Include="Views\ManageContracts\Edit.cshtml" />
+    <Content Include="Views\ManageContracts\Index.cshtml" />
+    <Content Include="Views\ManageContracts\CreateGroup.cshtml" />
+    <Content Include="Views\ManageContracts\IndexGroup.cshtml" />
+    <Content Include="Views\ManageContracts\EditGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

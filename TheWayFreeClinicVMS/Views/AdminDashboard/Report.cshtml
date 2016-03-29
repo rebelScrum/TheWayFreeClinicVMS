@@ -17,22 +17,43 @@
 <div class="container">
     <div class="col-md-12">
         <div>
-            <div class="form-group">
-                @using (Html.BeginForm())
+            <div class="jumbotron">
+                <div class="container">
+                    <div class="form-group">
+                        @using (Html.BeginForm())
             {
-                    <div>
-                        Specialty: @Html.DropDownList("specialtySearch", "All")                     
+                            <div class="row">
 
-                        <div id="reportrange" class="btn btn-default" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:30%; float:right;">
-                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                            <span id="dateRange">@ViewBag.dateRange</span> <b class="caret"></b>
-                        </div>
-                        <input name="hiddenDateRange" type="hidden" id="hiddenDateRange" value="" />
-                        <input id="submit" type="submit" value="Filter" />
+                                Specialty: @Html.DropDownList("specialtySearch", null, "All", new { @class = "btn" })
+
+                                <div id="reportrange" class="btn" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:30%; float:right;">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span id="dateRange">@ViewBag.dateRange</span> <b class="caret"></b>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row" style="float:right; vertical-align:bottom">
+                                <input name="hiddenDateRange" type="hidden" id="hiddenDateRange" value="" />
+                                <input id="submit" class="btn btn-warning btn-lg" type="submit" value="Filter" />
+                            </div>
+                        }
                     </div>
-                }
+                </div>
             </div>
-            @ViewBag.dateRange
+
+            <div style="text-align:center">
+                @ViewBag.dateRange
+                <br />
+                Grand Total: @ViewBag.grandTotalHours
+                @ViewData["exportList"]
+            </div>
+
+            <div style="text-align:right">               
+                <a href="@Url.Action("ExportHoursReport", "Export", new { hiddenDateRange = ViewBag.dateRange, specialtySearch = ViewBag.spcSearch })" class="btn btn-success" role="button">Export To Excel</a>
+            </div>
+
             <table class="table table-condensed table-hover table-striped table">
                 <tr>
                     <th>
@@ -51,7 +72,7 @@
                         Email
                     </th>
                     <th>
-                       Accumulated Hours
+                        Accumulated Hours
                     </th>
                 </tr>
                 @foreach (var item in Model)
@@ -98,7 +119,7 @@
     $(function () {
 
         function cb(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));            
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
 
         //cb(moment(), moment());

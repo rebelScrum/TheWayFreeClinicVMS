@@ -346,18 +346,21 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
+                
         public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch)
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
             ViewBag.dateRange = hiddenDateRange;
             ViewBag.start = hiddenDateRange;
+            ViewBag.spcSearch = specialtySearch;
             string[] tokens = new string[] {" - "};
             string[] dateRange;
             long begDateTicks = 0000000000;
             long endDateTicks = 0000000000;      
             long tempTotal = 0000000000;
             var volHours = 0.0;
+            var grandTotalHours = 0.0;
 
             List<HoursReportVol> HoursReportFullList = new List<HoursReportVol> { };
             List<HoursReportVol> HoursReportFilteredList = new List<HoursReportVol> { };
@@ -420,12 +423,15 @@ namespace TheWayFreeClinicVMS.Controllers
                         if (beg >= begDateTicks && end <= endDateTicks  )
                         {
                             tempTotal += (end - beg);
+                            
                         }
                     }
                 }
 
                 volHours = TimeSpan.FromTicks(tempTotal).TotalHours;
-                                
+                grandTotalHours += volHours;
+                
+
                 if (volHours == 0)
                 {
                     item.hours = 0;
@@ -438,6 +444,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 tempTotal = 000000000;
             }
 
+            ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
 
             //switch (sortBy)
             //{
@@ -451,8 +458,7 @@ namespace TheWayFreeClinicVMS.Controllers
             //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.hours).ToList();
             //        break;
             //}
-
-
+            ViewBag.list = HoursReportFilteredList;
             return View(HoursReportFilteredList);
         }
 
@@ -479,5 +485,6 @@ namespace TheWayFreeClinicVMS.Controllers
         {
             throw new NotImplementedException();
         }
+
     }
 }

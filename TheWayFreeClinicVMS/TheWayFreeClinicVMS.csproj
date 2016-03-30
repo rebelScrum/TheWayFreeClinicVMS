@@ -49,6 +49,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -308,7 +311,6 @@
     <Content Include="Views\ManageJobs\IndexEmployer.cshtml" />
     <Content Include="Views\ManageJobs\DetailsEmployer.cshtml" />
     <Content Include="Views\ManageJobs\EditEmployer.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\AdminDashboard\_VolunteerLicense.cshtml" />
     <Content Include="Views\AdminDashboard\_VolunteerContract.cshtml" />
     <Content Include="Views\ManageLicenses\Create.cshtml" />
@@ -320,9 +322,7 @@
     <Content Include="Views\ManageContracts\CreateGroup.cshtml" />
     <Content Include="Views\ManageContracts\IndexGroup.cshtml" />
     <Content Include="Views\ManageContracts\EditGroup.cshtml" />
-=======
     <Content Include="Views\Export\ExportHoursReport.cshtml" />
->>>>>>> refs/remotes/origin/Home-Page
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -343,15 +343,6 @@
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
       <VersionMinor>5</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Microsoft.Office.Interop.Excel">
-      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>7</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>

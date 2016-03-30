@@ -15,6 +15,7 @@ namespace TheWayFreeClinicVMS.Models
         public int contrID { get; set; }
 
         //Contract number
+        [Display(Name = "Contract Number")]
         [MaxLength(30)]
         public string ctrNum { get; set; }
 
@@ -22,6 +23,7 @@ namespace TheWayFreeClinicVMS.Models
         public int volID { get; set; }
 
         //PA Group ID
+        [Display(Name = "PA Group")]
         public int pgrID { get; set; }
 
         //navigation Volunteer acts as relationship identifier

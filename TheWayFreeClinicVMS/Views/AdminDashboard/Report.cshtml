@@ -1,89 +1,143 @@
-﻿@model System.Collections.Generic.IEnumerable<TheWayFreeClinicVMS.Models.Volunteer>
-
-@{
+﻿@{
     ViewBag.Title = "Report";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>Report</h2>
 
+<!-- Include Required Prerequisites -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css" />
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
 <div class="container">
     <div class="col-md-12">
         <div>
-            <div class="form-group">
-                @using (Html.BeginForm())
+            <div class="jumbotron">
+                <div class="container">
+                    <div class="form-group">
+                        @using (Html.BeginForm())
             {
-                    <p>
-                        Specialty: @Html.DropDownList("specialtySearch", "All")
-                        Language: @Html.DropDownList("langSearch", "All")
-                        <input type="submit" value="Filter" />
-                        <br />                                               
-                    </p>
+                            <div class="row">
 
-                }
+                                Specialty: @Html.DropDownList("specialtySearch", null, "All", new { @class = "btn" })
+
+                                <div id="reportrange" class="btn" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:30%; float:right;">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span id="dateRange">@ViewBag.dateRange</span> <b class="caret"></b>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row" style="float:right; vertical-align:bottom">
+                                <input name="hiddenDateRange" type="hidden" id="hiddenDateRange" value="" />
+                                <input id="submit" class="btn btn-warning btn-lg" type="submit" value="Filter" />
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
+
+            <div style="text-align:center">
+                @ViewBag.dateRange
+                <br />
+                Grand Total: @ViewBag.grandTotalHours
+                @ViewData["exportList"]
+            </div>
+
+            <div style="text-align:right">               
+                <a href="@Url.Action("ExportHoursReport", "Export", new { hiddenDateRange = ViewBag.dateRange, specialtySearch = ViewBag.spcSearch })" class="btn btn-success" role="button">Export To Excel</a>
+            </div>
+
             <table class="table table-condensed table-hover table-striped table">
                 <tr>
                     <th>
-                        @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
-                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+                        Last Name
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.volFirstName)
+                        First Name
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Specialty.spcName)
+                        Specialty
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.volEmail)
+                        Active
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.volPhone)
+                        Email
                     </th>
                     <th>
-                        @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.DateSortParm })
-                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
-
+                        Accumulated Hours
                     </th>
-                    <th>
-                        @Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm })
-                        <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
-                    </th>
-
-                    <th></th>
                 </tr>
                 @foreach (var item in Model)
             {
                     <tr>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.volLastName)
+                            @item.volunteer.volLastName
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volFirstName)
+                            @item.volunteer.volFirstName
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Specialty.spcName)
+                            @item.volunteer.Specialty.spcName
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volEmail)
+                            @item.volunteer.volActive
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volPhone)
+                            @item.volunteer.volEmail
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.volStartDate)
+                            @item.hours
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.volActive)
-                        </td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 }
-
             </table>
+
         </div>
     </div>
 </div>
+
+
+
+
+<script type="text/javascript">
+
+    $('#submit').click(function () {
+        //put date range in hidded input element for form submission
+        var range = $('#dateRange').html();
+        $('#hiddenDateRange').attr("value", range);
+    })
+
+    $(function () {
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        //cb(moment(), moment());
+
+        $('#reportrange').daterangepicker({
+            ranges: {
+                'Today': [moment().startOf('day'), moment()],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'Year to Date': [moment().startOf('year'), moment()]
+            },
+            "timePicker": true,
+            "timePicker24Hour": true,
+            "alwaysShowCalendars": true,
+            "autoUpdateInput": false,
+            "opens": "left",
+        }, cb);
+    });
+</script>

@@ -207,6 +207,7 @@
     <Content Include="Content\css\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\custom.css" />
     <Content Include="Content\docs\message1.txt" />
     <Content Include="Content\img\Help1_HomePageOverview.png" />
     <Content Include="Content\img\Help2_ClockIn.png" />

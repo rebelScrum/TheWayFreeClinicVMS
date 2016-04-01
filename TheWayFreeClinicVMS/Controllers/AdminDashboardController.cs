@@ -323,14 +323,18 @@ namespace TheWayFreeClinicVMS.Controllers
 
         //***********************************************************************************************
                 
-        public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch)
+        public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch, string active)
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
             ViewBag.dateRange = hiddenDateRange;
             ViewBag.start = hiddenDateRange;
-            ViewBag.spcSearch = specialtySearch;
+            ViewBag.allSelected = "";
+            ViewBag.trueSelected = "";
+            ViewBag.falseSelected = "";
+
             string[] tokens = new string[] {" - "};
+
             string[] dateRange;
             long begDateTicks = 0000000000;
             long endDateTicks = 0000000000;      
@@ -378,6 +382,25 @@ namespace TheWayFreeClinicVMS.Controllers
                 sorts = sorts.Where(s => s.spcID == specialtyID);
             }
 
+            if (active != null)
+            {
+                switch (active)
+                {
+                    case "0":
+                        ViewBag.falseSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == false);
+                        break;
+                    case "1":
+                        ViewBag.trueSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true);
+                        break;
+                    case "2":
+                        ViewBag.allSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true || s.volActive == false);
+                        break;
+                }                
+            }
+
             //create new object for each vol in sorts including properties for hours and exposing volID; adds to list of new objects
             foreach (var item in sorts)
             {
@@ -398,15 +421,13 @@ namespace TheWayFreeClinicVMS.Controllers
 
                         if (beg >= begDateTicks && end <= endDateTicks  )
                         {
-                            tempTotal += (end - beg);
-                            
+                            tempTotal += (end - beg);                            
                         }
                     }
                 }
 
                 volHours = TimeSpan.FromTicks(tempTotal).TotalHours;
-                grandTotalHours += volHours;
-                
+                grandTotalHours += volHours;                
 
                 if (volHours == 0)
                 {
@@ -422,19 +443,6 @@ namespace TheWayFreeClinicVMS.Controllers
 
             ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
 
-            //switch (sortBy)
-            //{
-            //    case "Name Asc":
-            //        HoursReportFilteredList = HoursReportFilteredList.OrderBy(s => s.volunteer.volLastName).ToList();
-            //        break;                
-            //    case "Name Desc":
-            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.volunteer.volLastName).ToList();
-            //        break;
-            //    default:
-            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.hours).ToList();
-            //        break;
-            //}
-            ViewBag.list = HoursReportFilteredList;
             return View(HoursReportFilteredList);
         }
 

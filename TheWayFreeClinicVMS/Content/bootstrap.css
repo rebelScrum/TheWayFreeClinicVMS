@@ -1117,11 +1117,13 @@ img {
   vertical-align: middle;
 }
 
+/*David P: Used for Help page tutorials*/
 .img-responsive-help {
   display: block;
-  border: thick;
   max-width: 100%;
   height: auto;
+  border: 5px solid black;
+  margin: 20px 20px 20px 20px;
 }
 
 .img-responsive,

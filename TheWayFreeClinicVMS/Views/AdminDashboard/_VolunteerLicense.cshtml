@@ -1,0 +1,20 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.License>
+
+
+@if (!Model.Any())
+{
+    @: None
+}
+else
+{
+
+    foreach (var item in Model)
+    {
+    @:License:
+    @Html.DisplayFor(modelItem => item.lcNum)
+    @:Expires On:
+    @Html.DisplayFor(modelItem => item.lcExpire)
+
+}
+
+}

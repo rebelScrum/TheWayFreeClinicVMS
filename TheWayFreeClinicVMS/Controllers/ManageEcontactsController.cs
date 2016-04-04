@@ -38,8 +38,6 @@ namespace TheWayFreeClinicVMS.Controllers
             Econtact econtact = new Econtact();
             econtact.volID = db.Volunteers.Where(s => s.volID == volunteerID).Select(v => v.volID).Single();
             return View(econtact);
-          
-
         }
 
         // POST: ManageEcontacts/Create
@@ -55,8 +53,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", new { id = econtact.volID});
             }
-
-            
+    
             return View(econtact);
         }
 

@@ -100,8 +100,18 @@
              <dt> Employment:</dt>
              <dd>
                  @{Html.RenderAction("VolunteerEmployer", new { id = Model.volID }); }
-             <a href="@Url.Action("Index", "ManageJobs", new { id = Model.volID })" class="btn btn-primary btn-sm">Details</a>
+             <a href="@Url.Action("Index", "ManageJobs", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
          </dd>
+             <dt> License:</dt>
+             <dd>
+                 @{Html.RenderAction("VolunteerLicense", new { id = Model.volID }); }
+                 <a href="@Url.Action("Index", "ManageLicenses", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+             </dd>
+             <dt> Contract:</dt>
+             <dd>
+                 @{Html.RenderAction("VolunteerContract", new { id = Model.volID }); }
+                 <a href="@Url.Action("Index", "ManageContracts", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+             </dd>
          </dl>
 
 </div>

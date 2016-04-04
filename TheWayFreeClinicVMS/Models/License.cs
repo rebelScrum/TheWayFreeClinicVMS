@@ -21,20 +21,24 @@ namespace TheWayFreeClinicVMS.Models
         public int volID { get; set; }
 
         //number/code
+        [Display(Name = "Number")]
         public int lcNum { get; set; }
 
         // date
+        [Display(Name = "Start Date")]
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime lcDate { get; set; }
 
         // clear
+        [Display(Name = "Clear Record")]
         [Required]
         [DefaultValue(true)]
         public bool lcClear { get; set; }
 
         //expiration date
+        [Display(Name = "Expiration Date")]
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]

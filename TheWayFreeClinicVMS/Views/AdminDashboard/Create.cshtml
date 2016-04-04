@@ -22,6 +22,7 @@
         <div class="form-horizontal">
             
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.volActive)
             <div class="row">
              
                 <div class="col-md-6">

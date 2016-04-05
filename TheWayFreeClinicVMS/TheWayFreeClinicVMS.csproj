@@ -323,6 +323,7 @@
     <Content Include="Views\ManageContracts\IndexGroup.cshtml" />
     <Content Include="Views\ManageContracts\EditGroup.cshtml" />
     <Content Include="Views\Export\ExportHoursReport.cshtml" />
+    <Content Include="Views\AdminDashboard\AvailabilityReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

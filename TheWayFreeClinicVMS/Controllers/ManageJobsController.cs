@@ -222,7 +222,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // POST: ManageJobs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditEmployer([Bind(Include = "empName,empPhone,empStreet1,empStreet2,empCity,empState,empZip")] Employer employer)
+        public ActionResult EditEmployer([Bind(Include = "empID,empName,empPhone,empStreet1,empStreet2,empCity,empState,empZip")] Employer employer)
         {
             if (ModelState.IsValid)
             {

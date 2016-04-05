@@ -470,6 +470,124 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(HoursReportFilteredList);
         }
 
+        public ActionResult AvailabilityReport(string searchString, string hiddenDateRange, int? specialtySearch, string active, bool mon = false, bool tue = false, bool wed = false, bool thu = false, bool fri = false, bool sat = false)
+        {
+            ViewBag.viewName = "index";
+            ViewBag.FullName = getUserName();
+            ViewBag.dateRange = hiddenDateRange;
+
+            string[] tokens = new string[] { " - " };
+            string[] dateRange;
+            long begDateTicks = 0000000000;
+            long endDateTicks = 0000000000;
+            long tempTotal = 0000000000;
+            var volHours = 0.0;
+            var grandTotalHours = 0.0;
+
+            List<HoursReportVol> HoursReportFullList = new List<HoursReportVol> { };
+            List<HoursReportVol> HoursReportFilteredList = new List<HoursReportVol> { };
+            HoursReportVol vol = new HoursReportVol();
+
+            var volunteers = db.Volunteers;
+            var times = db.Worklog;
+
+            var sorts = from v in volunteers
+                        select v;
+
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();
+
+            //parse date range, convert to ticks
+            if (hiddenDateRange != null && hiddenDateRange != "")
+            {
+                dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
+                ViewBag.startDate = dateRange[0];
+                ViewBag.endDate = dateRange[1];
+                begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
+                endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
+            }
+            else if (hiddenDateRange == "")
+            {
+                return View(HoursReportFilteredList);
+            }
+
+            //filtering by first name, last name 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sorts = sorts.Where(s => s.volLastName.Contains(searchString)
+                                       || s.volFirstName.Contains(searchString));
+            }
+
+            if (specialtySearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.spcID == specialtyID);
+            }
+
+            if (active != null)
+            {
+                switch (active)
+                {
+                    case "0":
+                        ViewBag.falseSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == false);
+                        break;
+                    case "1":
+                        ViewBag.trueSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true);
+                        break;
+                    case "2":
+                        ViewBag.allSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true || s.volActive == false);
+                        break;
+                }
+            }
+
+            //create new object for each vol in sorts including properties for hours and exposing volID; adds to list of new objects
+            foreach (var item in sorts)
+            {
+                vol = new HoursReportVol();
+                vol.id = item.volID;
+                vol.volunteer = item;
+                HoursReportFullList.Add(vol);
+            }
+
+            foreach (var item in HoursReportFullList)
+            {
+                foreach (var log in times.ToList())
+                {
+                    if (log.volID == item.id && log.wrkEndTime.HasValue)
+                    {
+                        var beg = log.wrkStartTime.Ticks;
+                        var end = log.wrkEndTime.Value.Ticks;
+
+                        if (beg >= begDateTicks && end <= endDateTicks)
+                        {
+                            tempTotal += (end - beg);
+                        }
+                    }
+                }
+
+                volHours = TimeSpan.FromTicks(tempTotal).TotalHours;
+                grandTotalHours += volHours;
+
+                if (volHours == 0)
+                {
+                    item.hours = 0;
+                }
+                else
+                {
+                    item.hours = Math.Round(volHours, 3);
+                    HoursReportFilteredList.Add(item);
+                }
+                tempTotal = 000000000;
+            }
+
+            ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
+
+            return View(HoursReportFilteredList);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

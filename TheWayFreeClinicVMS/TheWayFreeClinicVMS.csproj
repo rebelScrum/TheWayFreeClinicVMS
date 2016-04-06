@@ -213,6 +213,14 @@
     <Content Include="Content\img\Help2_ClockIn.png" />
     <Content Include="Content\img\Help3_RecentActivityClockIn.png" />
     <Content Include="Content\img\Help_ClickLogIn.png" />
+    <Content Include="Content\img\Help_Dashboard_ClickActiveHeader1stTime.png" />
+    <Content Include="Content\img\Help_Dashboard_ClickLastNameHeader.png" />
+    <Content Include="Content\img\Help_Dashboard_ClickStartDate1stTime.png" />
+    <Content Include="Content\img\Help_Dashboard_OrderedByLastName.png" />
+    <Content Include="Content\img\Help_Dashboard_OrderedByStartDate1stTime.png" />
+    <Content Include="Content\img\Help_Dashboard_Overview.png" />
+    <Content Include="Content\img\Help_Dashboard_ShowingOnlyActive.png" />
+    <Content Include="Content\img\Help_Dashboard_ShowingOnlyInactive.png" />
     <Content Include="Content\img\Help_HomePageAnnouncements.png" />
     <Content Include="Content\img\Help_LogInEnterCreds.png" />
     <Content Include="Content\img\Help_LogInOverview.png" />
@@ -220,7 +228,10 @@
     <Content Include="Content\img\Help_LogIn_ClickLogInButton.png" />
     <Content Include="Content\img\Help_LogIn_InvalidLogInAttempt.png" />
     <Content Include="Content\img\Help_LogIn_NowLoggedIn.png" />
+    <Content Include="Content\img\Help_Profile_ClickClockInClockOut.png" />
     <Content Include="Content\img\Help_Profile_ClickEdit.png" />
+    <Content Include="Content\img\Help_Profile_EditClickSaveChanges.png" />
+    <Content Include="Content\img\Help_Profile_EditErrors.png" />
     <Content Include="Content\img\Help_Profile_Overview.png" />
     <Content Include="Content\img\Help_RecentActivityClockOut.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

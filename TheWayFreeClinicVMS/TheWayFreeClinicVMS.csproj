@@ -206,7 +206,7 @@
     <Compile Include="Models\Speak.cs" />
     <Compile Include="Models\Specialty.cs" />
     <Compile Include="Models\Volunteer.cs" />
-    <Compile Include="Models\VolunteerDataViewModel.cs" />
+    <Compile Include="Models\RegisterVolunteerViewModel.cs" />
     <Compile Include="Models\Worktime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -323,6 +323,10 @@
     <Content Include="Views\ManageContracts\IndexGroup.cshtml" />
     <Content Include="Views\ManageContracts\EditGroup.cshtml" />
     <Content Include="Views\Export\ExportHoursReport.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageAdmins.cshtml" />
+    <Content Include="Views\AdminDashboard\UpdateTimesheet.cshtml" />
+    <Content Include="Views\Account\AddAdmin.cshtml" />
+    <Content Include="Views\Account\DeleteAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

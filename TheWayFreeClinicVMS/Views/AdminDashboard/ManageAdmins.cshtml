@@ -1,0 +1,50 @@
+﻿@model System.Collections.Generic.IEnumerable<TheWayFreeClinicVMS.Models.ApplicationUser>
+
+
+@{
+    ViewBag.Title = "ManageAdmins";
+}
+<div class="container">
+    <div class="col-md-8">
+        <h2 style="text-align:center;">Administrators</h2>
+        <hr />
+        <p>
+            <a href="@Url.Action("AddAdmin", "Account")" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Administrator</a>
+        </p>
+        <table class="table">
+            <tr>
+
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Volunteer.volLastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Volunteer.volFirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Volunteer.volEmail)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DeleteAdmin", "Account",new { id = item.Id})" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+        </div>
+    </div>

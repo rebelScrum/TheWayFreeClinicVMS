@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "AddAdmin";
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            
+            <h3>Add New Admin</h3>
+            <p>Note: New administrator has to be registered as a volunteer prior to performing this action.</p>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+               
+                <div class="col-md-10">
+                    <label>Enter new administrator's email: </label>
+                    <input class="form-control" type="text" name="email" placeholder="email@email.com" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+    <a href="@Url.Action("Index", "AdminDashboard")" class="btn btn-info">Back to Dashboard</a>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

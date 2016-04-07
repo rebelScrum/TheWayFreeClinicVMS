@@ -61,5 +61,7 @@ namespace TheWayFreeClinicVMS.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TheWayFreeClinicVMS.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

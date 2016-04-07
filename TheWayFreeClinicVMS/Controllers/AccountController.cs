@@ -9,12 +9,17 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TheWayFreeClinicVMS.Models;
+using System.Net;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+    
+
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -155,6 +160,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, "Volunteer");
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -273,14 +279,14 @@ namespace TheWayFreeClinicVMS.Controllers
 
         //
         // POST: /Account/ExternalLogin
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
-        }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult ExternalLogin(string provider, string returnUrl)
+        //{
+        //    // Request a redirect to the external login provider
+        //    return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+        //}
 
         //
         // GET: /Account/SendCode
@@ -403,6 +409,61 @@ namespace TheWayFreeClinicVMS.Controllers
             return View();
         }
 
+
+        //Add Administrator
+        //Get
+        public ActionResult AddAdmin()
+        {
+            ViewBag.FullName = getUserName();
+            return View();
+        }
+        //Add Administrator
+        //POST
+        [HttpPost]
+        public ActionResult AddAdmin(string email)
+        {
+            if (email != "")
+            {
+                var createAdmin = db.Users.Where(a => a.Email == email).Select(i => i.Id).FirstOrDefault();
+                UserManager.AddToRole(createAdmin, "Admin");
+                return RedirectToAction("ManageAdmins", "AdminDashboard");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+        }
+        //Delete Administrator
+        public ActionResult DeleteAdmin(string id)
+        {
+            ViewBag.FullName = getUserName();
+            if (id == "")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var admin = db.ApplicationUsers.Find(id);
+        
+            return View(admin);
+        }
+
+        //Delete Administrator
+        [HttpPost, ActionName("DeleteAdmin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            
+            UserManager.RemoveFromRole(id, "Admin");
+            db.SaveChanges();
+            return RedirectToAction("ManageAdmins", "AdminDashboard");
+        }
+        public string getUserName()
+        {
+            var vols = db.Volunteers;
+            string fullName = (from v in vols
+                               where v.volEmail == User.Identity.Name
+                               select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
+            return fullName;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

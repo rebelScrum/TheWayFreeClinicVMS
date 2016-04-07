@@ -24,7 +24,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Volunteer volunteer = db.Volunteers.Find(id);
-            if (volunteer == null)
+            if (volunteer == null || User.Identity.Name != volunteer.volEmail)
             {
                 return HttpNotFound();
             }

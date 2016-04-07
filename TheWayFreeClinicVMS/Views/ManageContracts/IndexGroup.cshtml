@@ -1,0 +1,82 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Pagroup>
+
+@{
+    ViewBag.Title = "IndexGroup";
+}
+
+<h4>PA Groups</h4>
+
+<p>
+    <a href=@Url.Action("CreateGroup", "ManageContracts") class="btn btn-info btn-sm">New PA Group</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrOfcFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrOfcLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrStreet1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrStreet2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrState)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pgrZip)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrOfcFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrOfcLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrStreet1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrStreet2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrCity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrState)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pgrZip)
+        </td>
+        <td>
+            <a href=@Url.Action("EditGroup", "ManageContracts", new { id=item.pgrID }) class="btn btn-primary btn-sm">Edit</a>
+           
+        </td>
+    </tr>
+}
+
+</table>
+<a href="@Url.Action("Index", "AdminDashboard")" class="btn btn-success">Back to Admin Dashboard</a>

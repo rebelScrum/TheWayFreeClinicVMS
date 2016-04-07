@@ -49,6 +49,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -172,8 +175,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminDashboardController.cs" />
+    <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageAvailabilitiesController.cs" />
+    <Compile Include="Controllers\ManageContractsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManageEcontactsController.cs" />
+    <Compile Include="Controllers\ManageJobsController.cs" />
+    <Compile Include="Controllers\ManageLicensesController.cs" />
     <Compile Include="Controllers\VolunteerProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -322,6 +331,38 @@
     <Content Include="Views\AdminDashboard\_VolunteerTimesheet.cshtml" />
     <Content Include="Views\Home\homeMessage.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerLanguages.cshtml" />
+    <Content Include="Views\AdminDashboard\Report.cshtml" />
+    <Content Include="Views\ManageAvailabilities\AddAvailability.cshtml" />
+    <Content Include="Views\ManageAvailabilities\DeleteAvailability.cshtml" />
+    <Content Include="Views\ManageAvailabilities\EditAvailability.cshtml" />
+    <Content Include="Views\ManageAvailabilities\ViewAvailability.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerEcontact.cshtml" />
+    <Content Include="Views\ManageEcontacts\Create.cshtml" />
+    <Content Include="Views\ManageEcontacts\Delete.cshtml" />
+    <Content Include="Views\ManageEcontacts\Edit.cshtml" />
+    <Content Include="Views\ManageEcontacts\Index.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\Create.cshtml" />
+    <Content Include="Views\ManageJobs\Edit.cshtml" />
+    <Content Include="Views\ManageJobs\Index.cshtml" />
+    <Content Include="Views\ManageJobs\CreateEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\IndexEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\DetailsEmployer.cshtml" />
+    <Content Include="Views\ManageJobs\EditEmployer.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerLicense.cshtml" />
+    <Content Include="Views\AdminDashboard\_VolunteerContract.cshtml" />
+    <Content Include="Views\ManageLicenses\Create.cshtml" />
+    <Content Include="Views\ManageLicenses\Edit.cshtml" />
+    <Content Include="Views\ManageLicenses\Index.cshtml" />
+    <Content Include="Views\ManageContracts\Create.cshtml" />
+    <Content Include="Views\ManageContracts\Edit.cshtml" />
+    <Content Include="Views\ManageContracts\Index.cshtml" />
+    <Content Include="Views\ManageContracts\CreateGroup.cshtml" />
+    <Content Include="Views\ManageContracts\IndexGroup.cshtml" />
+    <Content Include="Views\ManageContracts\EditGroup.cshtml" />
+    <Content Include="Views\Export\ExportHoursReport.cshtml" />
+    <Content Include="Views\AdminDashboard\AvailabilityReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -336,6 +377,26 @@
     <EmbeddedResource Include="Migrations\201602192154185_Initial.resx">
       <DependentUpon>201602192154185_Initial.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

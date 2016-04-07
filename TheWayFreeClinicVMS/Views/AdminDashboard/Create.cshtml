@@ -22,63 +22,66 @@
         <div class="form-horizontal">
             
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.volActive)
             <div class="row">
+             
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.volFirstName, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(model => model.volFirstName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.volFirstName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.volLastName, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(model => model.volLastName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.volLastName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.volMiddleName, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(model => model.volMiddleName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.volMiddleName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.volDOB, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(model => model.volDOB, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.volDOB, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.volEmail, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(model => model.volEmail, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.volEmail, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.volPhone, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(model => model.volPhone, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.volPhone, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
                         @Html.LabelFor(model => model.spcID, "Specialty", htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             @Html.DropDownList("spcID", null, htmlAttributes: new { @class = "form-control" })
                         </div>
-                        
+                        <a href="@Url.Action("AddSpecialty", "AdminDashboard")" class="btn btn-primary btn-sm" id="specButton" onclick="showDiv()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Specialty</a>
                     </div>
-                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.volFirstName, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.volFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.volFirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.volLastName, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.volLastName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.volLastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.volMiddleName, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.volMiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.volMiddleName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.volDOB, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.volDOB, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.volDOB, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.volEmail, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.volEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.volEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.volPhone, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.volPhone, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.volPhone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.volStreet1, htmlAttributes: new { @class = "control-label col-md-3" })
@@ -127,11 +130,8 @@
                             @Html.ValidationMessageFor(model => model.volStartDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    @*ToDO// Make this button look good in responsive layout
-                          // Add partial view with JQuery instead of separate page view*@
-                    <div class="col-md-2">                       
-                         <a href="@Url.Action("AddSpecialty", "AdminDashboard")" class="btn btn-primary btn-sm" id="specButton" onclick="showDiv()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Specialty</a>
-                         </div>
+                   
+                   
                 </div>
                 @*<div id="addSpec" class="col-md-5" style="display: none">
                     @{Html.RenderAction("AddSpecialty"); }

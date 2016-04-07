@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Job>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4>
+ Employment
+</h4>
+
+<p>
+    <a href=@Url.Action("Create", "ManageJobs", new { id = ViewBag.volID}) class="btn btn-info btn-sm">Add Employment</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Employer.empName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.jobTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.jobStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.jobEndDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employer.empName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.jobTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.jobStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.jobEndDate)
+        </td>
+        <td>
+            <a href=@Url.Action("Edit", "ManageJobs", new { id = item.jobID}) class="btn btn-primary btn-sm">Edit</a>
+            @*@Html.ActionLink("Details", "Details", new { id=item.jobID }) |*@
+        </td>
+    </tr>
+}
+
+</table>
+<a href="@Url.Action("Details", "AdminDashboard", new { id = ViewBag.volID })" class="btn btn-success btn-sm">Back to Details</a>

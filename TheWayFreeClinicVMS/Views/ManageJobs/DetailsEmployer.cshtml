@@ -1,0 +1,73 @@
+﻿@model TheWayFreeClinicVMS.Models.Employer
+
+@{
+    ViewBag.Title = "DetailsEmployer";
+}
+
+<div>
+    <h4>Employer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.empName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.empPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.empStreet1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empStreet1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.empStreet2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empStreet2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.empCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.empState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.empZip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empZip)
+        </dd>
+
+    </dl>
+</div>
+<p>
+
+    <a href=@Url.Action("EditEmployer", "ManageJobs", new { id=Model.empID }) class="btn btn-primary btn-sm">Edit</a>
+    <a href=@Url.Action("IndexEmployer", "ManageJobs") class="btn btn-success btn-sm">Back to List</a>
+</p>

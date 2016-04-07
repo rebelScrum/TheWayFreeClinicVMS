@@ -21,6 +21,7 @@ namespace TheWayFreeClinicVMS.Models
         //name
         [Required]
         [MaxLength(50)]
+        [Display(Name = "PA Group Name")]
         public string pgrName { get; set; }
 
         //officer name
@@ -48,28 +49,33 @@ namespace TheWayFreeClinicVMS.Models
         //street1
         [Required]
         [StringLength(30)]
+        [Display(Name = "Street")]
         public string pgrStreet1 { get; set; }
 
         //street2
         [StringLength(30)]
+        [Display(Name = "Street 2")]
         public string pgrStreet2 { get; set; }
 
         //city
         [Required]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,25}$")]
         [StringLength(25)]
+        [Display(Name = "City")]
         public string pgrCity { get; set; }
 
         //state
         [Required]
         [RegularExpression(@"^[A-Z\s]{2}$")]
         [StringLength(2)]
+        [Display(Name = "State")]
         public string pgrState { get; set; }
 
         //zip
         [Required]
         [RegularExpression(@"^(\d{5})$")]
         [StringLength(5)]
+        [Display(Name = "Zip")]
         public string pgrZip { get; set; }
 
         //many contracts for one group

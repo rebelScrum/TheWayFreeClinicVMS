@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Contract>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4>Contracts</h4>
+
+<p>
+    <a href=@Url.Action("Create", "ManageContracts", new { id = ViewBag.volID}) class="btn btn-info btn-sm">Add Contract</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Pagroup.pgrName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ctrNum)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pagroup.pgrName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ctrNum)
+        </td>
+        <td>
+            <a href=@Url.Action("Edit", "ManageContracts", new { id = item.contrID}) class="btn btn-primary btn-sm">Edit</a>
+        </td>
+    </tr>
+}
+
+</table>
+<a href="@Url.Action("Details", "AdminDashboard", new { id = ViewBag.volID })" class="btn btn-success btn-sm">Back to Details</a>

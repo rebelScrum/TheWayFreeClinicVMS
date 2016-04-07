@@ -4,34 +4,36 @@
 
 <h2>@ViewBag.Title</h2>
 
-<!-- Version 2.0: Shortcuts to longform content -->
+<!-- Version 2.0: Shortcuts to long content blocks -->
 
 <!-- Shortcuts-->
 <div>
     <p>Whether you're a new user wanting to get a feel for how this system works or you're more experienced but wanting to improve your knowledge, we hope that this page will be helpful to you. The info here is organized according to task - for example, clocking in and out. If after reading you still have unanswered questions, please see an administrator for clarification.</p>
 
+    <!-- <p> ~ Yours, RebelScrum (Creators of the Volunteer Management System)</p> -->
+
     <p>You may use the links right below to jump to the section that you're interested in.</p>
 
-    <h3>Volunteer Info</h3>
+    <h3>Volunteers</h3>
 
     <a href="#clockInOut">Clocking In/Out</a> <br />
     <a href="#logIn">Logging In</a> <br />
-    <a href="#profilePage">Viewing and Editing Your Profile Page</a> <br />
+    <a href="#profilePage">Viewing and Editing Your Profile</a> <br />
 
-    <h3>Administrator Info</h3>
+    <h3>Administrators</h3>
 
-    <a></a>
-    <a></a>
-    <a></a>
-    <a></a>
-    <a></a>
-
+    <a href="#dashboard">Using the Dashboard</a> <br />
+    <a href="#sideMenu">Using the Side Menu</a> <br />
+    <a href="#viewEdit">Viewing and Editing a Volunteer's Profile</a> <br />
+    <a href="#postingHomeInfo">Posting Information on the Home Page</a> <br />
+    <a href="#reports">Generating and Using Reports</a> <br />
 </div>
 
-<!-- Longform -->
-<div>
+<!-- TODO: Insert some kind of separator/border here -->
 
-    <h3>Volunteer Tasks</h3>
+<!-- Main content -->
+<div>
+    <h2>Volunteers</h2>
 
     <!-- Clock in/out -->
     <h4 id="clockInOut">Clocking In/Out</h4>
@@ -90,18 +92,18 @@
     <img class="img-responsive-help" src="~/Content/img/Help_Profile_ClickClockInClockOut.png" />
 
 
-    <h3>Administrator Tasks</h3>
+    <h2>Administrators</h2>
 
-    <!-- Dashboard: Main page -->
-    <h4>Using the Dashboard</h4>
+    <!-- Dashboard -->
+    <h4 id="dashboard">Using the Dashboard</h4>
 
     <p>On the dashboard page you'll see a table of volunteers, with information about them including last name, first name, specialty (e.g. Nurse, Physican), email address, phone number, the date he/she started volunteering, and a checkbox indicating whether he/she is still an active volunteer.</p>
     <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_Overview.png" />
 
-    <p>You can filter the volunteers shown in the table in several different ways to see only the ones that you need to see right now. For example, if you click or tap the "Last Name" column header,</p>
+    <p>You can filter the volunteers shown in the table in several different ways to see only the ones that you need to see right now. For example, if you click or tap the "Last Name" column header...</p>
     <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ClickLastNameHeader.png" />
 
-    <p>The list is now filtered in order of last name descending. If you were to click or tap the header again, it would reorder by last name ascending.</p>
+    <p>You'll see that the list is now filtered in order of last name descending. If you were to click or tap the header again, it would reorder by last name ascending.</p>
     <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_OrderedByLastName.png" />
 
     <p>You can also order in the same way by start date.</p>
@@ -129,36 +131,44 @@
 
     <p>Next to each volunteer you'll see a Details button and an Edit button. The Details button takes you to the profile page of that volunteer, which has more in-depth info on that person, and the Edit button will take you to directly to a page where you can edit that person's info. See Viewing and Editing a Volunteer's Profile for more information. </p>
 
-    <p>Next, let's talk about that blue menu that you see on the left side of your screen.</p>
+    <!-- Using the admin's side menu -->
+    <h4 id="sideMenu">Using the Side Menu</h4>
+
+    <p>Let's talk about that blue menu that you see on the left side of your screen.</p>
     <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_SideMenuOverview.png" />
 
     <p>Notice that the options are grouped by category. If you click or tap one of the categories, it expands to show the options that are inside of it. </p>
     <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_SideMenuViewExpanded.png" />
 
-    <p>You'll see that under "View" the first option is "Volunteers" - that will take you straight to this volunteer list screen that we're currently on. This option is available because you want to jump back here from a page somewhere else.</p>
+    <p>You'll see that under "View" the first option is "Volunteers" - that will take you straight to this volunteer list screen that we're currently on. This option is available because you may want to jump back here from a page somewhere else.</p>
 
     <p>Under "Create", you'll see "New Volunteer" and "New Report". Selecting the first will take you to a page where you can enter the info for a new volunteer and register them in the system. See <a>Creating a Volunteer Profile</a> for more information. The second option, "New Report", will take you to the Reports page where you can have the system analyze your volunteers and produce a report for you.</p>
 
-    <p>Under "Update", notice "Home Page Messages". This takes you to a page where you can control the content currently shown in the "Message From Admin" and "Image From Admin" boxes on the Home page. See <a>Posting Announcements on the Home Page</a> for more info. </p>
+    <p>Under "Update", notice "Home Page Messages". This takes you to a page where you can control the content currently shown in the "Message From Admin" and "Image From Admin" boxes on the Home page. See <a>Posting Information on the Home Page</a> for more info. </p>
 
     <!-- Viewing and editing a profile -->
-    <h4>Viewing and Editing a Volunteer's Profile</h4>
+    <h4 id="viewEdit">Viewing and Editing a Volunteer's Profile</h4>
 
     <p>From the Dashboard, if you click Details next to John Example, you'll be taken to his profile page.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_ClickEditFromDashboard.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_Overview.png" />
 
     <p>Now that we're on John Example's profile page, we can see his picture, his personal info, what languages he speaks, who he works for, when he's available to volunteer, and his most recent timesheet activity.</p>
 
     <p>John can of course change his own profile information using his volunteer account. But since you're an admin, you also can change it. Notice the buttons scattered around this page that let you change various things.</p>
 
-    <p>If you click or tap "Edit", you'll see that now you can change his personal info fields, like first name, last name, and address. This is the same page that you would end up at if you selected "Edit" next to this volunteer from the main Dashboard page.</p>
+    <p>If you click or tap "Edit", you'll see that now you can change his saved personal information, like first name, last name, and address. This is the same page that you would end up at if you selected "Edit" in John's row on the dashboard page.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_EditPage.png" />
 
-    <p>Notice that John here is not an active volunteer. He hasn't been seen since he ran away to join the circus some time ago, but we're really hoping that he'll come back. It's up to you and the other administrators to decide how long goes by before a volunteer should be considered inactive.</p>
+    <p>Notice that John here is not an active volunteer - the "Active" checkbox is unchecked. John hasn't been seen since he ran away to join the circus some time ago, but we're really hoping that he'll come back. It's up to you and the other administrators to decide how long goes by before a volunteer should be considered inactive.</p>
 
-    <p>Note also that the "Specialty" field is a little different. If John's specialty isn't in the dropdown list of available roles, you can add a new one. If you click or tap "Add Speciality", you'll be taken to a page in which you can enter a new one, save it, and then come back to this page.</p>
-
-    <p>If you make any changes to this profile, click or tap Save once you're done.</p>
-
-    <p>If anything was entered incorrectly, you'll see a red error message appear below the items that need to be changed before the info can be saved.</p>
+    <p>Notice also that the "Specialty" field is a little different. If John's specialty (e.g. RN, physician, nutritionist) isn't in the dropdown list that you see there, you might want to add a new one. If you select "Add Specialty", you'll be taken to a page in which you can create a new specialty and save it. After saving a new specialty, you'll be taken back to this page.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_AddSpecialtyClick.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_AddSpecialtyPage.png" />
+    <!-- Img: Taken back to Edit page -->
+     
+    <p>If you make any changes to this profile, click or tap Save once you're done. If anything was entered incorrectly (e.g. a date in the wrong format), you'll see a red error message appear below the items that need to be changed before the info can be saved. </p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_EditSaveAttemptWithError.png" />
 
     <p>If you don't want to make any changes, just click or tap "Back to List", and you'll be returned to the main Dashboard screen.</p>
 
@@ -176,9 +186,21 @@
 
     <p>Lastly, notice next that we can add a language that John speaks. Choose a language from the dropdown list, and then click "Add".</p>
     
+    <!-- Posting home page information-->
+    <h4 id="postingHomeInfo">Posting Information on the Home Page</h4>
 
-    
+    <p>As an administrator, you have the ability to display announcements and other info (including images) on the home page in a place where everybody will see it whenever they're clocking in. We've built a page into the system where you can control what's displayed. To get to that page, select "Update" from the side menu, then select "Home Page Messages". </p>
 
+    <p>Notice now the two boxes in which you can change what's currently displayed. The first box changes the text area in the top left part of the home page. The second box controls what image is shown in the box beneath the first. </p>
+
+    <p>To change the text area, enter your desired message and then click Submit. Your message will now be displayed on the Home page. </p>
+
+    <p>To change the image, select "Browse...". A new window will appear prompting you to choose an image file from the PC or mobile device that you're currently using. Using this window, navigate to where the image is stored on your device and select it. Assuming that you have a good Internet connection right now, the image will upload to the site. Click Submit and your image will now be displayed on the home page.</p>
+
+    <p>Please keep in mind when making changes to both text and images displayed on the home page that your changes can be undone by another administrator. You may want to check with the other administrators that you won't conflict with something that someone else is going to post soon.</p>
+
+    <!-- Reports -->
+    <h4 id="reports">Generating and Using Reports</h4>
 
 </div>
 

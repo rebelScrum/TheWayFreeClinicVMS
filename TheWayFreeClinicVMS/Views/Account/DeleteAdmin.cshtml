@@ -15,7 +15,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Volunteer.volLastName),@Html.DisplayFor(model => model.Volunteer.volFirstName)
+            @Html.DisplayFor(model => model.Volunteer.volLastName), @Html.DisplayFor(model => model.Volunteer.volFirstName)
         </dd>
 
         <dt>
@@ -35,8 +35,12 @@
 
         <div class="form-actions no-color">
             <input type="hidden" id="id" value="@Html.DisplayFor(model => model.Id)" />
-            <input type="submit" value="Delete" class="btn btn-danger" /> 
+            
+        </div>
+        <div class="col-md-offset-1 col-md-8">
+            <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+            <a href="@Url.Action("ManageAdmins", "AdminDashboard")" class="btn btn-info btn-sm"> Back to List</a>
         </div>
     }
-    <a href="@Url.Action("ManageAdmins", "AdminDashboard")" class="btn btn-info btn-sm"> Back to List</a>
+    
 </div>

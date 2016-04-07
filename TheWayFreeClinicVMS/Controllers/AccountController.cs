@@ -441,8 +441,8 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var admin = db.ApplicationUsers.Find(id);
-        
+            var admin = db.Users.Find(id);
+
             return View(admin);
         }
 

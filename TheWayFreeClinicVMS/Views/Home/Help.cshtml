@@ -1,0 +1,308 @@
+﻿@{
+    ViewBag.Title = "Help";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<!-- Version 2.0: Shortcuts to long content blocks -->
+
+<!-- Shortcuts-->
+<div>
+    <p>Whether you're a new user wanting to get a feel for how this system works or you're more experienced but wanting to improve your knowledge, we hope that this page will be helpful to you. The info here is organized according to task - for example, clocking in and out. If after reading you still have unanswered questions, please see an administrator for clarification.</p>
+
+    <!-- <p> ~ Yours, RebelScrum (Creators of the Volunteer Management System)</p> -->
+
+    <p>You may use the links right below to jump to the section that you're interested in.</p>
+
+    <h3>Volunteers</h3>
+
+    <a href="#clockInOut">Clocking In/Out</a> <br />
+    <a href="#logIn">Logging In</a> <br />
+    <a href="#profilePage">Viewing and Editing Your Profile</a> <br />
+
+    <h3>Administrators</h3>
+
+    <a href="#dashboard">Using the Dashboard</a> <br />
+    <a href="#sideMenu">Using the Side Menu</a> <br />
+    <a href="#viewEdit">Viewing and Editing a Volunteer's Profile</a> <br />
+    <a href="#postingHomeInfo">Posting Information on the Home Page</a> <br />
+    <a href="#reports">Generating and Using Reports</a> <br />
+</div>
+
+<!-- TODO: Insert some kind of separator/border here -->
+
+<!-- Main content -->
+<div>
+    <h2>Volunteers</h2>
+
+    <!-- Clock in/out -->
+    <h4 id="clockInOut">Clocking In/Out</h4>
+
+    <p>If you've just walked into the clinic and you're ready to clock in for the day, you'll enter your email address in the Work Log section and click or tap Submit.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help2_ClockIn.png" />
+
+    <p>The Recent Activity tracker will now show your name and the time you clocked in.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help3_RecentActivityClockIn.png" />
+
+    <p>When you want to clock out, you'll go through the same process again: Enter your email, click or tap Submit.</p>
+
+    <p>Your activity will again show up in the tracker. Now the "Out" column will have your clock-out time.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_RecentActivityClockOut.png" />
+
+    <p><strong>Note: Don't worry if you forgot to clock in/out. You can also enter your hours worked from your profile. We'll cover that below.</strong></p>
+
+    <p>If you want to access your volunteer profile page, you'll need to be logged in. If you haven't logged in already, you can do so by selecting "Log In" at the top right.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ClickLogIn.png" />
+
+    <!-- Login -->
+    <h4 id="logIn">Logging in</h4>
+
+    <p>Enter your email address and password. (Note: If you're not yet a registered user, please speak to an administrator so that he/she can set up a profile for you.)</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_LogInEnterCreds.png" />
+
+    <p>If you want your web browser to remember your password for you, then check "Remember me". Then the next time that you come back to the log in screen, your browser will enter your password for you automatically. </p>
+    <img class="img-responsive-help" src="~/Content/img/Help_LogIn_CheckRememberMe.png" />
+
+    <p>Click or tap the "Log In" button.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_LogIn_ClickLogInButton.png" />
+
+    <p>If something was entered incorrectly, you'll see a red "Invalid login attempt" message.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_LogIn_InvalidLogInAttempt.png" />
+
+    <p>Otherwise, you are now logged in and can navigate to your volunteer profile page by clicking "Hello [your name here]!" at the top right of the screen (where "Register" was before you logged in).</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_LogIn_NowLoggedIn.png" />
+
+    <!-- Profile page -->
+    <h4 id="profilePage">Viewing and Editing your Profile Page</h4>
+
+    <p>From the home page, if you click or tap on "Hello [your name here]!" (assuming that you're logged in), you'll be taken to your profile.</p>
+
+    <img class="img-responsive-help" src="~/Content/img/Help_Profile_Overview.png" />
+
+    <p>Here you can see your personal information. This information is viewable by all administrators, but not by other volunteers. Administrators use this information to keep track of things like your availability, your specialty(ies), and whether you're still an active volunteer. If you want to change something, click or tap Edit.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Profile_ClickEdit.png" />
+
+    <p>Now you can edit your profile. Note that if you enter something in the wrong format (e.g. phone number without an area code, email address without an "at" symbol), the page will display red error text beneath the relevant field(s).</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Profile_EditErrors.png" />
+
+    <p>When you're done, click or tap Save Changes.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Profile_EditClickSaveChanges.png" />
+
+    <p>You can also go back to the home screen from your profile by selecting Clock-In/Clock-Out</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Profile_ClickClockInClockOut.png" />
+
+
+    <h2>Administrators</h2>
+
+    <!-- Dashboard -->
+    <h4 id="dashboard">Using the Dashboard</h4>
+
+    <p>On the dashboard page you'll see a table of volunteers, with information about them including last name, first name, specialty (e.g. Nurse, Physican), email address, phone number, the date he/she started volunteering, and a checkbox indicating whether he/she is still an active volunteer.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_Overview.png" />
+
+    <p>You can filter the volunteers shown in the table in several different ways to see only the ones that you need to see right now. For example, if you click or tap the "Last Name" column header...</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ClickLastNameHeader.png" />
+
+    <p>You'll see that the list is now filtered in order of last name descending. If you were to click or tap the header again, it would reorder by last name ascending.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_OrderedByLastName.png" />
+
+    <p>You can also order in the same way by start date.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ClickStartDate1stTime.png" />
+    <!-- Replace this one: Difference is not clear.-->
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_OrderedByStartDate1stTime.png" />
+
+    <p>If you want to see only active volunteers, click or tap the "Active" header.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ClickActiveHeader1stTime.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ShowingOnlyActive.png" />
+
+    <p>Selecting it again will show only inactive volunteers.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ShowingOnlyInactive.png" />
+
+    <p>You can also search directly for someone by their name. Type the name into the text box above the table and click or tap Search.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_SearchByName.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_NameSearchResult.png" />
+
+    <p>And, last but not least, you can filter by the person's specialty, that is, his/her role at the clinic (e.g. physician, RN, podiatrist). Choose a specialty and click or tap Filter.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ChooseSpecialty.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ChooseSpecialtyClickFilter.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_ChooseSpecialtyResults.png" />
+
+    <p>If you want to apply a prepackaged filter, click one of the blue buttons above the list to apply that filter.</p>
+
+    <p>Next to each volunteer you'll see a Details button and an Edit button. The Details button takes you to the profile page of that volunteer, which has more in-depth info on that person, and the Edit button will take you to directly to a page where you can edit that person's info. See Viewing and Editing a Volunteer's Profile for more information. </p>
+
+    <!-- Using the admin's side menu -->
+    <h4 id="sideMenu">Using the Side Menu</h4>
+
+    <p>Let's talk about that blue menu that you see on the left side of your screen.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_SideMenuOverview.png" />
+
+    <p>Notice that the options are grouped by category. If you click or tap one of the categories, it expands to show the options that are inside of it. </p>
+    <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_SideMenuViewExpanded.png" />
+
+    <p>You'll see that under "View" the first option is "Volunteers" - that will take you straight to this volunteer list screen that we're currently on. This option is available because you may want to jump back here from a page somewhere else.</p>
+
+    <p>Under "Create", you'll see "New Volunteer" and "New Report". Selecting the first will take you to a page where you can enter the info for a new volunteer and register them in the system. See <a>Creating a Volunteer Profile</a> for more information. The second option, "New Report", will take you to the Reports page where you can have the system analyze your volunteers and produce a report for you.</p>
+
+    <p>Under "Update", notice "Home Page Messages". This takes you to a page where you can control the content currently shown in the "Message From Admin" and "Image From Admin" boxes on the Home page. See <a>Posting Information on the Home Page</a> for more info. </p>
+
+    <!-- Viewing and editing a profile -->
+    <h4 id="viewEdit">Viewing and Editing a Volunteer's Profile</h4>
+
+    <p>From the Dashboard, if you click Details next to John Example, you'll be taken to his profile page.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_ClickEditFromDashboard.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_Overview.png" />
+
+    <p>Now that we're on John Example's profile page, we can see his picture, his personal info, what languages he speaks, who he works for, when he's available to volunteer, and his most recent timesheet activity.</p>
+
+    <p>John can of course change his own profile information using his volunteer account. But since you're an admin, you also can change it. Notice the buttons scattered around this page that let you change various things.</p>
+
+    <p>If you click or tap "Edit", you'll see that now you can change his saved personal information, like first name, last name, and address. This is the same page that you would end up at if you selected "Edit" in John's row on the dashboard page.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_EditPage.png" />
+
+    <p>Notice that John here is not an active volunteer - the "Active" checkbox is unchecked. John hasn't been seen since he ran away to join the circus some time ago, but we're really hoping that he'll come back. It's up to you and the other administrators to decide how long goes by before a volunteer should be considered inactive.</p>
+
+    <p>Notice also that the "Specialty" field is a little different. If John's specialty (e.g. RN, physician, nutritionist) isn't in the dropdown list that you see there, you might want to add a new one. If you select "Add Specialty", you'll be taken to a page in which you can create a new specialty and save it. After saving a new specialty, you'll be taken back to this page.</p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_AddSpecialtyClick.png" />
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_AddSpecialtyPage.png" />
+    <!-- Img: Taken back to Edit page -->
+     
+    <p>If you make any changes to this profile, click or tap Save once you're done. If anything was entered incorrectly (e.g. a date in the wrong format), you'll see a red error message appear below the items that need to be changed before the info can be saved. </p>
+    <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_EditSaveAttemptWithError.png" />
+
+    <p>If you don't want to make any changes, just click or tap "Back to List", and you'll be returned to the main Dashboard screen.</p>
+
+    <p>Next, notice that we can change John's emergency contact information. Click or tap "Update" next to "Emergency Contact" to get started.</p>
+
+    <p>Now we're at a page showing John's emergency contacts - Notice that he currently has none listed. We can change that by selecting "Add New" at the top. </p>
+
+    <p>On the next page, we can enter a first name, last name, and phone number for a contact. Click or tap "Add" to save this contact. As before, if any invalid information was entered, you'll see red error messages.</p>
+
+    <p>We can also change John's employment info from his profile page. Click or tap "Details" and you'll see a screen just like the emergency contacts page. It works the same way - Click or tap "Add Employment", fill out the necessary fields, and save. </p>
+
+    <p>Similarly, you can add times of availability for John. Click "Update Availability", and you'll be taken to a place in which you can add new times of availability, similarly to adding emergency contacts and employment info above.</p>
+
+    <p>If you add an availability period, you'll see it in the table in John's profile.</p>
+
+    <p>Lastly, notice next that we can add a language that John speaks. Choose a language from the dropdown list, and then click "Add".</p>
+    
+    <!-- Posting home page information-->
+    <h4 id="postingHomeInfo">Posting Information on the Home Page</h4>
+
+    <p>As an administrator, you have the ability to display announcements and other info (including images) on the home page in a place where everybody will see it whenever they're clocking in. We've built a page into the system where you can control what's displayed. To get to that page, select "Update" from the side menu, then select "Home Page Messages". </p>
+
+    <p>Notice now the two boxes in which you can change what's currently displayed. The first box changes the text area in the top left part of the home page. The second box controls what image is shown in the box beneath the first. </p>
+
+    <p>To change the text area, enter your desired message and then click Submit. Your message will now be displayed on the Home page. </p>
+
+    <p>To change the image, select "Browse...". A new window will appear prompting you to choose an image file from the PC or mobile device that you're currently using. Using this window, navigate to where the image is stored on your device and select it. Assuming that you have a good Internet connection right now, the image will upload to the site. Click Submit and your image will now be displayed on the home page.</p>
+
+    <p>Please keep in mind when making changes to both text and images displayed on the home page that your changes can be undone by another administrator. You may want to check with the other administrators that you won't conflict with something that someone else is going to post soon.</p>
+
+    <!-- Reports -->
+    <h4 id="reports">Generating and Using Reports</h4>
+
+</div>
+
+<!-- Version 1.0: Walkthroughs
+<article>
+    <p>Whether you're a new user wanting to get a feel for things or you're more experienced but wanting to improve your knowledge, the info on this page should be helpful to you. Here you'll find a tutorial that goes through the relevant pages for both a volunteer user and an administrator. At the end, we've included some anticipated Frequently Asked Questions. If after reading you still have unanswered questions, please see an administrator for clarification.</p>
+
+    <h3>Volunteer Tutorial</h3>
+
+    <h4>The Home Page</h4>
+
+    <p>When you first pull up the website, you'll see the home page.</p>
+    <img class="img-responsive" src="~/Content/img/Help1_HomePageOverview.png" />
+        
+    <p>On the left side of the screen are places where an administrator can display a message and/or an image to all users.</p>
+    <img class="img-responsive" src="~/Content/img/Help_HomePageAnnouncements.png" />
+
+    <p>If you've just walked into the clinic and you're ready to clock in for the day, you'll enter your email address in the Work Log section and click or tap Submit.</p>
+    <img class="img-responsive" src="~/Content/img/Help2_ClockIn.png" />
+
+    <p>The Recent Activity tracker will now show your name and the time you clocked in.</p>
+    <img class="img-responsive" src="~/Content/img/Help3_RecentActivityClockIn.png" />
+
+    <p>When you want to clock out, you'll go through the same process again: Enter your email, click or tap Submit.</p>
+
+    <p>Your activity will again show up in the tracker. Now the "Out" column will have your clock-out time.</p>
+    <img class="img-responsive" src="~/Content/img/Help_RecentActivityClockOut.png" />
+
+    <p><strong>Note: Don't worry if you forgot to clock in/out. You can also enter your hours worked from your profile. We'll cover that below.</strong></p>
+    
+    <p>If you want to access your volunteer profile page, you'll need to be logged in. If you haven't logged in already, you can do so by selecting "Log In" at the top right.</p>
+    <img class="img-responsive" src="~/Content/img/Help_ClickLogIn.png" />
+
+    <h4>The Log In Page</h4>
+
+    <img class="img-responsive" src="~/Content/img/Help_LogInOverview.png" />
+
+    <p>Enter your email address and password. (Note: If you're not yet a registered user, please speak to an administrator so that he/she can set up a profile for you.)</p>
+    <img class="img-responsive" src="~/Content/img/Help_LogInEnterCreds.png" />
+    
+    <p>If you want your web browser to remember your password for you, then check "Remember me". Then the next time that you come back to the log in screen, your browser will enter your password for you automatically. </p>
+    <img class="img-responsive" src="~/Content/img/Help_LogIn_CheckRememberMe.png" />
+
+    <p>Click or tap the "Log In" button.</p>
+    <img class="img-responsive" src="~/Content/img/Help_LogIn_ClickLogInButton.png" /> 
+
+    <p>If something was entered incorrectly, you'll see a red "Invalid login attempt" message.</p>
+    <img class="img-responsive" src="~/Content/img/Help_LogIn_InvalidLogInAttempt.png" />
+
+    <p>Otherwise, you are now logged in and can navigate to your volunteer profile page by clicking "Hello [your name here]!" at the top right of the screen (where "Register" was before you logged in).</p>
+    <img class="img-responsive" src="~/Content/img/Help_LogIn_NowLoggedIn.png" />
+
+    <h4>Your Profile Page</h4>
+
+    <p>From the home page, if you click or tap on "Hello [your name here]!" (assuming that you're logged in), you'll be taken to your profile.</p>
+
+    <img class="img-responsive" src="~/Content/img/Help_Profile_Overview.png" />
+
+    <p>Here you can see your personal information. This info is viewable by all administrators, but not by other volunteers. Administrators use this info to keep track of things like your availability, your specialty(ies), and whether you're still an active volunteer. If you want to change something, click or tap Edit.</p>
+    <img class="img-responsive" src="~/Content/img/Help_Profile_ClickEdit.png" />
+
+    <p>Now you can edit your profile. Note that if you enter something in the wrong format (e.g. phone number without an area code, email address without an "at" symbol), the page will display red error text beneath the relevant field(s).</p>
+
+
+    <p>When you're done, click or tap Save Changes.</p>
+
+    <p>You can also go back to the home screen from your profile by selecting Clock-In/Clock-Out</p>
+
+    <h4>The Contact Page</h4>
+
+    <p>You can go here to see contact info for the clinic, including an interactive map.</p>
+
+    <h3>Administrator Tutorial</h3>
+
+    <p>When you first pull up the website, you'll see the home page.</p>
+    <!--<img class="img-" src="~/Content/img/Help1_HomePageOverview.png" />
+
+    <p>On the upper left side of the screen are places where you can display a message and/or an image to all users. We'll get to how you can do that in a bit.</p>
+
+    <!-- <p>Below these, there are links to frequently used options, such as the Report View.</p>*
+
+    <h4>The Dashboard Page</h4>
+
+    <p>Here you'll see a table of volunteers, with information about them including last name, first name, specialty (e.g. Nurse, Physican), email address, phone number, the date he/she started volunteering, and a checkbox indicating whether he/she is still an active volunteer.</p>
+
+    <p>Next to each volunteer you'll see a Details button and an Edit button.</p>
+
+    <p>If you click Details, you'll see the profile page for that volunteer. </p>
+
+    <p>You can filter the volunteers shown in the table in several different ways to see only the ones that you need to see right now.</p>
+
+    <p></p>
+
+    <h3>FAQ</h3>
+
+    <h4>How do I clock in?</h4>
+    <p>Navigate to the home page. Enter your email in the "Work Log" box and click or tap Submit. You are now clocked in!</p>
+
+    <h4>Something's wrong with my profile information. How do I change it?</h4>
+    <p>Go to your profile page by clicking "Hello [your name here]!" at the top right of the screen. On your page, click or tap "Edit". Now you can start changing what's in the fields. When you're done, click or tap Save Changes.</p>
+
+    <h4>Will Rick Astley ever give someone up?</h4>
+    <p>We're not sure why people keep asking this question. No, that's absolutely absurd.</p>
+
+</article>

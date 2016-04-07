@@ -84,7 +84,7 @@ namespace TheWayFreeClinicVMS.Controllers
                         newTime.volID = thisVolID;
                         newTime.wrkDate = DateTime.Now;
                         newTime.wrkStartTime = DateTime.Now;
-                        newTime.wrkEndTime = null;//same as startTime, signifying clocked in.                        
+                        newTime.wrkEndTime = null;                    
                         db.Worklog.Add(newTime);
                         db.SaveChanges();
                         ViewBag.clock = "Clocked In!";                      

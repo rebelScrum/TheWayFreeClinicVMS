@@ -22,6 +22,15 @@ namespace TheWayFreeClinicVMS.Controllers
             public double hours { get; set; }
             public Volunteer volunteer { get; set; }
         }
+
+        public class AvailabilityReportVol
+        {
+            public int id { get; set; }
+            public List<string> days { get; set; }
+            public List<string> daysQueried { get; set; }   
+            public List<string> hours { get; set; }
+            public Volunteer volunteer { get; set; }
+        }
        
 
         // GET: AdminDashboard
@@ -470,47 +479,55 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(HoursReportFilteredList);
         }
 
-        public ActionResult AvailabilityReport(string searchString, string hiddenDateRange, int? specialtySearch, string active, bool mon = false, bool tue = false, bool wed = false, bool thu = false, bool fri = false, bool sat = false)
+        public ActionResult AvailabilityReport(string searchString, /*string hiddenDateRange,*/ int? specialtySearch, string active, bool all = false, bool mon = false, bool tue = false, bool wed = false, bool thu = false, bool fri = false, bool sat = false)
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
-            ViewBag.dateRange = hiddenDateRange;
+            //ViewBag.dateRange = hiddenDateRange;
 
-            string[] tokens = new string[] { " - " };
-            string[] dateRange;
-            long begDateTicks = 0000000000;
-            long endDateTicks = 0000000000;
-            long tempTotal = 0000000000;
-            var volHours = 0.0;
-            var grandTotalHours = 0.0;
+            //string[] tokens = new string[] { " - " };
+            //string[] dateRange;
+            //long begDateTicks = 0000000000;
+            //long endDateTicks = 0000000000;
 
-            List<HoursReportVol> HoursReportFullList = new List<HoursReportVol> { };
-            List<HoursReportVol> HoursReportFilteredList = new List<HoursReportVol> { };
-            HoursReportVol vol = new HoursReportVol();
+            List<AvailabilityReportVol> AvailabilityReportFullList = new List<AvailabilityReportVol> { };
+            List<AvailabilityReportVol> AvailabilityReportFilteredList = new List<AvailabilityReportVol> { };
+            AvailabilityReportVol vol = new AvailabilityReportVol();
 
-            var volunteers = db.Volunteers;
-            var times = db.Worklog;
+            var volunteers = db.Volunteers.ToList();
+            var availabilities = db.Availabilities.ToList();
 
-            var sorts = from v in volunteers
-                        select v;
+            var sorts = (from v in volunteers
+                        join a in availabilities on v.volID equals a.volID
+                        where v.volID == a.volID 
+                        select v).Distinct();
+
+            List<string> daysQuery = new List<string>();
+            if (all) { ViewBag.allChkd = "checked"; ViewBag.allActv = "active"; }
+            if (mon) { daysQuery.Add("Monday"); ViewBag.MonChkd = "checked"; ViewBag.MonActv = "active"; }
+            if (tue) { daysQuery.Add("Tuesday"); ViewBag.TueChkd = "checked"; ViewBag.TueActv = "active"; }
+            if (wed) { daysQuery.Add("Wednesday"); ViewBag.WedChkd = "checked"; ViewBag.WedActv = "active"; }
+            if (thu) { daysQuery.Add("Thursday"); ViewBag.ThuChkd = "checked"; ViewBag.ThuActv = "active"; }
+            if (fri) { daysQuery.Add("Friday"); ViewBag.FriChkd = "checked"; ViewBag.FriActv = "active"; }
+            if (sat) { daysQuery.Add("Saturday"); ViewBag.SatChkd = "checked"; ViewBag.SatActv = "active"; }
 
             var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
             ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
             int specialtyID = specialtySearch.GetValueOrDefault();
 
             //parse date range, convert to ticks
-            if (hiddenDateRange != null && hiddenDateRange != "")
-            {
-                dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
-                ViewBag.startDate = dateRange[0];
-                ViewBag.endDate = dateRange[1];
-                begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
-                endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
-            }
-            else if (hiddenDateRange == "")
-            {
-                return View(HoursReportFilteredList);
-            }
+            //if (hiddenDateRange != null && hiddenDateRange != "")
+            //{
+            //    dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
+            //    ViewBag.startDate = dateRange[0];
+            //    ViewBag.endDate = dateRange[1];
+            //    begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
+            //    endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
+            //}
+            //else if (hiddenDateRange == "")
+            //{
+            //    return View("AvailabilityReport");
+            //}
 
             //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
@@ -546,46 +563,48 @@ namespace TheWayFreeClinicVMS.Controllers
             //create new object for each vol in sorts including properties for hours and exposing volID; adds to list of new objects
             foreach (var item in sorts)
             {
-                vol = new HoursReportVol();
+                List<string> days = new List<string>();
+                List<string> daysQueried = new List<string>();
+                List<string> hours = new List<string>();
+                vol = new AvailabilityReportVol();
+                
                 vol.id = item.volID;
                 vol.volunteer = item;
-                HoursReportFullList.Add(vol);
-            }
 
-            foreach (var item in HoursReportFullList)
-            {
-                foreach (var log in times.ToList())
+                foreach (var avail in availabilities)
                 {
-                    if (log.volID == item.id && log.wrkEndTime.HasValue)
+                    if (vol.id == avail.volID)
                     {
-                        var beg = log.wrkStartTime.Ticks;
-                        var end = log.wrkEndTime.Value.Ticks;
-
-                        if (beg >= begDateTicks && end <= endDateTicks)
+                        if (daysQuery.Contains(avail.avDay.ToString()))
                         {
-                            tempTotal += (end - beg);
+                            daysQueried.Add(avail.avDay.ToString());
                         }
+                        else
+                        {
+                            days.Add(avail.avDay.ToString()); 
+                        }
+                                     
+                        hours.Add(avail.avFrom.ToString("hh:mm tt") + " - " + avail.avUntil.ToString("hh:mm tt"));
                     }
                 }
-
-                volHours = TimeSpan.FromTicks(tempTotal).TotalHours;
-                grandTotalHours += volHours;
-
-                if (volHours == 0)
-                {
-                    item.hours = 0;
-                }
-                else
-                {
-                    item.hours = Math.Round(volHours, 3);
-                    HoursReportFilteredList.Add(item);
-                }
-                tempTotal = 000000000;
+                vol.days = days;
+                vol.daysQueried = daysQueried;
+                vol.hours = hours;
+                AvailabilityReportFullList.Add(vol);
             }
 
-            ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
-
-            return View(HoursReportFilteredList);
+            foreach (var item in AvailabilityReportFullList)
+            {
+                foreach(var day in item.daysQueried)
+                {
+                    if (daysQuery.Contains(day))
+                    {
+                        AvailabilityReportFilteredList.Add(item);
+                    }
+                }
+            }
+               
+            return View(AvailabilityReportFilteredList.Distinct());
         }
 
         protected override void Dispose(bool disposing)

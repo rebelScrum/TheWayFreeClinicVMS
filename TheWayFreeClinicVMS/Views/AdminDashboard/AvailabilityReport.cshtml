@@ -32,10 +32,10 @@
                                     <span id="spec">@Html.DropDownList("specialtySearch", null, "All", new { @class = "btn" })</span>
                                 </div>
                                 <div class="col-lg-9">
-                                    <span id="reportrange" class="btn" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; float:right;">
+                                    @*<span id="reportrange" class="btn" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; float:right;">
                                         <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                                         <span id="dateRange">@ViewBag.dateRange</span> <b class="caret"></b>
-                                    </span>
+                                    </span>*@
                                 </div>
                             </div>
 
@@ -57,24 +57,27 @@
                                     <label for="active">Available: </label>
                                 </div>
 
-                                <div class="col-lg-11 btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary">
-                                        <input id="mon" name="mon" value="true" type="checkbox" /> Monday
+                                <div class="col-lg-11 btn-group btn-group-lg" data-toggle="buttons">
+                                    <label id="allLbl" class="btn btn-default @ViewBag.allActv" onclick="checkAllBtns()">
+                                        <input id="all" name="all" value="true" type="checkbox" checked="@ViewBag.allChkd" /> All
                                     </label>
-                                    <label class="btn btn-primary">
-                                        <input id="tue" name="mon" value="true" type="checkbox" /> Tuesday
+                                    <label id="monLbl" class="btn btn-default @ViewBag.MonActv" onclick="uncheckAllBtn()">
+                                        <input id="mon" name="mon" value="true" type="checkbox" checked="@ViewBag.MonChkd"/> Monday
                                     </label>
-                                    <label class="btn btn-primary">
-                                        <input id="wed" name="mon" value="true" type="checkbox" /> Wednesday
+                                    <label id="tueLbl" class="btn btn-default @ViewBag.TueActv" onclick="uncheckAllBtn()">
+                                        <input id="tue" name="tue" value="true" type="checkbox" checked="@ViewBag.TueChkd"/> Tuesday
                                     </label>
-                                    <label class="btn btn-primary">
-                                        <input id="thu" name="mon" value="true" type="checkbox" /> Thursday
+                                    <label id="wedLbl" class="btn btn-default @ViewBag.WedActv" onclick="uncheckAllBtn()">
+                                        <input id="wed" name="wed" value="true" type="checkbox" checked="@ViewBag.WedChkd"/> Wednesday
                                     </label>
-                                    <label class="btn btn-primary">
-                                        <input id="fri" name="mon" value="true" type="checkbox" /> Friday
+                                    <label id="thuLbl" class="btn btn-default @ViewBag.ThuActv" onclick="uncheckAllBtn()">
+                                        <input id="thu" name="thu" value="true" type="checkbox" checked="@ViewBag.ThuChkd"/> Thursday
                                     </label>
-                                    <label class="btn btn-primary">
-                                        <input id="sat" name="mon" value="true" type="checkbox" /> Saturday
+                                    <label id="friLbl" class="btn btn-default @ViewBag.FriActv" onclick="uncheckAllBtn()">
+                                        <input id="fri" name="fri" value="true" type="checkbox" checked="@ViewBag.FriChkd"/> Friday
+                                    </label>
+                                    <label id="satLbl" class="btn btn-default @ViewBag.SatActv" onclick="uncheckAllBtn()">
+                                        <input id="sat" name="sat" value="true" type="checkbox" checked="@ViewBag.SatChkd"/> Saturday
                                     </label>
                                 </div>
 
@@ -94,8 +97,6 @@
             <div style="text-align:center">
                 @ViewBag.dateRange
                 <br />
-                Grand Total: @ViewBag.grandTotalHours
-                @ViewData["exportList"]
             </div>
 
             <div style="text-align:right; padding-bottom: 20px;">
@@ -117,10 +118,10 @@
                         Active
                     </th>
                     <th>
-                        Email
+                        Day
                     </th>
                     <th>
-                        Accumulated Hours
+                        Hours Available
                     </th>
                 </tr>
                 @foreach (var item in Model)
@@ -140,10 +141,20 @@
                             @item.volunteer.volActive
                         </td>
                         <td>
-                            @item.volunteer.volEmail
+                            @foreach (var day in item.daysQueried)
+                            {
+                                <b>@Html.DisplayFor(modelItem => day) <br /></b>
+                            }     
+                            @foreach (var day in item.days)
+                            {
+                                @Html.DisplayFor(modelItem => day) <br />
+                            }
                         </td>
                         <td>
-                            @item.hours
+                            @foreach (var hour in item.hours)
+                            {
+                                @Html.DisplayFor(modelItem => hour) <br />
+                            }      
                         </td>
                     </tr>
                 }
@@ -159,34 +170,73 @@
 
 <script type="text/javascript">
 
-    $('#submit').click(function () {
-        //put date range in hidded input element for form submission
-        var range = $('#dateRange').html();
-        $('#hiddenDateRange').attr("value", range);
-    })
-
-    $(function () {
-
-        function cb(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    function checkAllBtns() {
+       
+        if (document.getElementById("all").checked == false)
+        {
+            document.getElementById("monLbl").classList.add("active");
+            document.getElementById("mon").checked = true;
+            document.getElementById("tueLbl").classList.add("active");
+            document.getElementById("tue").checked = true;
+            document.getElementById("wedLbl").classList.add("active");
+            document.getElementById("wed").checked = true;
+            document.getElementById("thuLbl").classList.add("active");
+            document.getElementById("thu").checked = true;
+            document.getElementById("friLbl").classList.add("active");
+            document.getElementById("fri").checked = true;
+            document.getElementById("satLbl").classList.add("active");
+            document.getElementById("sat").checked = true;
         }
+        else
+        {
+            document.getElementById("monLbl").classList.remove("active");
+            document.getElementById("mon").checked = false;
+            document.getElementById("tueLbl").classList.remove("active");
+            document.getElementById("tue").checked = false;
+            document.getElementById("wedLbl").classList.remove("active");
+            document.getElementById("wed").checked = false;
+            document.getElementById("thuLbl").classList.remove("active");
+            document.getElementById("thu").checked = false;
+            document.getElementById("friLbl").classList.remove("active");
+            document.getElementById("fri").checked = false;
+            document.getElementById("satLbl").classList.remove("active");
+            document.getElementById("sat").checked = false;
+        }
+    }
 
-        //cb(moment(), moment());
+    function uncheckAllBtn() {
+        document.getElementById("allLbl").classList.remove("active");
+        document.getElementById("all").checked = false;
+    }
 
-        $('#reportrange').daterangepicker({
-            ranges: {
-                'Today': [moment().startOf('day'), moment()],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                'Year to Date': [moment().startOf('year'), moment()]
-            },
-            "timePicker": true,
-            "timePicker24Hour": true,
-            "alwaysShowCalendars": true,
-            "autoUpdateInput": false,
-            "opens": "left",
-        }, cb);
-    });
+    //$('#submit').click(function () {
+    //    //put date range in hidded input element for form submission
+    //    var range = $('#dateRange').html();
+    //    $('#hiddenDateRange').attr("value", range);
+    //})
+
+    //$(function () {
+
+    //    function cb(start, end) {
+    //        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    //    }
+
+    //    //cb(moment(), moment());
+
+    //    $('#reportrange').daterangepicker({
+    //        ranges: {
+    //            'Today': [moment().startOf('day'), moment()],
+    //            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    //            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    //            'This Month': [moment().startOf('month'), moment().endOf('month')],
+    //            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    //            'Year to Date': [moment().startOf('year'), moment()]
+    //        },
+    //        "timePicker": true,
+    //        "timePicker24Hour": true,
+    //        "alwaysShowCalendars": true,
+    //        "autoUpdateInput": false,
+    //        "opens": "left",
+    //    }, cb);
+    //});
 </script>

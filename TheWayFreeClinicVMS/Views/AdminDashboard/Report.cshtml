@@ -22,22 +22,41 @@
                     <div class="form-group">
                         @using (Html.BeginForm())
             {
+
                             <div class="row">
-
-                                Specialty: @Html.DropDownList("specialtySearch", null, "All", new { @class = "btn" })
-
-                                <div id="reportrange" class="btn" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:30%; float:right;">
-                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                                    <span id="dateRange">@ViewBag.dateRange</span> <b class="caret"></b>
+                                <div class="col-lg-1">
+                                    <label for="spec">Specialty: </label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <span id="spec">@Html.DropDownList("specialtySearch", null, "All", new { @class = "btn" })</span>
+                                </div>
+                                <div class="col-lg-9">
+                                    <span id="reportrange" class="btn" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; float:right;">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                        <span id="dateRange">@ViewBag.dateRange</span> <b class="caret"></b>
+                                    </span>
                                 </div>
                             </div>
 
-                            <br />
+                             <div class="row" style="padding-top:20px;">
+                                 <div class="col-lg-1">
+                                     <label for="active">Active: </label>
+                                 </div>
+                                 <div class="col-lg-2">
+                                     <select id='active' name='active' class="btn">
+                                         <option @ViewBag.allSelected value='2'>All</option>
+                                         <option @ViewBag.trueSelected value='1'>True</option>
+                                         <option @ViewBag.falseSelected value='0'>False</option>
+                                     </select>
+                                 </div>
+                             </div>
 
-                            <div class="row" style="float:right; vertical-align:bottom">
-                                <input name="hiddenDateRange" type="hidden" id="hiddenDateRange" value="" />
-                                <input id="submit" class="btn btn-warning btn-lg" type="submit" value="Filter" />
-                            </div>
+                             <div class="row">
+                                 <div class="col-lg-12" style="text-align:right;">
+                                     <input name="hiddenDateRange" type="hidden" id="hiddenDateRange" value="" />
+                                     <input id="submit" class="btn btn-warning btn-lg" type="submit" value="Filter" />
+                                 </div>
+                             </div>
                         }
                     </div>
                 </div>
@@ -50,7 +69,7 @@
                 @ViewData["exportList"]
             </div>
 
-            <div style="text-align:right">               
+            <div style="text-align:right; padding-bottom: 20px;">
                 <a href="@Url.Action("ExportHoursReport", "Export", new { hiddenDateRange = ViewBag.dateRange, specialtySearch = ViewBag.spcSearch })" class="btn btn-success" role="button">Export To Excel</a>
             </div>
 
@@ -102,6 +121,7 @@
             </table>
 
         </div>
+
     </div>
 </div>
 

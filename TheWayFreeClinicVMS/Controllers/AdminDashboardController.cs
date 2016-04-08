@@ -23,6 +23,15 @@ namespace TheWayFreeClinicVMS.Controllers
             public double hours { get; set; }
             public Volunteer volunteer { get; set; }
         }
+
+        public class AvailabilityReportVol
+        {
+            public int id { get; set; }
+            public List<string> days { get; set; }
+            public List<string> daysQueried { get; set; }   
+            public List<string> hours { get; set; }
+            public Volunteer volunteer { get; set; }
+        }
        
 
         // GET: AdminDashboard
@@ -392,14 +401,20 @@ namespace TheWayFreeClinicVMS.Controllers
 
         //***********************************************************************************************
 
-        public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch)
+                
+        public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch, string active)
+
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
             ViewBag.dateRange = hiddenDateRange;
             ViewBag.start = hiddenDateRange;
-            ViewBag.spcSearch = specialtySearch;
+            ViewBag.allSelected = "";
+            ViewBag.trueSelected = "";
+            ViewBag.falseSelected = "";
+
             string[] tokens = new string[] {" - "};
+
             string[] dateRange;
             long begDateTicks = 0000000000;
             long endDateTicks = 0000000000;      
@@ -447,6 +462,25 @@ namespace TheWayFreeClinicVMS.Controllers
                 sorts = sorts.Where(s => s.spcID == specialtyID);
             }
 
+            if (active != null)
+            {
+                switch (active)
+                {
+                    case "0":
+                        ViewBag.falseSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == false);
+                        break;
+                    case "1":
+                        ViewBag.trueSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true);
+                        break;
+                    case "2":
+                        ViewBag.allSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true || s.volActive == false);
+                        break;
+                }                
+            }
+
             //create new object for each vol in sorts including properties for hours and exposing volID; adds to list of new objects
             foreach (var item in sorts)
             {
@@ -467,15 +501,13 @@ namespace TheWayFreeClinicVMS.Controllers
 
                         if (beg >= begDateTicks && end <= endDateTicks  )
                         {
-                            tempTotal += (end - beg);
-                            
+                            tempTotal += (end - beg);                            
                         }
                     }
                 }
 
                 volHours = TimeSpan.FromTicks(tempTotal).TotalHours;
-                grandTotalHours += volHours;
-                
+                grandTotalHours += volHours;                
 
                 if (volHours == 0)
                 {
@@ -491,20 +523,135 @@ namespace TheWayFreeClinicVMS.Controllers
 
             ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
 
-            //switch (sortBy)
-            //{
-            //    case "Name Asc":
-            //        HoursReportFilteredList = HoursReportFilteredList.OrderBy(s => s.volunteer.volLastName).ToList();
-            //        break;                
-            //    case "Name Desc":
-            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.volunteer.volLastName).ToList();
-            //        break;
-            //    default:
-            //        HoursReportFilteredList = HoursReportFilteredList.OrderByDescending(s => s.hours).ToList();
-            //        break;
-            //}
-            ViewBag.list = HoursReportFilteredList;
             return View(HoursReportFilteredList);
+        }
+
+        public ActionResult AvailabilityReport(string searchString, /*string hiddenDateRange,*/ int? specialtySearch, string active, bool all = false, bool mon = false, bool tue = false, bool wed = false, bool thu = false, bool fri = false, bool sat = false)
+        {
+            ViewBag.viewName = "index";
+            ViewBag.FullName = getUserName();
+            //ViewBag.dateRange = hiddenDateRange;
+
+            //string[] tokens = new string[] { " - " };
+            //string[] dateRange;
+            //long begDateTicks = 0000000000;
+            //long endDateTicks = 0000000000;
+
+            List<AvailabilityReportVol> AvailabilityReportFullList = new List<AvailabilityReportVol> { };
+            List<AvailabilityReportVol> AvailabilityReportFilteredList = new List<AvailabilityReportVol> { };
+            AvailabilityReportVol vol = new AvailabilityReportVol();
+
+            var volunteers = db.Volunteers.ToList();
+            var availabilities = db.Availabilities.ToList();
+
+            var sorts = (from v in volunteers
+                        join a in availabilities on v.volID equals a.volID
+                        where v.volID == a.volID 
+                        select v).Distinct();
+
+            List<string> daysQuery = new List<string>();
+            if (all) { ViewBag.allChkd = "checked"; ViewBag.allActv = "active"; }
+            if (mon) { daysQuery.Add("Monday"); ViewBag.MonChkd = "checked"; ViewBag.MonActv = "active"; }
+            if (tue) { daysQuery.Add("Tuesday"); ViewBag.TueChkd = "checked"; ViewBag.TueActv = "active"; }
+            if (wed) { daysQuery.Add("Wednesday"); ViewBag.WedChkd = "checked"; ViewBag.WedActv = "active"; }
+            if (thu) { daysQuery.Add("Thursday"); ViewBag.ThuChkd = "checked"; ViewBag.ThuActv = "active"; }
+            if (fri) { daysQuery.Add("Friday"); ViewBag.FriChkd = "checked"; ViewBag.FriActv = "active"; }
+            if (sat) { daysQuery.Add("Saturday"); ViewBag.SatChkd = "checked"; ViewBag.SatActv = "active"; }
+
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();
+
+            //parse date range, convert to ticks
+            //if (hiddenDateRange != null && hiddenDateRange != "")
+            //{
+            //    dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
+            //    ViewBag.startDate = dateRange[0];
+            //    ViewBag.endDate = dateRange[1];
+            //    begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
+            //    endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
+            //}
+            //else if (hiddenDateRange == "")
+            //{
+            //    return View("AvailabilityReport");
+            //}
+
+            //filtering by first name, last name 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sorts = sorts.Where(s => s.volLastName.Contains(searchString)
+                                       || s.volFirstName.Contains(searchString));
+            }
+
+            if (specialtySearch.HasValue)
+            {
+                sorts = sorts.Where(s => s.spcID == specialtyID);
+            }
+
+            if (active != null)
+            {
+                switch (active)
+                {
+                    case "0":
+                        ViewBag.falseSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == false);
+                        break;
+                    case "1":
+                        ViewBag.trueSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true);
+                        break;
+                    case "2":
+                        ViewBag.allSelected = "selected";
+                        sorts = sorts.Where(s => s.volActive == true || s.volActive == false);
+                        break;
+                }
+            }
+
+            //create new object for each vol in sorts including properties for hours and exposing volID; adds to list of new objects
+            foreach (var item in sorts)
+            {
+                List<string> days = new List<string>();
+                List<string> daysQueried = new List<string>();
+                List<string> hours = new List<string>();
+                vol = new AvailabilityReportVol();
+                
+                vol.id = item.volID;
+                vol.volunteer = item;
+
+                foreach (var avail in availabilities)
+                {
+                    if (vol.id == avail.volID)
+                    {
+                        if (daysQuery.Contains(avail.avDay.ToString()))
+                        {
+                            daysQueried.Add(avail.avDay.ToString());
+                        }
+                        else
+                        {
+                            days.Add(avail.avDay.ToString()); 
+                        }
+                                     
+                        hours.Add(avail.avFrom.ToString("hh:mm tt") + " - " + avail.avUntil.ToString("hh:mm tt"));
+                    }
+                }
+                vol.days = days;
+                vol.daysQueried = daysQueried;
+                vol.hours = hours;
+                AvailabilityReportFullList.Add(vol);
+            }
+
+            foreach (var item in AvailabilityReportFullList)
+            {
+                foreach(var day in item.daysQueried)
+                {
+                    if (daysQuery.Contains(day))
+                    {
+                        AvailabilityReportFilteredList.Add(item);
+                    }
+                }
+            }
+               
+            return View(AvailabilityReportFilteredList.Distinct());
         }
 
         protected override void Dispose(bool disposing)

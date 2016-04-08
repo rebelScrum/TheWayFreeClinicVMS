@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -113,7 +114,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
             ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
 
-            ExportToExcel(HoursReportFilteredList);
+            ExportHoursReportToCSV(HoursReportFilteredList, hiddenDateRange);
 
             return View(HoursReportFilteredList);
         }
@@ -127,56 +128,30 @@ namespace TheWayFreeClinicVMS.Controllers
             return fullName;
         }
 
-        public void ExportToExcel(List<AdminDashboardController.HoursReportVol> Data)
-        {
-            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+        public void ExportHoursReportToCSV(List<AdminDashboardController.HoursReportVol> Data, string hiddenDateRange)
+        {                 
+            StringWriter sw = new StringWriter();
 
-            excel.Workbooks.Add();
+            sw.WriteLine("\"Last Name\",\"First Name\",\"Specialty\",\"Active\",\"E-mail\",\"Hours\"");
+            string hdr = "attachment;filename=" + hiddenDateRange.Replace(",", "") + ".csv";
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", hdr);
+            Response.ContentType = "text/csv";
 
-            Microsoft.Office.Interop.Excel._Worksheet workSheet = excel.ActiveSheet;
-
-            try
+            foreach (var line in Data)
             {
-                workSheet.Cells[1, "A"] = "Last Name";
-                workSheet.Cells[1, "B"] = "First";
-                workSheet.Cells[1, "C"] = "Total Hours";
-
-                int row = 2;
-                foreach (var vol in Data)
-                {
-                    workSheet.Cells[row, "A"] = vol.volunteer.volLastName;
-                    workSheet.Cells[row, "B"] = vol.volunteer.volFirstName;
-                    workSheet.Cells[row, "C"] = vol.hours;
-
-                    row++;
-                }
-
-                workSheet.Range["A1"].AutoFormat(Microsoft.Office.Interop.Excel.XlRangeAutoFormat.xlRangeAutoFormatClassic1);
-
-                string fileName = string.Format(@"{0}\ExcelData.xlsx", Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
-
-                workSheet.SaveAs(fileName);
-
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                                           line.volunteer.volLastName,
+                                           line.volunteer.volFirstName,
+                                           line.volunteer.Specialty.spcName,
+                                           line.volunteer.volActive,
+                                           line.volunteer.volEmail,
+                                           line.hours));
             }
-            catch (Exception exception)
-            {
 
-            }
-            finally
-            {
-                excel.Quit();
+            Response.Write(sw.ToString());
 
-                if (excel != null)
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-
-                if (workSheet != null)
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(workSheet);
-
-                excel = null;
-                workSheet = null;
-
-                GC.Collect();
-            }
+            Response.End();
         }
 
     }

@@ -360,16 +360,10 @@
     <Content Include="Views\ManageContracts\CreateGroup.cshtml" />
     <Content Include="Views\ManageContracts\IndexGroup.cshtml" />
     <Content Include="Views\ManageContracts\EditGroup.cshtml" />
-<<<<<<< HEAD
-=======
-    <Content Include="Views\Export\ExportHoursReport.cshtml" />
-
     <Content Include="Views\AdminDashboard\ManageAdmins.cshtml" />
     <Content Include="Views\AdminDashboard\UpdateTimesheet.cshtml" />
     <Content Include="Views\Account\AddAdmin.cshtml" />
     <Content Include="Views\Account\DeleteAdmin.cshtml" />
-
->>>>>>> refs/remotes/origin/Development
     <Content Include="Views\AdminDashboard\AvailabilityReport.cshtml" />
 
   </ItemGroup>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -475,20 +476,44 @@ namespace TheWayFreeClinicVMS.Controllers
             }
 
             ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
+            Session["HRFL"] = HoursReportFilteredList;
 
             return View(HoursReportFilteredList);
+        }
+
+        public ActionResult ExportHoursReportToCSV()
+        {
+            List<HoursReportVol> Data =  (List<HoursReportVol>)Session["HRFL"];
+            StringWriter sw = new StringWriter();
+
+            sw.WriteLine("\"Last Name\",\"First Name\",\"Specialty\",\"Active\",\"E-mail\",\"Hours\"");
+            string hdr = "attachment;filename=" + DateTime.Now.ToShortDateString() + ".csv";
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", hdr);
+            Response.ContentType = "text/csv";
+
+            foreach (var line in Data)
+            {
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                                           line.volunteer.volLastName,
+                                           line.volunteer.volFirstName,
+                                           line.volunteer.Specialty.spcName,
+                                           line.volunteer.volActive,
+                                           line.volunteer.volEmail,
+                                           line.hours));
+            }
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+
+            return View("Report", Data);
         }
 
         public ActionResult AvailabilityReport(string searchString, /*string hiddenDateRange,*/ int? specialtySearch, string active, bool all = false, bool mon = false, bool tue = false, bool wed = false, bool thu = false, bool fri = false, bool sat = false)
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
-            //ViewBag.dateRange = hiddenDateRange;
-
-            //string[] tokens = new string[] { " - " };
-            //string[] dateRange;
-            //long begDateTicks = 0000000000;
-            //long endDateTicks = 0000000000;
 
             List<AvailabilityReportVol> AvailabilityReportFullList = new List<AvailabilityReportVol> { };
             List<AvailabilityReportVol> AvailabilityReportFilteredList = new List<AvailabilityReportVol> { };
@@ -504,32 +529,17 @@ namespace TheWayFreeClinicVMS.Controllers
 
             List<string> daysQuery = new List<string>();
             if (all) { ViewBag.allChkd = "checked"; ViewBag.allActv = "active"; }
-            if (mon) { daysQuery.Add("Monday"); ViewBag.MonChkd = "checked"; ViewBag.MonActv = "active"; }
-            if (tue) { daysQuery.Add("Tuesday"); ViewBag.TueChkd = "checked"; ViewBag.TueActv = "active"; }
-            if (wed) { daysQuery.Add("Wednesday"); ViewBag.WedChkd = "checked"; ViewBag.WedActv = "active"; }
-            if (thu) { daysQuery.Add("Thursday"); ViewBag.ThuChkd = "checked"; ViewBag.ThuActv = "active"; }
-            if (fri) { daysQuery.Add("Friday"); ViewBag.FriChkd = "checked"; ViewBag.FriActv = "active"; }
-            if (sat) { daysQuery.Add("Saturday"); ViewBag.SatChkd = "checked"; ViewBag.SatActv = "active"; }
+            if (mon) { daysQuery.Add("Monday"); ViewBag.MonChkd = "checked"; ViewBag.MonActv = "active"; ViewBag.Mon = true; }
+            if (tue) { daysQuery.Add("Tuesday"); ViewBag.TueChkd = "checked"; ViewBag.TueActv = "active"; ViewBag.Tue = true; }
+            if (wed) { daysQuery.Add("Wednesday"); ViewBag.WedChkd = "checked"; ViewBag.WedActv = "active"; ViewBag.Wed = true; }
+            if (thu) { daysQuery.Add("Thursday"); ViewBag.ThuChkd = "checked"; ViewBag.ThuActv = "active"; ViewBag.Thu = true; }
+            if (fri) { daysQuery.Add("Friday"); ViewBag.FriChkd = "checked"; ViewBag.FriActv = "active"; ViewBag.Fri = true; }
+            if (sat) { daysQuery.Add("Saturday"); ViewBag.SatChkd = "checked"; ViewBag.SatActv = "active"; ViewBag.Sat = true; }
 
             var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
             ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
             int specialtyID = specialtySearch.GetValueOrDefault();
 
-            //parse date range, convert to ticks
-            //if (hiddenDateRange != null && hiddenDateRange != "")
-            //{
-            //    dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
-            //    ViewBag.startDate = dateRange[0];
-            //    ViewBag.endDate = dateRange[1];
-            //    begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
-            //    endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
-            //}
-            //else if (hiddenDateRange == "")
-            //{
-            //    return View("AvailabilityReport");
-            //}
-
-            //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
             {
                 sorts = sorts.Where(s => s.volLastName.Contains(searchString)
@@ -603,8 +613,71 @@ namespace TheWayFreeClinicVMS.Controllers
                     }
                 }
             }
+
+            Session["ARFL"] = AvailabilityReportFilteredList;
                
             return View(AvailabilityReportFilteredList.Distinct());
+        }
+
+        public ActionResult ExportAvailabilityReportToCSV()
+        {
+            List<AvailabilityReportVol> Data = (List<AvailabilityReportVol>)Session["ARFL"];
+
+            StringWriter sw = new StringWriter();
+
+            sw.WriteLine("\"Last Name\",\"First Name\",\"Specialty\",\"Active\",\"Days\",\"Hours\"");
+            string hdr = "attachment;filename=" + "Availability Report" + DateTime.Now.ToShortDateString() + ".csv";
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", hdr);
+            Response.ContentType = "text/csv";
+
+            foreach (var line in Data.Distinct())
+            {
+                var daysQueriedString = "";
+                var daysString = "";
+                var hoursString = "";
+                var allDaysString = "";
+
+                foreach (var day in line.daysQueried)
+                {                    
+                    daysQueriedString += day + "\n";
+                }
+                foreach (var day in line.days)
+                {
+                    daysString += day + "\n";
+                }
+                foreach(var hours in line.hours)
+                {
+                    hoursString += hours + "\n";
+                }
+
+                if (daysString != null)
+                {
+                    allDaysString = daysQueriedString + daysString;
+                }
+                else
+                {
+                    allDaysString = daysQueriedString;
+                }
+                
+
+                allDaysString = allDaysString.TrimEnd('\n');
+                hoursString = hoursString.TrimEnd('\n');
+
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                                           line.volunteer.volLastName,
+                                           line.volunteer.volFirstName,
+                                           line.volunteer.Specialty.spcName,
+                                           line.volunteer.volActive,
+                                           allDaysString,
+                                           hoursString));
+            }
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+
+            return View("AvailabilityReport", Data);
         }
 
         protected override void Dispose(bool disposing)

@@ -102,16 +102,7 @@
                  @{Html.RenderAction("VolunteerEmployer", new { id = Model.volID }); }
              <a href="@Url.Action("Index", "ManageJobs", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
          </dd>
-             <dt> License:</dt>
-             <dd>
-                 @{Html.RenderAction("VolunteerLicense", new { id = Model.volID }); }
-                 <a href="@Url.Action("Index", "ManageLicenses", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
-             </dd>
-             <dt> Contract:</dt>
-             <dd>
-                 @{Html.RenderAction("VolunteerContract", new { id = Model.volID }); }
-                 <a href="@Url.Action("Index", "ManageContracts", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
-             </dd>
+             
          </dl>
 
 </div>
@@ -124,12 +115,27 @@
                 @{Html.RenderAction("VolunteerTimesheet", new { id = Model.volID }); }
             </div>
         <div class="col-md-5" style="border-left: solid #808080; margin-left:50px;">
-            <h4 class="text-center" style="color: #4CAF50;"><strong>Available for Volunteering</strong></h4>
-            @{Html.RenderAction("VolunteerAvailable", new { id = Model.volID }); }
-            <a href="@Url.Action("ViewAvailability", "ManageAvailabilities", new { id = Model.volID })" class="btn btn-info">Update Availability</a>
-        </div>
+            <div>
+                <h4 class="text-center" style="color: #4CAF50;"><strong>Available for Volunteering</strong></h4>
+                @{Html.RenderAction("VolunteerAvailable", new { id = Model.volID }); }
+                <a href="@Url.Action("ViewAvailability", "ManageAvailabilities", new { id = Model.volID })" class="btn btn-info">Update Availability</a>
+            </div>
+            <div style="margin-top:30px;">
+                <dl class="dl-horizontal">
+                    <dt> License:</dt>
+                    <dd>
+                        @{Html.RenderAction("VolunteerLicense", new { id = Model.volID }); }
+                        <a href="@Url.Action("Index", "ManageLicenses", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+                    </dd>
+                    <dt> Contract:</dt>
+                    <dd>
+                        @{Html.RenderAction("VolunteerContract", new { id = Model.volID }); }
+                        <a href="@Url.Action("Index", "ManageContracts", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+                    </dd>
+                </dl>
+            </div>
+</div>
 
     </div>
     <hr />
 
-</div>

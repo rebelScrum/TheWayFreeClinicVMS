@@ -55,13 +55,18 @@
                             <a href="@Url.Action("Index", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Volunteers</a>
                             <a href="#" class="list-group-item"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Work Log Data</a>
                             <a href="#" class="list-group-item"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Schedules</a>
+                            <a href="@Url.Action("IndexEmployer", "ManageJobs")" class="list-group-item"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Employers</a>
+                            <a href="@Url.Action("ManageAdmins", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Administrators</a>
+                            <a href="@Url.Action("IndexGroup", "ManageContracts")" class="list-group-item"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> PA Groups</a>
                         </div>
 
                         <a href="#createList" class="list-group-item active strong" data-toggle="collapse" data-parent="#MainMenu">Create <span class="caret" aria-hidden="true"></span></a>
                         <div class="collapse" id="createList">
                             <a href="@Url.Action("Create", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Volunteer</a>
+                            <a href="@Url.Action("AddAdmin", "Account")" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> New Administrator</a>
                             <a href="@Url.Action("Report", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> New Hours Report</a>
                             <a href="@Url.Action("AvailabilityReport", "AdminDashboard")" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> New Availability Report</a>
+
                         </div>
 
                         <a href="#updateList" class="list-group-item active strong" data-toggle="collapse" data-parent="#MainMenu">Update <span class="caret" aria-hidden="true"></span></a>

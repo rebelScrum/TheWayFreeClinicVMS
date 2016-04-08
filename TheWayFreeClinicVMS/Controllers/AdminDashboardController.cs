@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -254,9 +255,45 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerTimesheet", timesheet);
         }
 
+        //***********************************************************************************
+        //Update Timesheet
+        public ActionResult UpdateTimesheet(int? id)
+        {
+            ViewBag.FullName = getUserName();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Worktime worklog = db.Worklog.Find(id);
+            
+
+            if (worklog == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.volID = new SelectList(db.Volunteers, "volID", "volFirstName", worklog.volID);
+            return View(worklog);
+        }
+        // POST: ManageTimesheet/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateTimesheet([Bind(Include = "wrkID,volID,wrkDay,wrkStartTime,wrkEndTime")] Worktime worklog)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(worklog).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Details", new { id = worklog.volID });
+            }
+
+            return View(worklog);
+        }
         //************************************************************************************
         //Get Employment
-        
+
         public ActionResult VolunteerEmployer(int? id)
         {
             var volunteerID = id;
@@ -326,6 +363,14 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerLanguages", speaks);
         }
 
+        // View list of Admins
+        public ActionResult ManageAdmins()
+        {
+            string roleID = db.Roles.Where(r => r.Name == "Admin").Select(s => s.Id).FirstOrDefault();
+            var admins = db.Users.Where(x => x.Roles.Any(y => y.RoleId == roleID)).ToList();
+            return View(admins);
+        }
+
 
         // GET: AdminDashboard/Delete/5
         //public ActionResult Delete(int? id)
@@ -355,8 +400,10 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
+
                 
         public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch, string active)
+
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();

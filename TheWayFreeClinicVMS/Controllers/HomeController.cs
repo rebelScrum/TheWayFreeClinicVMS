@@ -125,6 +125,7 @@ namespace TheWayFreeClinicVMS.Controllers
         public ActionResult homeMessage()
         {
             string text = "";
+            int maxLength = 100;
             
             List<HomePageMessage> hpmList = new List<HomePageMessage>();
 
@@ -136,7 +137,16 @@ namespace TheWayFreeClinicVMS.Controllers
                 hpm.filePath = file.FullName;
                 hpm.fileName = file.Name;
                 hpm.fullText = System.IO.File.ReadAllText(file.FullName);
-                hpm.preview = hpm.fullText.Substring(0, 100) + "...";                
+
+                if (hpm.fullText.Length > maxLength)
+                {
+                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";  
+                }
+                else
+                {
+                    hpm.preview = hpm.fullText;
+                }
+                              
                 hpmList.Add(hpm);          
             }
 
@@ -146,9 +156,9 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(hpmList);
         }
 
-        [HttpPost, ActionName("textBoxAction")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult homeMessage(string message)
+        public ActionResult homeMessageAdd(string message)
         {
             ViewBag.FullName = getUserName();
             var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
@@ -157,7 +167,61 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 file.WriteLine(timeStamp);
                 file.WriteLine(message);
-                file.WriteLine();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult homeMessageUpdate(string message, string fileName, string removeMessage)
+        {
+            ViewBag.FullName = getUserName();
+            switch(removeMessage)
+            {
+                case "":
+                    {
+                        var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
+                        using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), false))
+                        {
+                            file.WriteLine(timeStamp);
+                            file.WriteLine(message);
+                            file.WriteLine();
+                        }
+                        break;
+                    }
+                case "remove":
+                    {
+                        System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
+                        try
+                        {
+                            fi.Delete();
+                        }
+                        catch (System.IO.IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult homeMessageDelete(string fileName)
+        {
+            ViewBag.FullName = getUserName();
+
+            System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
+            try
+            {
+                fi.Delete();
+            }
+            catch (System.IO.IOException e)
+            {
+                Console.WriteLine(e.Message);
             }
 
             return RedirectToAction("Index");

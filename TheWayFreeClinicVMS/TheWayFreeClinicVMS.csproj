@@ -216,7 +216,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\custom.css" />
-    <Content Include="Content\docs\message1.txt" />
     <Content Include="Content\img\Help1_HomePageOverview.png" />
     <Content Include="Content\img\Help2_ClockIn.png" />
     <Content Include="Content\img\Help3_RecentActivityClockIn.png" />
@@ -365,10 +364,11 @@
     <Content Include="Views\Account\AddAdmin.cshtml" />
     <Content Include="Views\Account\DeleteAdmin.cshtml" />
     <Content Include="Views\AdminDashboard\AvailabilityReport.cshtml" />
-
+    <Content Include="Views\Home\homeAllMessages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\docs\HomePageMessages\" />
     <Folder Include="Content\img\homePageImg\" />
   </ItemGroup>
   <ItemGroup>

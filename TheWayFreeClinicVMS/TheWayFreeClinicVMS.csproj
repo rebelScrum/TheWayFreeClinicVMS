@@ -368,7 +368,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\docs\HomePageMessages\" />
+    <Folder Include="Content\docs\HomePageMessages\HomePageMessagesArchive\" />
     <Folder Include="Content\img\homePageImg\" />
   </ItemGroup>
   <ItemGroup>

@@ -3,18 +3,16 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@using (Html.BeginForm("textBoxAction", "Home"))
+@using (Html.BeginForm("homeMessageAdd", "Home"))
 {
     <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Edit Message Box 1</h3>
-        </div>
+        <div class="panel-heading"><span style="font-size:x-large;">Create New Message from Admin</span></div>
         <div class="panel-body">
             <div class="form-group">
                 <div>
                     <textarea name="message" placeholder="Message" class="form-control" style="min-width:100%;"></textarea>
                     @*<input type="text" name="message" placeholder="Message" class="form-control" style="max-width:100%" ; />*@
-                    <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; margin-top:20px; float:right;">Submit</button>
+                    <button type="submit" class="btn btn-info btn-lg" style="background-color:limegreen; margin-top:20px; float:right;">Submit</button>
                     @Html.AntiForgeryToken()
                 </div>
             </div>
@@ -22,13 +20,60 @@
     </div>
 }
 
+
+@using (Html.BeginForm("homeMessageUpdate", "Home"))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading"><span style="font-size:x-large;">Update or Delete Message</span></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div>
+                    <table class="table table-condensed table-hover">
+                        <tr style="font-size:large;">
+                            <th>
+                                Messages
+                            </th>
+                            <th>
+                                Preview
+                            </th>
+                            <th>
+                                
+                            </th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.fileName
+                                </td>
+                                <td>
+                                    @item.preview
+                                    <span id="@item.fileName" hidden>@item.fullText</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <a href="#" name="@item.fileName" onclick="return fillTextArea(this.name)" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Edit</a>
+                                    <a href="#" name="@item.fileName" onclick="return messageRemove(this.name)" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Remove</a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                    <input id="fileName" name="fileName" type="text" value="" hidden />
+                    <input id="removeMessage" name="removeMessage" type="text" value="" hidden />
+                    <textarea id='modifyMessage' name="message" class="form-control" style="min-width:100%;"></textarea>
+                    <button id="updateSubmitBtn" type="submit" class="btn btn-info btn-lg" style="background-color:limegreen; margin-top:20px; float:right;">Update</button>
+                    @Html.AntiForgeryToken()
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 @using (Html.BeginForm("homeMessage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Edit Message Box 2 (Image)</h3>
-        </div>
+        <div class="panel-heading"><span style="font-size:x-large;">Change Home Page Image</span></div>
         <div class="panel-body">
             <div class="">
                 <input type="file" name="file" />
@@ -36,21 +81,25 @@
                 @Html.AntiForgeryToken()
             </div>
         </div>
-    </div>
-
-
-    
+    </div>    
 }
 
-@using (Html.BeginForm())
-{
-    <div class="form-group">
-        <div>
-            <textarea name="pic" placeholder="" class="form-control" style="max-width:50%;"></textarea>
-            <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen;">Submit</button>
-            @Html.AntiForgeryToken()
-        </div>
-    </div>
+<script>
+    function fillTextArea(fileName)
+    {
+        document.getElementById('fileName').value = fileName;
 
+        var fullText = document.getElementById(fileName).innerText;
+        var fullText = fullText.substring(fullText.indexOf(']') + 1, fullText.length).replace(/^\s+|\s+$/g, "");
+        document.getElementById('modifyMessage').value = fullText;
+        document.getElementById('modifyMessage').style.height = document.getElementById('modifyMessage').scrollHeight + 'px';
+    }
 
-}
+    function messageRemove(fileName)
+    {
+        document.getElementById('fileName').value = fileName;
+        document.getElementById('removeMessage').value = "remove";
+        document.getElementById('updateSubmitBtn').style = "background-color:red; margin-top:20px; float:right;";
+        document.getElementById('updateSubmitBtn').innerHTML = "Confirm Remove";
+    }
+</script>

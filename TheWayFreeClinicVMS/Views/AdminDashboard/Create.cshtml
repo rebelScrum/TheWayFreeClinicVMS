@@ -36,7 +36,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.volFirstName, htmlAttributes: new { @class = "control-label col-md-3" })
                             <div class="col-md-8">
-                                @Html.EditorFor(model => model.volFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.volFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "John" } })
                                 @Html.ValidationMessageFor(model => model.volFirstName, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.volLastName, htmlAttributes: new { @class = "control-label col-md-3" })
                             <div class="col-md-8">
-                                @Html.EditorFor(model => model.volLastName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.volLastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Doe" } })
                                 @Html.ValidationMessageFor(model => model.volLastName, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.volEmail, htmlAttributes: new { @class = "control-label col-md-3" })
                             <div class="col-md-8">
-                                @Html.EditorFor(model => model.volEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.volEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "example@mail.com" } })
                                 @Html.ValidationMessageFor(model => model.volEmail, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.volPhone, htmlAttributes: new { @class = "control-label col-md-3" })
                             <div class="col-md-8">
-                                @Html.EditorFor(model => model.volPhone, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.volPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "(777)777-7777" } })
                                 @Html.ValidationMessageFor(model => model.volPhone, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.volStreet1, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.volStreet1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.volStreet1, new { htmlAttributes = new { @class = "form-control", placeholder = "777 Main Street" } })
                             @Html.ValidationMessageFor(model => model.volStreet1, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.volCity, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.volCity, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.volCity, new { htmlAttributes = new { @class = "form-control", placeholder = "Jacksonville" } })
                             @Html.ValidationMessageFor(model => model.volCity, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.volState, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.volState, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.volState, new { htmlAttributes = new { @class = "form-control", placeholder = "FL" } })
                             @Html.ValidationMessageFor(model => model.volState, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.volZip, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.volZip, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.volZip, new { htmlAttributes = new { @class = "form-control", placeholder = "77777" } })
                             @Html.ValidationMessageFor(model => model.volZip, "", new { @class = "text-danger" })
                         </div>
                     </div>

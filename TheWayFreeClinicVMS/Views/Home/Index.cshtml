@@ -67,7 +67,7 @@
 
                                     <button id="submit" type="submit" value="Submit" class="btn btn-success btn-lg" style="width:100%; margin-bottom:20px;">Submit</button>
                                     <span style="font-size:small">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</span>
-                                    <p id="confirm"></p>
+                                    <p id="confirm" style="text-align:center; font-size:x-large;"></p>
                                 }
                                 <!-- end form-->
                             </div>
@@ -140,7 +140,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("confirm").innerHTML = "@ViewBag.confirm @ViewBag.clock";
-        $('#confirm').delay(3000).fadeOut();
+        $('#confirm').delay(5000).fadeOut();
     });
 
 </script>

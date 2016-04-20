@@ -163,13 +163,14 @@ namespace TheWayFreeClinicVMS.Controllers
             ViewBag.FullName = getUserName();
             var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
             var fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss") + ".txt";
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), true))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), false))
             {
                 file.WriteLine(timeStamp);
                 file.WriteLine(message);
+                file.WriteLine();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("homeMessage");
         }
 
         [HttpPost]
@@ -184,6 +185,7 @@ namespace TheWayFreeClinicVMS.Controllers
                         var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
                         using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), false))
                         {
+                            file.Write("");
                             file.WriteLine(timeStamp);
                             file.WriteLine(message);
                             file.WriteLine();
@@ -205,7 +207,7 @@ namespace TheWayFreeClinicVMS.Controllers
                     }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("homeMessage");
         }
 
         [HttpPost]
@@ -224,7 +226,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 Console.WriteLine(e.Message);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("homeMessage");
         }
 
         [HttpPost]

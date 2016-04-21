@@ -5,7 +5,7 @@ using System.Web;
 
 namespace TheWayFreeClinicVMS.Models
 {
-    public class VolunteerDataViewModel
+    public class RegisterVolunteerViewModel
     {
         public IEnumerable<Volunteer> Volunteer { get; set; }
         public IEnumerable<Language> Language { get; set; }

@@ -61,5 +61,7 @@ namespace TheWayFreeClinicVMS.Models
         {
             return new ApplicationDbContext();
         }
+
+        
     }
 }

@@ -66,9 +66,20 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
-            string text = System.IO.File.ReadAllText(Server.MapPath("~/Content/docs/") + ("message1.txt"));
-            ViewBag.message = text;
+
+            string text = "";
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
+
+            foreach (var file in d.GetFiles("*.txt"))
+            {
+                text += System.IO.File.ReadAllText(file.FullName);
+            }
+
+            ViewBag.message = text.Replace(Environment.NewLine, "<br />");
+
             ViewBag.confirm = "you are now...";
+
             ViewBag.clock = "";
 
             var wlog = db.Worklog.Include(v => v.Volunteer);
@@ -163,13 +174,14 @@ namespace TheWayFreeClinicVMS.Controllers
             ViewBag.FullName = getUserName();
             var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
             var fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss") + ".txt";
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), true))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), false))
             {
                 file.WriteLine(timeStamp);
                 file.WriteLine(message);
+                file.WriteLine();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("homeMessage");
         }
 
         [HttpPost]
@@ -184,6 +196,7 @@ namespace TheWayFreeClinicVMS.Controllers
                         var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
                         using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), false))
                         {
+                            file.Write("");
                             file.WriteLine(timeStamp);
                             file.WriteLine(message);
                             file.WriteLine();
@@ -192,10 +205,9 @@ namespace TheWayFreeClinicVMS.Controllers
                     }
                 case "remove":
                     {
-                        System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
                         try
                         {
-                            fi.Delete();
+                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName));
                         }
                         catch (System.IO.IOException e)
                         {
@@ -205,7 +217,7 @@ namespace TheWayFreeClinicVMS.Controllers
                     }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("homeMessage");
         }
 
         [HttpPost]
@@ -224,7 +236,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 Console.WriteLine(e.Message);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("homeMessage");
         }
 
         [HttpPost]

@@ -14,13 +14,30 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+
+    public class HomePageMessage
+    {
+        public string filePath;
+        public string fileName;
+        public string fullText;
+        public string preview;
+    }
+
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();        
 
         public ActionResult Index()
         {
-            string text = System.IO.File.ReadAllText(Server.MapPath("~/Content/docs/") + ("message1.txt"));
+            string text = "";
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
+            
+            foreach (var file in d.GetFiles("*.txt"))
+            {
+                text += System.IO.File.ReadAllText(file.FullName);
+            }
+
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
             ViewBag.error = TempData["error"];
             ViewBag.FullName = getUserName();
@@ -30,8 +47,7 @@ namespace TheWayFreeClinicVMS.Controllers
                         select s;                          
 
             sorts = sorts.OrderByDescending(s => s.wrkDate);
-            return View(sorts.ToList());
-          
+            return View(sorts.ToList());          
         }
 
         public ActionResult Contact()
@@ -50,9 +66,20 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
-            string text = System.IO.File.ReadAllText(Server.MapPath("~/Content/docs/") + ("message1.txt"));
-            ViewBag.message = text;
+
+            string text = "";
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
+
+            foreach (var file in d.GetFiles("*.txt"))
+            {
+                text += System.IO.File.ReadAllText(file.FullName);
+            }
+
+            ViewBag.message = text.Replace(Environment.NewLine, "<br />");
+
             ViewBag.confirm = "you are now...";
+
             ViewBag.clock = "";
 
             var wlog = db.Worklog.Include(v => v.Volunteer);
@@ -108,21 +135,108 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult homeMessage()
         {
-            ViewBag.FullName = getUserName();
-            return View();
-        }
+            string text = "";
+            int maxLength = 100;
+            
+            List<HomePageMessage> hpmList = new List<HomePageMessage>();
 
-        [HttpPost, ActionName("textBoxAction")]
-        [ValidateAntiForgeryToken]
-        public ActionResult homeMessage(string message)
-        {
-            ViewBag.FullName = getUserName();
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/") + ("message1.txt"), true))
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
+
+            foreach (var file in d.GetFiles("*.txt"))
             {
-                file.WriteLine(message);
+                HomePageMessage hpm = new HomePageMessage();
+                hpm.filePath = file.FullName;
+                hpm.fileName = file.Name;
+                hpm.fullText = System.IO.File.ReadAllText(file.FullName);
+
+                if (hpm.fullText.Length > maxLength)
+                {
+                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";  
+                }
+                else
+                {
+                    hpm.preview = hpm.fullText;
+                }
+                              
+                hpmList.Add(hpm);          
             }
 
-            return RedirectToAction("Index");
+            ViewBag.message = text.Replace(Environment.NewLine, "<br />");
+
+            ViewBag.FullName = getUserName();
+            return View(hpmList);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult homeMessageAdd(string message)
+        {
+            ViewBag.FullName = getUserName();
+            var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
+            var fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss") + ".txt";
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), false))
+            {
+                file.WriteLine(timeStamp);
+                file.WriteLine(message);
+                file.WriteLine();
+            }
+
+            return RedirectToAction("homeMessage");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult homeMessageUpdate(string message, string fileName, string removeMessage)
+        {
+            ViewBag.FullName = getUserName();
+            switch(removeMessage)
+            {
+                case "":
+                    {
+                        var timeStamp = "[" + DateTime.Now.ToLongDateString() + "]";
+                        using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), false))
+                        {
+                            file.Write("");
+                            file.WriteLine(timeStamp);
+                            file.WriteLine(message);
+                            file.WriteLine();
+                        }
+                        break;
+                    }
+                case "remove":
+                    {
+                        try
+                        {
+                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName));
+                        }
+                        catch (System.IO.IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    }
+            }
+
+            return RedirectToAction("homeMessage");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult homeMessageDelete(string fileName)
+        {
+            ViewBag.FullName = getUserName();
+
+            System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
+            try
+            {
+                fi.Delete();
+            }
+            catch (System.IO.IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return RedirectToAction("homeMessage");
         }
 
         [HttpPost]

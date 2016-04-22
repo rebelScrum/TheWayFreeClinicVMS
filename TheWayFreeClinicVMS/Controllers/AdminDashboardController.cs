@@ -88,8 +88,13 @@ namespace TheWayFreeClinicVMS.Controllers
                     sorts = sorts.OrderBy(s => s.volLastName);
                     break;
             }
-
-           
+            int year = DateTime.Now.Year;
+            DateTime firstDay = new DateTime(year, 1, 1);
+            var newVolunteers = (from v in volunteers
+                                 where (v.volStartDate >= firstDay)
+                                 select v.volID).Count();
+            ViewBag.newVolunteers = newVolunteers;
+            ViewBag.year = year;
             return View(sorts.ToList());
         }
 
@@ -749,7 +754,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return fullName;
         }
 
-        
+
 
     }
 }

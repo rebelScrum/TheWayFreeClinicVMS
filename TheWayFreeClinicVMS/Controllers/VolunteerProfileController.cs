@@ -150,7 +150,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 //db.Worklog.Add(worklog);
                 db.SaveChanges();
 
-                return RedirectToAction("Details", new { id = worklog.volID });
+                return RedirectToAction("Index", new { id = worklog.volID });
             }
 
             return View(worklog);

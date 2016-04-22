@@ -6,7 +6,8 @@
 <div class="container">
     <div class="col-md-12">
         <h2 style="text-align:center;">View Volunteers</h2>
-        <hr />
+        <p style="text-align:center; color: #419641;"><strong>New Volunteers in @ViewBag.year: @ViewBag.newVolunteers</strong></p> 
+
         @*<div style="text-align:center;">
             <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Quick Filter</a>
             <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Quick Filter</a>
@@ -14,20 +15,17 @@
             <br />
             <hr />
         </div>*@
-        <p></p>
-        <div class="form-group">
-            @using (Html.BeginForm())
+            <div class="form-group">
+                @using (Html.BeginForm())
             {
-                <p>
-                    Find by name: @Html.TextBox("SearchString")
-                    <input type="submit" value="Search" />
-                    Specialty: @Html.DropDownList("specialtySearch", "All") 
-                    <input type="submit" value="Filter" />
-                    <br />
-               </p>            
-            }
-            
-        </div>
+                    <p>
+                        Find by name: @Html.TextBox("SearchString")
+                        <input type="submit" value="Search" />
+                             Specialty: @Html.DropDownList("specialtySearch", "All")
+                        <input type="submit" value="Filter" />
+                    </p>
+                }    
+            </div>   
         <div>
             <p></p>
             <table class="table table-condensed table-hover table-striped table">

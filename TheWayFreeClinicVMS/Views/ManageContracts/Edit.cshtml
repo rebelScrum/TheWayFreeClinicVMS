@@ -36,12 +36,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    <a href="@Url.Action("Details", "AdminDashboard", new { id = ViewBag.volID })" class="btn btn-success btn-sm">Back to Details</a>
+    <a href="@Url.Action("Index", "ManageContracts", new { id = Model.volID })" class="btn btn-info btn-sm">Back to Contracts</a>
 </div>

@@ -62,6 +62,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: ManageAvailabilities/Edit/5
         public ActionResult EditAvailability(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -81,7 +82,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "avID,volID,avDay,avFrom,avUntil")] Availability availability)
+        public ActionResult EditAvailability([Bind(Include = "avID,volID,avDay,avFrom,avUntil")] Availability availability)
         {
             
             if (ModelState.IsValid)
@@ -90,7 +91,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("ViewAvailability", new { id = availability.volID });
             }
-            
+           
             return View(availability);
         }
 
@@ -110,14 +111,14 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // POST: AdminDashboard/DeleteAvailability
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteAvailability")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Availability availability = db.Availabilities.Find(id);
             db.Availabilities.Remove(availability);
             db.SaveChanges();
-            return RedirectToAction("UpdateAvailability", new { id = availability.volID});
+            return RedirectToAction("ViewAvailability", new { id = availability.volID});
         }
 
         public string getUserName()

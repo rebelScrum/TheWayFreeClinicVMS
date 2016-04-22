@@ -50,5 +50,9 @@
 }
 
 <div>
-    <a href="@Url.Action("Details", "AdminDashboard",new { id = Model.volID })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Back to Details</a>            
+    <a href="@Url.Action("Details", "AdminDashboard",new { id = Model.volID })" class="btn btn-info btn-sm">Back to Details</a>            
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

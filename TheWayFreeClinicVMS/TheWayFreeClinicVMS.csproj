@@ -365,6 +365,14 @@
     <Content Include="Views\Account\DeleteAdmin.cshtml" />
     <Content Include="Views\AdminDashboard\AvailabilityReport.cshtml" />
     <Content Include="Views\Home\homeAllMessages.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerAvailable.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerLicense.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerContract.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerTimesheet.cshtml" />
+    <Content Include="Views\VolunteerProfile\UpdateTimesheet.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerEmployer.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerEcontact.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerLanguages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

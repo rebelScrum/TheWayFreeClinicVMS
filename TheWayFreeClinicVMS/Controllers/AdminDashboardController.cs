@@ -88,8 +88,13 @@ namespace TheWayFreeClinicVMS.Controllers
                     sorts = sorts.OrderBy(s => s.volLastName);
                     break;
             }
-
-           
+            int year = DateTime.Now.Year;
+            DateTime firstDay = new DateTime(year, 1, 1);
+            var newVolunteers = (from v in volunteers
+                                 where (v.volStartDate >= firstDay)
+                                 select v.volID).Count();
+            ViewBag.newVolunteers = newVolunteers;
+            ViewBag.year = year;
             return View(sorts.ToList());
         }
 
@@ -273,6 +278,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 return HttpNotFound();
             }
             ViewBag.volID = new SelectList(db.Volunteers, "volID", "volFirstName", worklog.volID);
+            
             return View(worklog);
         }
         // POST: ManageTimesheet/Edit/5
@@ -280,13 +286,16 @@ namespace TheWayFreeClinicVMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateTimesheet([Bind(Include = "wrkID,volID,wrkDay,wrkStartTime,wrkEndTime")] Worktime worklog)
+        public ActionResult UpdateTimesheet([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] Worktime worklog)
         {
 
             if (ModelState.IsValid)
             {
                 db.Entry(worklog).State = EntityState.Modified;
+                
+                //db.Worklog.Add(worklog);
                 db.SaveChanges();
+               
                 return RedirectToAction("Details", new { id = worklog.volID });
             }
 
@@ -745,11 +754,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return fullName;
         }
 
-        //This may not be needed
-        public ActionResult Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+
 
     }
 }

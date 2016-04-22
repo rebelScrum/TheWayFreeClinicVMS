@@ -4,92 +4,258 @@
     ViewBag.Title = "Index";
 }
 
+<style>
+    dl {
+        padding: 0.5em;
+    }
 
+    dt {
+        float: left;
+        clear: left;
+        width: 120px;
+        text-align: right;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+        dt:after {
+            content: ":";
+        }
+
+    dd {
+        margin: 0 0 0 110px;
+        padding: 0 0 0.5em 0;
+    }
+</style>
+
+
+<div class="container" style="margin-top: 50px;">
+    <div class="row well">
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="well" style="background-color:white; padding:10px;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="~/Content/img/ProfilePlaceholder.png" alt="volunteer placeholder" class="img-responsive" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div style="text-align:center;">
+                                <a href="@Url.Action("Edit", "VolunteerProfile",new { id = Model.volID })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> Upload Picture</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="well" style="background-color:white;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <dl>
+
+                                <dt>
+                                    Name
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volLastName), @Html.DisplayFor(model => model.volFirstName) @Html.DisplayFor(model => model.volMiddleName)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Specialty.spcName)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Specialty.spcName)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.volDOB)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volDOB)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.volEmail)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volEmail)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.volPhone)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volPhone)
+                                </dd>
+
+                                <dt>
+                                    Address
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volStreet1) @Html.DisplayFor(model => model.volStreet2)
+                                </dd>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volCity), @Html.DisplayFor(model => model.volState) @Html.DisplayFor(model => model.volZip)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.volStartDate)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volStartDate)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.volActive)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.volActive)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="@Url.Action("Edit", "VolunteerProfile",new { id = Model.volID })" class="btn btn-primary" style="float:right;"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div> <!--end vol info col-md-4-->
+
+            <div class="col-md-6">
+                <div class="well" style="background-color:white;">
+
+                    <div class="container-fluid">
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Languages
+                                </div>
+                                <div class="col-md-6">
+                                    @{Html.RenderAction("VolunteerLanguages", new { id = Model.volID }); }
+                                </div>
+                                <div class="col-md-2">
+                                    <!--a button should go here from languages partial view-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Emergency Contact
+                                </div>
+                                <div class="col-md-6">
+                                    @{Html.RenderAction("VolunteerEcontact", new { id = Model.volID }); }
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="@Url.Action("Index", "ManageEcontacts", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Employer
+                                </div>
+                                <div class="col-md-6">
+                                    @{Html.RenderAction("VolunteerEmployer", new { id = Model.volID }); }
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="@Url.Action("Index", "ManageJobs", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="well" style="background-color:white;">
+
+                    <div class="container-fluid">
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    License
+                                </div>
+                                <div class="col-md-6">
+                                    @{Html.RenderAction("VolunteerLicense", new { id = Model.volID }); }
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="@Url.Action("Index", "ManageLicenses", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Contract
+                                </div>
+                                <div class="col-md-6">
+                                    @{Html.RenderAction("VolunteerContract", new { id = Model.volID }); }
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="@Url.Action("Index", "ManageContracts", new { id = Model.volID })" class="btn btn-primary btn-sm">Update</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div> <!--end inner row main content-->
+
+        <div class="row">
+            <div class="col-md-2">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-info">Clock In/Clock Out</a>
+            </div>
+        </div> <!--end inner row nav buttons-->
+
+
+    </div> <!--end outer row-->
+</div> <!--end container-->
 
 <div class="container">
-    <div>
-        <h4>@Html.DisplayFor(model => model.volFirstName)'s Profile</h4>
-        <hr />
-        <div class="col-md-2">
-            <img class="img-responsive" src="~/Content/img/ProfilePlaceholder.png" alt="photo placeholder"/>
+    <div class="row well">
+
+        <div class="col-md-6" style="margin-bottom:10px;">
+            <div class="col-md-12">
+                <h4 class="text-center" style="color: #337ab7;"><strong>Timesheet</strong></h4>
+                @{Html.RenderAction("VolunteerTimesheet", new { id = Model.volID }); }
+            </div>
         </div>
-        <div class="col-md-4">
-            <dl class="dl-horizontal">
-                <dt>
-                    Name
-                </dt>
+        <div class="col-md-6" style="border-left: solid #808080;">
+            <div class="col-md-12">
 
-                <dd>
-                    @Html.DisplayFor(model => model.volLastName), @Html.DisplayFor(model => model.volFirstName) @Html.DisplayFor(model => model.volMiddleName)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Specialty.spcName)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Specialty.spcName)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.volDOB)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.volDOB)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.volEmail)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.volEmail)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.volPhone)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.volPhone)
-                </dd>
-
-                <dt>
-                    Address
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.volStreet1) @Html.DisplayFor(model => model.volStreet2)
-                </dd>
-
-                <dd>
-                    @Html.DisplayFor(model => model.volCity), @Html.DisplayFor(model => model.volState) @Html.DisplayFor(model => model.volZip)
-                </dd>
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-md-12">
+                        <h4 class="text-center" style="color: #337ab7;"><strong>Available for Volunteering</strong></h4>
+                        @{Html.RenderAction("VolunteerAvailable", new { id = Model.volID }); }
+                        <a href="@Url.Action("ViewAvailability", "ManageAvailabilities", new { id = Model.volID })" class="btn btn-primary" style="float:right;"> Update Availability</a>
+                    </div>
+                </div>
 
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.volStartDate)
-                </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.volStartDate)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.volActive)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.volActive)
-                </dd>
-            </dl>
-
-
-            <p>
-                <a href="@Url.Action("Index", "Home")" class="btn btn-info">Clock-In/Clock-Out</a>
-                <a href="@Url.Action("Edit", "VolunteerProfile",new { id = Model.volID })" class="btn btn-success"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
-            </p>
+            </div>
         </div>
+
     </div>
 </div>
+

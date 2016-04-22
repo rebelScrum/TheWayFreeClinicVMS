@@ -9,7 +9,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Worktime</h4>
         <hr />
@@ -50,7 +50,7 @@
 }
 
 <div>
-    <a href="@Url.Action("Details", "AdminDashboard",new { id = Model.volID })" class="btn btn-info btn-sm">Back to Details</a>            
+    <a href="@Url.Action("Details", "AdminDashboard",new { id = Model.volID })" class="btn btn-info btn-sm">Back to Details</a>
 </div>
 
 @section Scripts {

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Speak>
+
+
+
+@foreach (var item in Model)
+{
+    @Html.DisplayFor(modelItem => item.Language.lngName); <br />
+
+}
+<div class="form-group">
+    @using (Html.BeginForm())
+    {
+
+        @Html.DropDownList("langSearch", "Choose...")
+
+        <input type="submit" value="Add More" class="btn btn-primary btn-sm" />
+    }
+</div>
+
+
+

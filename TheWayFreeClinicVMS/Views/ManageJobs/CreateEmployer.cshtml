@@ -16,7 +16,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.empName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.empName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.empName, new { htmlAttributes = new { @class = "form-control", placeholder = "Company Name" } })
                 @Html.ValidationMessageFor(model => model.empName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.empPhone, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.empPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.empPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "(777)777-7777" } })
                 @Html.ValidationMessageFor(model => model.empPhone, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -32,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.empStreet1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.empStreet1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.empStreet1, new { htmlAttributes = new { @class = "form-control", placeholder = "777 Main Street" } })
                 @Html.ValidationMessageFor(model => model.empStreet1, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.empCity, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.empCity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.empCity, new { htmlAttributes = new { @class = "form-control", placeholder = "Jacksonville" } })
                 @Html.ValidationMessageFor(model => model.empCity, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -56,7 +56,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.empState, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.empState, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.empState, new { htmlAttributes = new { @class = "form-control", placeholder = "FL" } })
                 @Html.ValidationMessageFor(model => model.empState, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -64,21 +64,21 @@
         <div class="form-group">
             @Html.LabelFor(model => model.empZip, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.empZip, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.empZip, new { htmlAttributes = new { @class = "form-control", placeholder = "77777" } })
                 @Html.ValidationMessageFor(model => model.empZip, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    <a href=@Url.Action("IndexEmployer", "ManageJobs") class="btn btn-success btn-sm">All Employers</a>
+    <a href=@Url.Action("IndexEmployer", "ManageJobs") class="btn btn-info btn-sm">All Employers</a>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

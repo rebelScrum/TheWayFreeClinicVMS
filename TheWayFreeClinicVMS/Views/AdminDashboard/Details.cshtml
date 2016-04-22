@@ -118,7 +118,7 @@
             <div>
                 <h4 class="text-center" style="color: #4CAF50;"><strong>Available for Volunteering</strong></h4>
                 @{Html.RenderAction("VolunteerAvailable", new { id = Model.volID }); }
-                <a href="@Url.Action("ViewAvailability", "ManageAvailabilities", new { id = Model.volID })" class="btn btn-info">Update Availability</a>
+                <a href="@Url.Action("ViewAvailability", "ManageAvailabilities", new { id = Model.volID })" class="btn btn-primary"> Update Availability</a>
             </div>
             <div style="margin-top:30px;">
                 <dl class="dl-horizontal">

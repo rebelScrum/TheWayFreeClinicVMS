@@ -749,11 +749,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return fullName;
         }
 
-        //This may not be needed
-        public ActionResult Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
     }
 }

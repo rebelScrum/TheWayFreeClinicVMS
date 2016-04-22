@@ -25,14 +25,14 @@ namespace TheWayFreeClinicVMS.Controllers
 
     public class HomeController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();        
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {
             string text = "";
 
             DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
-            
+
             foreach (var file in d.GetFiles("*.txt"))
             {
                 text += System.IO.File.ReadAllText(file.FullName);
@@ -44,10 +44,11 @@ namespace TheWayFreeClinicVMS.Controllers
             var wlog = db.Worklog;
 
             var sorts = from s in wlog
-                        select s;                          
+                        select s;
 
             sorts = sorts.OrderByDescending(s => s.wrkDate);
-            return View(sorts.ToList());          
+            sorts = sorts.Take(15);
+            return View(sorts.ToList());
         }
 
         public ActionResult Contact()
@@ -86,35 +87,57 @@ namespace TheWayFreeClinicVMS.Controllers
             var volunteers = db.Volunteers;
 
             //get id from email
-            var thisVolID = (from i in volunteers  where i.volEmail == email select i.volID).SingleOrDefault();
+            var thisVolID = (from i in volunteers where i.volEmail == email select i.volID).SingleOrDefault();
 
             //will set Worktime object if Endtime null. i.e., user clocked-in. 
             Worktime time = (from w in wlog where w.volID == thisVolID && w.wrkEndTime == null select w).SingleOrDefault();
-            
+            TimeSpan closingTime = new TimeSpan(17, 00, 00);
             //if wrkEndTime null, user is still clocked in. Update wrkEndTime with timestamp. 
-            //Now user has no worktime record with empty end time. At next entry query will return null and move to else.
-            if (time != null)
-            {                
+            //Then, user has no worktime record with empty end time. At next entry query will return null and move to else.
+
+            if (time != null) //user still clocked in
+            {
                 time.wrkDate = DateTime.Now;
                 time.wrkEndTime = DateTime.Now;
+
+                if (time.wrkEndTime.Value.Date != time.wrkStartTime.Date) //if clocked out the day after clocked in
+                {
+                    time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 0);
+                    //send notification to admin
+                }
+                else if (time.wrkEndTime.Value.TimeOfDay >= closingTime) //clocked out same day as clock in, but after 5 PM
+                {
+                    time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 1);
+                    //send notification to admin
+                }
+
                 ViewBag.clock = "Clocked Out!";
                 db.SaveChanges();
             }
-            else //this user has no record containing null wrkEndTime
+            else //user has no record containing null wrkEndTime, user currently clocked out
             {
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        Worktime newTime = new Worktime();
+                        if (DateTime.Now.TimeOfDay >= closingTime) // if user tries to clock in after 5pm today
+                        {
+                            ViewBag.confirm = "";
+                            ViewBag.clock = "You cannot sign in after 5 PM. Please see your administrator for more information.";
+                        }
+                        else //normal working hours
+                        {
+                            Worktime newTime = new Worktime();
 
-                        newTime.volID = thisVolID;
-                        newTime.wrkDate = DateTime.Now;
-                        newTime.wrkStartTime = DateTime.Now;
-                        newTime.wrkEndTime = null;                    
-                        db.Worklog.Add(newTime);
-                        db.SaveChanges();
-                        ViewBag.clock = "Clocked In!";                      
+                            newTime.volID = thisVolID;
+                            newTime.wrkDate = DateTime.Now;
+                            newTime.wrkStartTime = DateTime.Now;
+                            newTime.wrkEndTime = null;
+                            db.Worklog.Add(newTime);
+                            db.SaveChanges();
+                            ViewBag.clock = "Clocked In!";
+                        }
+
                     }
                 }
                 catch (DataException)
@@ -129,7 +152,7 @@ namespace TheWayFreeClinicVMS.Controllers
                         select s;
 
             sorts = sorts.OrderByDescending(s => s.wrkDate);
-
+            sorts = sorts.Take(15);
             return View(sorts.ToList());
         }
 
@@ -137,7 +160,7 @@ namespace TheWayFreeClinicVMS.Controllers
         {
             string text = "";
             int maxLength = 100;
-            
+
             List<HomePageMessage> hpmList = new List<HomePageMessage>();
 
             DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
@@ -151,14 +174,14 @@ namespace TheWayFreeClinicVMS.Controllers
 
                 if (hpm.fullText.Length > maxLength)
                 {
-                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";  
+                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";
                 }
                 else
                 {
                     hpm.preview = hpm.fullText;
                 }
-                              
-                hpmList.Add(hpm);          
+
+                hpmList.Add(hpm);
             }
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
@@ -189,7 +212,7 @@ namespace TheWayFreeClinicVMS.Controllers
         public ActionResult homeMessageUpdate(string message, string fileName, string removeMessage)
         {
             ViewBag.FullName = getUserName();
-            switch(removeMessage)
+            switch (removeMessage)
             {
                 case "":
                     {
@@ -268,15 +291,15 @@ namespace TheWayFreeClinicVMS.Controllers
                     {
                         image.Save(renamedImagePath + ".png", System.Drawing.Imaging.ImageFormat.Png);
                     }
-                    image.Dispose();                   
-                    
+                    image.Dispose();
+
                 }
                 else
                 {
                     TempData["error"] = "ModelState Not Valid";
                 }
             }
-            
+
             return RedirectToAction("Index");
         }
 
@@ -296,7 +319,7 @@ namespace TheWayFreeClinicVMS.Controllers
                                where v.volEmail == User.Identity.Name
                                select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
 
-            
+
             return fullName;
         }
     }

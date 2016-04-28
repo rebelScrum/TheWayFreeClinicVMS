@@ -111,7 +111,23 @@ namespace TheWayFreeClinicVMS.Controllers
             var vol = db.Volunteers;
             var user = (from i in vol where i.volEmail == User.Identity.Name select i.volID).SingleOrDefault();
             var volunteerID = user;
-            var timesheet = db.Worklog.Where(s => s.volID == volunteerID).ToList();
+            var timesheet = db.Worklog.Where(s => s.volID == volunteerID).ToList().OrderByDescending(d => d.wrkDate);
+
+            var wlog = db.Worklog.Include(v => v.Volunteer);
+            var volunteers = db.Volunteers;
+
+            //will set Worktime object if Endtime null. i.e., user clocked-in. 
+            Worktime time = (from w in wlog where w.volID == volunteerID && w.wrkEndTime == null select w).SingleOrDefault();
+            if (time != null) //time variable holds a record with wrkEndTime==null, user is still clocked in
+            {
+                ViewBag.ClockStatus = "Clocked In";
+                ViewBag.ClockActionBtn = "Click To Clock Out";
+            }
+            else //user has no record containing null wrkEndTime, user currently clocked out
+            {
+                ViewBag.ClockStatus = "Clocked Out";
+                ViewBag.ClockActionBtn = "Click To Clock In";
+            }
 
             return PartialView("_VolunteerTimesheet", timesheet);
         }

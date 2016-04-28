@@ -67,6 +67,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
+            ViewBag.FullName = getUserName();
 
             string text = "";
 

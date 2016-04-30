@@ -204,6 +204,8 @@ namespace TheWayFreeClinicVMS.Controllers
                 {
                     hpm.preview = hpm.fullText;
                 }
+
+                hpmList.Add(hpm);
                 
             }
 

@@ -10,6 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+    [Authorize]
     public class VolunteerProfileController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

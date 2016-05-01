@@ -184,14 +184,14 @@ namespace TheWayFreeClinicVMS.Controllers
             if (vol != null)
             {
                 var user = new ApplicationUser { UserName = vol.volEmail, Email = vol.volEmail };
-                user.Volunteer = vol;
-                var result = await UserManager.CreateAsync(user, "CCsmall22!!");
+                user.Volunteer = vol; //add vol to volunteer table, sets user object's Volunteer attribute to vol
+                var result = await UserManager.CreateAsync(user, "CCsmall22!!"); //create autogen password logic here
                 if (result != null)
                 {
                     UserManager.AddToRole(user.Id, "Volunteer");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home"); // redirect to desired view, needs success message
                 }
                 AddErrors(result);
             }

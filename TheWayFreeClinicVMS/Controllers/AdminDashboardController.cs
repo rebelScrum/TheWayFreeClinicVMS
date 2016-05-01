@@ -141,8 +141,8 @@ namespace TheWayFreeClinicVMS.Controllers
                 var alreadyExists = db.Volunteers.Any(v => v.volEmail == volunteer.volEmail);
                 if ((ModelState.IsValid) && !(alreadyExists))
                 {                  
-                    return RedirectToAction("RegisterNewVol", "Account", volunteer);
-                    //return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });
+                    return RedirectToAction("RegisterNewVol", "Account", volunteer); // new redirect; to alternate register method in account controller passing vol from form
+                    //return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });  old redirect
                 }
             }
             catch (DataException)

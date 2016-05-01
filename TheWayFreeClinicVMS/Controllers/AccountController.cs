@@ -178,6 +178,28 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> RegisterNewVol(Volunteer vol)
+        {
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (vol != null)
+            {
+                var user = new ApplicationUser { UserName = vol.volEmail, Email = vol.volEmail };
+                user.Volunteer = vol;
+                var result = await UserManager.CreateAsync(user, "CCsmall22!!");
+                if (result != null)
+                {
+                    UserManager.AddToRole(user.Id, "Volunteer");
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index", "Home");
+        }
+
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]

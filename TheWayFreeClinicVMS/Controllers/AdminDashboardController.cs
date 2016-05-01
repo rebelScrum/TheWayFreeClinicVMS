@@ -7,6 +7,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
@@ -139,11 +140,9 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 var alreadyExists = db.Volunteers.Any(v => v.volEmail == volunteer.volEmail);
                 if ((ModelState.IsValid) && !(alreadyExists))
-                {
-                    db.Volunteers.Add(volunteer);
-                    db.SaveChanges();
-                    
-                    return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });
+                {                  
+                    return RedirectToAction("RegisterNewVol", "Account", volunteer);
+                    //return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });
                 }
             }
             catch (DataException)

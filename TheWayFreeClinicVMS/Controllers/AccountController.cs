@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TheWayFreeClinicVMS.Models;
 using System.Net;
+using System.Web.Security;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -62,6 +63,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            ViewBag.FullName = getUserName();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -73,6 +75,8 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            ViewBag.FullName = getUserName();
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -84,7 +88,34 @@ namespace TheWayFreeClinicVMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    {
+                        ApplicationUser user = db.Users.FirstOrDefault(u => u.UserName.Equals(model.Email, StringComparison.CurrentCultureIgnoreCase));
+
+                        if (user != null)
+                        {
+                            var roles = UserManager.GetRoles(user.Id);
+
+                            if (roles.Contains("Admin"))
+                            {
+                                return RedirectToAction("Index", "AdminDashboard");
+                            }
+                            else if (roles.Contains("Volunteer"))
+                            {
+                                return RedirectToAction("Index", "VolunteerProfile");
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+
+                        
+                    }
+                    
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

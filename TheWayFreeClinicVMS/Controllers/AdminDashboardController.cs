@@ -37,6 +37,7 @@ namespace TheWayFreeClinicVMS.Controllers
        
 
         // GET: AdminDashboard
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();

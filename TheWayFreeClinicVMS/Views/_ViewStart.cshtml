@@ -1,12 +1,27 @@
 ﻿@{
     var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"].ToString();
     string layout = "";
-    if (controller == "AdminDashboard")
+
+    switch (controller)
     {
-        layout = "~/Views/Shared/_AdminLayout.cshtml";
+        case "Account":
+        case "AdminDashboard":
+        case "ManageAvailabilities":
+        case "ManageContracts":
+        case "Manage":
+        case "ManageEcontact":
+        case "ManageJobs":
+        case "ManageLicenses":
+            {
+                layout = "~/Views/Shared/_AdminLayout.cshtml";
+                break;
+            }
+        default:
+            {
+                layout = "~/Views/Shared/_Layout.cshtml";
+                break;
+            }
     }
-    else {
-        layout = "~/Views/Shared/_Layout.cshtml";
-    }
+
     Layout = layout;
 }

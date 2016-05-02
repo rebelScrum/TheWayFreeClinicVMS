@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TheWayFreeClinicVMS.Models;
 using System.Net;
+using System.Web.Security;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -62,6 +63,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            ViewBag.FullName = getUserName();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -73,6 +75,8 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            ViewBag.FullName = getUserName();
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -84,7 +88,34 @@ namespace TheWayFreeClinicVMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    {
+                        ApplicationUser user = db.Users.FirstOrDefault(u => u.UserName.Equals(model.Email, StringComparison.CurrentCultureIgnoreCase));
+
+                        if (user != null)
+                        {
+                            var roles = UserManager.GetRoles(user.Id);
+
+                            if (roles.Contains("Admin"))
+                            {
+                                return RedirectToAction("Index", "AdminDashboard");
+                            }
+                            else if (roles.Contains("Volunteer"))
+                            {
+                                return RedirectToAction("Index", "VolunteerProfile");
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+
+                        
+                    }
+                    
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -176,6 +207,28 @@ namespace TheWayFreeClinicVMS.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public async Task<ActionResult> RegisterNewVol(Volunteer vol)
+        {
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (vol != null)
+            {
+                var user = new ApplicationUser { UserName = vol.volEmail, Email = vol.volEmail };
+                user.Volunteer = vol; //add vol to volunteer table, sets user object's Volunteer attribute to vol
+                var result = await UserManager.CreateAsync(user, "CCsmall22!!"); //create autogen password logic here
+                if (result != null)
+                {
+                    UserManager.AddToRole(user.Id, "Volunteer");
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    return RedirectToAction("Index", "Home"); // redirect to desired view, needs success message
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index", "Home");
         }
 
         //

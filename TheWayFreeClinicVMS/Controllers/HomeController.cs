@@ -35,7 +35,30 @@ namespace TheWayFreeClinicVMS.Controllers
 
             foreach (var file in d.GetFiles("*.txt"))
             {
-                text += System.IO.File.ReadAllText(file.FullName);
+
+                //only add messages < 30 days old
+                DateTime msgDate = Convert.ToDateTime(file.Name.Replace("-", "/").Remove(file.Name.IndexOf("_")));
+                DateTime expiryDate = msgDate.AddDays(30);
+                List<HomePageMessage> hpmList = new List<HomePageMessage>();
+
+                bool expired = DateTime.Now > expiryDate;
+
+                if (expired)
+                {
+                    try
+                    {
+                        System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/") + (file.Name), Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (file.Name));
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+                else
+                {
+                    text += System.IO.File.ReadAllText(file.FullName);
+                }
+                
             }
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
@@ -67,6 +90,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
+            ViewBag.FullName = getUserName();
 
             string text = "";
 
@@ -182,6 +206,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 }
 
                 hpmList.Add(hpm);
+                
             }
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");

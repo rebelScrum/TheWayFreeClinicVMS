@@ -7,6 +7,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
@@ -36,6 +37,7 @@ namespace TheWayFreeClinicVMS.Controllers
        
 
         // GET: AdminDashboard
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();
@@ -139,11 +141,9 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 var alreadyExists = db.Volunteers.Any(v => v.volEmail == volunteer.volEmail);
                 if ((ModelState.IsValid) && !(alreadyExists))
-                {
-                    db.Volunteers.Add(volunteer);
-                    db.SaveChanges();
-                    
-                    return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });
+                {                  
+                    return RedirectToAction("RegisterNewVol", "Account", volunteer); // new redirect; to alternate register method in account controller passing vol from form
+                    //return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });  old redirect
                 }
             }
             catch (DataException)

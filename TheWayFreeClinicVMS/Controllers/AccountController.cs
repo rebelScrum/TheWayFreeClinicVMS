@@ -110,6 +110,7 @@ namespace TheWayFreeClinicVMS.Controllers
                         }
                         else
                         {
+                            ViewBag.confirm = "Sign-In Error: See Administrator.";
                             return RedirectToAction("Index", "Home");
                         }
 

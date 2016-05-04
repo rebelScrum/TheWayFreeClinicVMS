@@ -137,7 +137,16 @@
 
     </div>
 
+<span id="signInMsg" hidden>@ViewBag.SignInMsg</span>
+
 <script>
+
+    window.onload = function () {
+        if (document.getElementById("signInMsg").innerHTML != ""){
+            alert(document.getElementById("signInMsg").innerHTML);
+        }
+    };
+
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("confirm").innerHTML = "@ViewBag.confirm @ViewBag.clock";
         $('#confirm').delay(5000).fadeOut();

@@ -127,11 +127,13 @@ namespace TheWayFreeClinicVMS.Controllers
                 if (time.wrkEndTime.Value.Date != time.wrkStartTime.Date) //if clocked out the day after clocked in
                 {
                     time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 0);
+                    ViewBag.SignInMsg = "You were still signed-in. \n\n Last sign-in occured: " + time.wrkStartTime + "\n\n You are now signed-out for that day (5:00 PM). \n Please enter your e-mail again if you want to sign-in for today";
                     //send notification to admin
                 }
                 else if (time.wrkEndTime.Value.TimeOfDay >= closingTime) //clocked out same day as clock in, but after 5 PM
                 {
                     time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 1);
+                    ViewBag.SignInMsg = "You were still signed-in. \n\n Last sign-in occured: " + time.wrkStartTime + "\n\n You are now signed-out for that day (5:00 PM). \n Please enter your e-mail again if you want to sign-in for today";
                     //send notification to admin
                 }
 

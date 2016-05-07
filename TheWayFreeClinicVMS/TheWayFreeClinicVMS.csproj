@@ -216,6 +216,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\custom.css" />
+    <Content Include="Content\docs\WorklogDataMessages\WorklogDataFlags.txt" />
     <Content Include="Content\img\Help1_HomePageOverview.png" />
     <Content Include="Content\img\Help2_ClockIn.png" />
     <Content Include="Content\img\Help3_RecentActivityClockIn.png" />
@@ -369,10 +370,10 @@
     <Content Include="Views\VolunteerProfile\_VolunteerLicense.cshtml" />
     <Content Include="Views\VolunteerProfile\_VolunteerContract.cshtml" />
     <Content Include="Views\VolunteerProfile\_VolunteerTimesheet.cshtml" />
-    <Content Include="Views\VolunteerProfile\UpdateTimesheet.cshtml" />
     <Content Include="Views\VolunteerProfile\_VolunteerEmployer.cshtml" />
     <Content Include="Views\VolunteerProfile\_VolunteerEcontact.cshtml" />
     <Content Include="Views\VolunteerProfile\_VolunteerLanguages.cshtml" />
+    <Content Include="Views\AdminDashboard\WorklogData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,6 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Authorize]
     public class ManageController : Controller
     {

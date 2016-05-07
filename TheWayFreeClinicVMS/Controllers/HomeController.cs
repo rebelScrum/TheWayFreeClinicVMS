@@ -128,13 +128,23 @@ namespace TheWayFreeClinicVMS.Controllers
                 {
                     time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 0);
                     ViewBag.SignInMsg = "You were still signed-in. \n\n Last sign-in occured: " + time.wrkStartTime + "\n\n You are now signed-out for that day (5:00 PM). \n Please enter your e-mail again if you want to sign-in for today";
-                    //send notification to admin
+
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), true))
+                    {
+                        var flag = time.wrkID + ",2;";
+                        file.Write(flag);
+                    }                    //send notification to admin
                 }
                 else if (time.wrkEndTime.Value.TimeOfDay >= closingTime) //clocked out same day as clock in, but after 5 PM
                 {
                     time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 1);
                     ViewBag.SignInMsg = "You were still signed-in. \n\n Last sign-in occured: " + time.wrkStartTime + "\n\n You are now signed-out for that day (5:00 PM). \n Please enter your e-mail again if you want to sign-in for today";
-                    //send notification to admin
+
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), true))
+                    {
+                        var flag = time.wrkID + ",1;";
+                        file.Write(flag);
+                    }                    //send notification to admin
                 }
 
                 ViewBag.clock = "Clocked Out!";
@@ -182,6 +192,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(sorts.ToList());
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult homeMessage()
         {
             string text = "";
@@ -217,6 +228,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(hpmList);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult homeMessageAdd(string message)
@@ -234,6 +246,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return RedirectToAction("homeMessage");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult homeMessageUpdate(string message, string fileName, string removeMessage)
@@ -270,6 +283,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return RedirectToAction("homeMessage");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult homeMessageDelete(string fileName)
@@ -289,6 +303,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return RedirectToAction("homeMessage");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult homeMessage(HttpPostedFileBase file)

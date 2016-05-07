@@ -10,6 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ManageAvailabilitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -15,6 +15,7 @@ namespace TheWayFreeClinicVMS.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: VolunteerProfile
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult Index()
         {
             ViewBag.FullName = getUserName();

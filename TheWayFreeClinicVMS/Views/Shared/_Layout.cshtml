@@ -25,8 +25,8 @@
                         <li>@Html.ActionLink("VMS Home", "Index", "Home")</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         <li>@Html.ActionLink("Help", "Help", "Home")</li>
-                        @if (Roles.IsUserInRole("Admin"))
-                        {
+                     @if (User.IsInRole("Admin"))
+                     {
                             <li>@Html.ActionLink("Dashboard", "Index", "AdminDashboard")</li>
                         }
                     </ul>

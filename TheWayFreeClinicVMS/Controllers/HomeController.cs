@@ -10,7 +10,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
-
+ 
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -25,11 +25,13 @@ namespace TheWayFreeClinicVMS.Controllers
 
     public class HomeController : Controller
     {
+        
         private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {
-            string text = "";
+             
+               string text = "";
 
             DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
 

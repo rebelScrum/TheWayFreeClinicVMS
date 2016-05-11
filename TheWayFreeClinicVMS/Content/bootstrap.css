@@ -7,17 +7,59 @@
 
 /* BEGIN CUSTOM CSS */
 
-/* David P: Used for Help page tutorial images */
+/* Help page tutorial images */
 .img-responsive-help {
     max-width: 100%;
     height: auto;
     border: 5px solid black;
     margin: 15px 5px 15px 5px;
+    position: center;
 }
 
+/* Set larger font size for Help page */
 .help-page {
     font-size: 18px;
 }
+
+/* Style the buttons that are used to open and close the accordion panel */
+button.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: 2px black thin ridge;
+    outline: none;
+    transition: ease-in-out;
+}
+
+    /* Change color on mouse hover */
+    button.accordion:hover {
+        background-color: #ddd;
+    }
+    /* Change color when section becomes active */
+    button.accordion.active {
+        background-color: lightgreen;
+    }
+
+        button.accordion.active:hover {
+            background-color: #267326;
+        }
+
+
+/* Note: hidden by default */
+div.accordion-panel {
+    padding: 10px 18px;
+    background-color: white;
+    display: none;
+}
+
+    /* The "show" class is added to the accordion panel when the user clicks on one of the buttons. This will show the panel content */
+    div.accordion-panel.show {
+        display: block;
+        background-color: #e6e6e6;
+    }
 
 /* END CUSTOM CSS */
 
@@ -306,7 +348,7 @@ th {
 
     /* David P: Used for Help page */
 
-    
+
 
     /*
   .accordion {

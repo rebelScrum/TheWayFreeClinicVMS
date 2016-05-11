@@ -217,6 +217,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\custom.css" />
+    <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\docs\WorklogDataMessages\WorklogDataFlags.txt" />
     <Content Include="Content\img\Help1_HomePageOverview.png" />
     <Content Include="Content\img\Help2_ClockIn.png" />
@@ -273,6 +274,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\daterangepicker.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -375,6 +378,7 @@
     <Content Include="Views\VolunteerProfile\_VolunteerEcontact.cshtml" />
     <Content Include="Views\VolunteerProfile\_VolunteerLanguages.cshtml" />
     <Content Include="Views\AdminDashboard\WorklogData.cshtml" />
+    <Content Include="Views\AdminDashboard\Backup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

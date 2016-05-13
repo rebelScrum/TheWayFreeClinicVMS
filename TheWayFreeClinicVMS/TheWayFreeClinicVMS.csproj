@@ -378,10 +378,11 @@
     <Content Include="Views\VolunteerProfile\_VolunteerEcontact.cshtml" />
     <Content Include="Views\VolunteerProfile\_VolunteerLanguages.cshtml" />
     <Content Include="Views\AdminDashboard\WorklogData.cshtml" />
-    <Content Include="Views\AdminDashboard\Backup.cshtml" />
+    <Content Include="Views\AdminDashboard\BackupDB.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\docs\Backups\" />
     <Folder Include="Content\docs\HomePageMessages\HomePageMessagesArchive\" />
     <Folder Include="Content\img\homePageImg\" />
   </ItemGroup>

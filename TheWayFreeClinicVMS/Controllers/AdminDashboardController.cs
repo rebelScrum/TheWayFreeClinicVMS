@@ -13,6 +13,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
+using Microsoft.SqlServer;
+using System.Data.SqlClient;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -893,6 +897,72 @@ namespace TheWayFreeClinicVMS.Controllers
 
             
             return View(wlogSorts.ToList());
+        }
+
+        public ActionResult BackupDB()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BackupDbToFile()
+        {            
+                SqlConnection con = new SqlConnection();
+                SqlCommand sqlcmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter();
+                DataTable dt = new DataTable();
+
+                //con.ConnectionString = @"Server=MyPC\SqlServer2k8;database=Test;Integrated Security=true;";
+                con.ConnectionString = @"Data Source=99.127.65.108,1433;Initial Catalog=rebelscrumdb;Persist Security Info=True;User ID=rebelNadiia;Password=thewayfreeclinic;";
+                string backupDIR = Server.MapPath("~/Content/docs/Backups/");
+                string fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss");
+
+                if (!System.IO.Directory.Exists(backupDIR))
+                {
+                    System.IO.Directory.CreateDirectory(backupDIR);
+                }
+            try
+            {
+                con.Open();
+                sqlcmd = new SqlCommand("backup database rebelscrumdb to disk='" + backupDIR + "\\" + fileName + ".Bak'", con);
+                sqlcmd.ExecuteNonQuery();
+                con.Close();
+
+                if (Server.MapPath("~/Content/docs/Backups/" + fileName + ".Bak") != null)
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName + ".Bak");
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName + ".Bak");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.BackupMsg = "Error Occured During DB backup process !<br>" + ex.ToString();
+            }
+
+            return RedirectToAction("BackupDB");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BackupDBToExcel()
+        {
+            GridView gv = new GridView();
+            gv.DataSource = db.Volunteers.ToList();
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=Marklist.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            gv.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+
+            return RedirectToAction("BackupDB");
         }
 
         protected override void Dispose(bool disposing)

@@ -105,7 +105,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
 
-            ViewBag.confirm = "you are now...";
+            ViewBag.confirm = email + " is now... ";
 
             ViewBag.clock = "";
 

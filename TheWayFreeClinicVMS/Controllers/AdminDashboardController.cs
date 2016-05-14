@@ -13,6 +13,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
+using Microsoft.SqlServer;
+using System.Data.SqlClient;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -256,6 +260,22 @@ namespace TheWayFreeClinicVMS.Controllers
         {
             var volunteerID = id;
             var timesheet = db.Worklog.Where(s => s.volID == volunteerID).ToList();
+
+            var wlog = db.Worklog.Include(v => v.Volunteer);
+            var volunteers = db.Volunteers;
+
+            //will set Worktime object if Endtime null. i.e., user clocked-in. 
+            Worktime time = (from w in wlog where w.volID == volunteerID && w.wrkEndTime == null select w).SingleOrDefault();
+            if (time != null) //time variable holds a record with wrkEndTime==null, user is still clocked in
+            {
+                ViewBag.ClockStatus = "Clocked In";
+                ViewBag.ClockActionBtn = "Click To Clock Out";
+            }
+            else //user has no record containing null wrkEndTime, user currently clocked out
+            {
+                ViewBag.ClockStatus = "Clocked Out";
+                ViewBag.ClockActionBtn = "Click To Clock In";
+            }
 
             return PartialView("_VolunteerTimesheet", timesheet);
         }
@@ -877,6 +897,137 @@ namespace TheWayFreeClinicVMS.Controllers
 
             
             return View(wlogSorts.ToList());
+        }
+
+        public ActionResult BackupDB()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BackupDbToFile()
+        {            
+                SqlConnection con = new SqlConnection();
+                SqlCommand sqlcmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter();
+                DataTable dt = new DataTable();
+
+                //con.ConnectionString = @"Server=MyPC\SqlServer2k8;database=Test;Integrated Security=true;";
+                con.ConnectionString = @"Data Source=99.127.65.108,1433;Initial Catalog=rebelscrumdb;Persist Security Info=True;User ID=rebelNadiia;Password=thewayfreeclinic;";
+                string backupDIR = Server.MapPath("~/Content/docs/Backups/");
+                string fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss");
+
+                if (!System.IO.Directory.Exists(backupDIR))
+                {
+                    System.IO.Directory.CreateDirectory(backupDIR);
+                }
+            try
+            {
+                con.Open();
+                sqlcmd = new SqlCommand("backup database rebelscrumdb to disk='" + backupDIR + "\\" + fileName + ".Bak'", con);
+                sqlcmd.ExecuteNonQuery();
+                con.Close();
+
+                if (Server.MapPath("~/Content/docs/Backups/" + fileName + ".Bak") != null)
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName + ".Bak");
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName + ".Bak");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.BackupMsg = "Error Occured During DB backup process !<br>" + ex.ToString();
+            }
+
+            return RedirectToAction("BackupDB");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void BackupDBToExcel(string tableName)
+        {
+            string dateCreated = DateTime.Now.ToShortDateString();
+            string fileName = tableName + "_" + dateCreated;
+
+            GridView gv = new GridView();
+
+            switch (tableName)
+            {
+                case "Availability":
+                    {
+                        gv.DataSource = db.Availabilities.ToList();
+                        break;
+                    }
+                case "Contract":
+                    {
+                        gv.DataSource = db.Contracts.ToList();
+                        break;
+                    }
+                case "Econtact":
+                    {
+                        gv.DataSource = db.Econtacts.ToList();
+                        break;
+                    }
+                case "Employer":
+                    {
+                        gv.DataSource = db.Employers.ToList();
+                        break;
+                    }
+                case "Job":
+                    {
+                        gv.DataSource = db.Jobs.ToList();
+                        break;
+                    }
+                case "Language":
+                    {
+                        gv.DataSource = db.Languages.ToList();
+                        break;
+                    }
+                case "License":
+                    {
+                        gv.DataSource = db.Licenses.ToList();
+                        break;
+                    }
+                case "Pagroup":
+                    {
+                        gv.DataSource = db.Pagroups.ToList();
+                        break;
+                    }
+                case "Speak":
+                    {
+                        gv.DataSource = db.Speaks.ToList();
+                        break;
+                    }
+                case "Specialty":
+                    {
+                        gv.DataSource = db.Specialties.ToList();
+                        break;
+                    }
+                case "Volunteer":
+                    {
+                        gv.DataSource = db.Volunteers.ToList();
+                        break;
+                    }
+                case "Worktime":
+                    {
+                        gv.DataSource = db.Worklog.ToList();
+                        break;
+                    }
+            }            
+            
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=" + fileName + ".xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            gv.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
         }
 
         protected override void Dispose(bool disposing)

@@ -945,14 +945,81 @@ namespace TheWayFreeClinicVMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult BackupDBToExcel()
+        public void BackupDBToExcel(string tableName)
         {
+            string dateCreated = DateTime.Now.ToShortDateString();
+            string fileName = tableName + "_" + dateCreated;
+
             GridView gv = new GridView();
-            gv.DataSource = db.Volunteers.ToList();
+
+            switch (tableName)
+            {
+                case "Availability":
+                    {
+                        gv.DataSource = db.Availabilities.ToList();
+                        break;
+                    }
+                case "Contract":
+                    {
+                        gv.DataSource = db.Contracts.ToList();
+                        break;
+                    }
+                case "Econtact":
+                    {
+                        gv.DataSource = db.Econtacts.ToList();
+                        break;
+                    }
+                case "Employer":
+                    {
+                        gv.DataSource = db.Employers.ToList();
+                        break;
+                    }
+                case "Job":
+                    {
+                        gv.DataSource = db.Jobs.ToList();
+                        break;
+                    }
+                case "Language":
+                    {
+                        gv.DataSource = db.Languages.ToList();
+                        break;
+                    }
+                case "License":
+                    {
+                        gv.DataSource = db.Licenses.ToList();
+                        break;
+                    }
+                case "Pagroup":
+                    {
+                        gv.DataSource = db.Pagroups.ToList();
+                        break;
+                    }
+                case "Speak":
+                    {
+                        gv.DataSource = db.Speaks.ToList();
+                        break;
+                    }
+                case "Specialty":
+                    {
+                        gv.DataSource = db.Specialties.ToList();
+                        break;
+                    }
+                case "Volunteer":
+                    {
+                        gv.DataSource = db.Volunteers.ToList();
+                        break;
+                    }
+                case "Worktime":
+                    {
+                        gv.DataSource = db.Worklog.ToList();
+                        break;
+                    }
+            }            
+            
             gv.DataBind();
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename=Marklist.xls");
+            Response.AddHeader("content-disposition", "attachment; filename=" + fileName + ".xls");
             Response.ContentType = "application/ms-excel";
             Response.Charset = "";
             StringWriter sw = new StringWriter();
@@ -961,8 +1028,6 @@ namespace TheWayFreeClinicVMS.Controllers
             Response.Output.Write(sw.ToString());
             Response.Flush();
             Response.End();
-
-            return RedirectToAction("BackupDB");
         }
 
         protected override void Dispose(bool disposing)

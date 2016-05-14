@@ -16,28 +16,42 @@
                     @Html.AntiForgeryToken()
 
                     <div class="col-md-6">
-                        <div class="jumbotron" style="padding-bottom:10px;">
+                        <div class="jumbotron">
+                            <div class="panel panel-heading panel-primary" style="background-color:#ffffff;">Backup Database to .Bak File</div>
+
                             <button type="submit" class="btn btn-default btn-block" style="height:100px; width:100px; margin:auto;">
                                 <span class="glyphicon glyphicon-hdd" style="font-size:xx-large;"></span>
-                            </button>
-                            <div class="panel panel-heading panel-primary" style="margin-top:20px; background-color:#ffffff;">Backup Database to .Bak File</div>
+                            </button>                            
+
                         </div>
                     </div>
                 }
 
-                @using (Html.BeginForm("BackupDbToExcel", "AdminDashboard"))
-                {
-                    @Html.AntiForgeryToken()
+                <div class="col-md-6">
+                    <div class="jumbotron">
+                        <div class="panel panel-heading panel-primary" style="background-color:#ffffff;">Backup Data Tables to Excel Files</div>
 
-                    <div class="col-md-6">
-                        <div class="jumbotron" style="padding-bottom:10px;">
-                            <button type="submit" class="btn btn-default btn-block" style="height:100px; width:100px; margin:auto;">
-                                <span class="glyphicon glyphicon-list" style="font-size:xx-large;"></span>
-                            </button>
-                            <div class="panel panel-heading panel-primary" style="margin-top:20px; background-color:#ffffff;">Backup All Data Tables to Excel Files</div>
-                        </div>
+                        @using (Html.BeginForm("BackupDbToExcel", "AdminDashboard"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input name="tableName" type="submit" value="Availability" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Contract" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Econtact" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Employer" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Job" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Language" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="License" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Pagroup" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Speak" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Specialty" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Volunteer" class="btn btn-default btn-block" style="margin:auto;" />
+                            <input name="tableName" type="submit" value="Worktime" class="btn btn-default btn-block" style="margin:auto;" />
+
+                        }
+
                     </div>
-                }
+                </div>
+
 
             </div>
         </div>

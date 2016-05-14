@@ -40,8 +40,9 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-danger" /> 
+            
             <a href="@Url.Action("Index", "ManageEcontacts", new { id = Model.volID })" class="btn btn-info">Back to List</a>
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
         </div>
     }
 </div>

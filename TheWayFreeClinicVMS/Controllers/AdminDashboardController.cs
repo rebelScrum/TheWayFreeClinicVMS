@@ -1,19 +1,24 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminDashboardController : Controller
     {
-
         private ApplicationDbContext db = new ApplicationDbContext();
 
         public class HoursReportVol
@@ -33,14 +38,13 @@ namespace TheWayFreeClinicVMS.Controllers
         }
        
 
-        // GET: AdminDashboard
+        // GET: AdminDashboard        
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
         {
             ViewBag.FullName = getUserName();
             var volunteers = db.Volunteers.Include(v => v.Specialty);                      
 
             //selects volunteer list
-
             var sorts = from s in volunteers
                         select s;
 
@@ -86,12 +90,17 @@ namespace TheWayFreeClinicVMS.Controllers
                     sorts = sorts.OrderBy(s => s.volLastName);
                     break;
             }
-
-           
+            int year = DateTime.Now.Year;
+            DateTime firstDay = new DateTime(year, 1, 1);
+            var newVolunteers = (from v in volunteers
+                                 where (v.volStartDate >= firstDay)
+                                 select v.volID).Count();
+            ViewBag.newVolunteers = newVolunteers;
+            ViewBag.year = year;
             return View(sorts.ToList());
         }
 
-        // GET: AdminDashboard/Details/5
+        // GET: AdminDashboard/Details/5        
         public ActionResult Details(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -109,7 +118,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(volunteer);
         }
 
-        // GET: AdminDashboard/Create
+        // GET: AdminDashboard/Create        
         public ActionResult Create()
         {
             ViewBag.FullName = getUserName();
@@ -119,9 +128,9 @@ namespace TheWayFreeClinicVMS.Controllers
             //sets every newly created volunteer to active as default
             volunteer.volActive = true;
             return View(volunteer);
-        } 
+        }
 
-        // POST: AdminDashboard/Create
+        // POST: AdminDashboard/Create        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
@@ -132,11 +141,9 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 var alreadyExists = db.Volunteers.Any(v => v.volEmail == volunteer.volEmail);
                 if ((ModelState.IsValid) && !(alreadyExists))
-                {
-                    db.Volunteers.Add(volunteer);
-                    db.SaveChanges();
-                    
-                    return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });
+                {                  
+                    return RedirectToAction("RegisterNewVol", "Account", volunteer); // new redirect; to alternate register method in account controller passing vol from form
+                    //return RedirectToAction("Details", "AdminDashboard", new { id = volunteer.volID });  old redirect
                 }
             }
             catch (DataException)
@@ -147,7 +154,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(volunteer);
         }
 
-        // GET: AdminDashboard/Edit/5
+        // GET: AdminDashboard/Edit/5        
         public ActionResult Edit(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -166,8 +173,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(volunteer);
         }
 
-        // POST: AdminDashboard/Edit/5
-      
+        // POST: AdminDashboard/Edit/5        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "volID,volFirstName,volLastName,middleName,volDOB,volEmail,volPhone,volStreet1,volStreet2,volCity,volState,volZip,volStartDate,volActive,spcID")] Volunteer volunteer)
@@ -183,15 +189,15 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(volunteer);
         }
 
-       //**************************************************************************************
-        // GET: AdminDashboard/AddSpecialty
+        //**************************************************************************************
+        // GET: AdminDashboard/AddSpecialty        
         public ActionResult AddSpecialty()
         {
             ViewBag.FullName = getUserName();
             return View("_AddSpecialty");
         }
 
-        // POST: AdminDashboard/AddSpecialty     
+        // POST: AdminDashboard/AddSpecialty            
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddSpecialty([Bind(Include = "spcID, spcName")] Specialty specialty)
@@ -219,7 +225,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         //**************************************************************************************
-        //Get Availability
+        //Get Availability        
         public ActionResult VolunteerAvailable(int? id)
         {
             var volunteerID = id;
@@ -227,7 +233,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerAvailable", schedule);
         }
         //**************************************************************************************
-        //Get License
+        //Get License        
         public ActionResult VolunteerLicense(int? id)
         {
             var volunteerID = id;
@@ -235,7 +241,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerLicense", license);
         }
         //*************************************************************************************
-        //Get Contract
+        //Get Contract        
         public ActionResult VolunteerContract(int? id)
         {
             var volunteerID = id;
@@ -245,7 +251,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerContract", contract);
         }
         //***********************************************************************************
-        //Get Timesheet
+        //Get Timesheet        
         public ActionResult VolunteerTimesheet(int? id)
         {
             var volunteerID = id;
@@ -254,9 +260,110 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerTimesheet", timesheet);
         }
 
+        //***********************************************************************************
+        //Update Timesheet        
+        public ActionResult UpdateTimesheet(int? id)
+        {
+            ViewBag.FullName = getUserName();
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Worktime worklog = db.Worklog.Find(id);
+            
+
+            if (worklog == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.volID = new SelectList(db.Volunteers, "volID", "volFirstName", worklog.volID);
+
+            if (Request.Browser.Browser == "InternetExplorer")
+            {
+                ViewBag.date = worklog.wrkDate.ToShortDateString();
+            }
+            else
+            {
+                ViewBag.date = worklog.wrkDate.ToString("yyyy-MM-dd");
+            }
+
+            
+            
+            return View(worklog);
+        }
+        // POST: ManageTimesheet/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateTimesheet([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] Worktime worklog)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(worklog).State = EntityState.Modified;
+                
+                //db.Worklog.Add(worklog);
+                db.SaveChanges();
+
+                List<string> flags = new List<string>();
+
+                using (System.IO.StreamReader file = new System.IO.StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                {
+                    try
+                    {
+                        var txt = "";
+
+                        while ((txt = file.ReadLine()) != null)
+                        {
+                            var msgs = txt.Split(';');
+                            foreach (var item in msgs)
+                            {
+                                if (item != "")
+                                {
+                                    var id_code = item.Split(',');
+
+                                    if (id_code[0] != worklog.wrkID.ToString())
+                                    {
+                                        flags.Add(item);
+                                    }
+                                }
+                            }
+                        }
+                        file.Close();      
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+                using (System.IO.StreamWriter newFile = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                {
+                    try
+                    {
+                        foreach (var item in flags)
+                        {
+                            if (item != "")
+                            {
+                                newFile.Write(item + ";");
+                            }                            
+                        }
+                        newFile.Close();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+
+                return RedirectToAction("Details", new { id = worklog.volID });
+            }
+
+            return View(worklog);
+        }
         //************************************************************************************
-        //Get Employment
-        
+        //Get Employment        
         public ActionResult VolunteerEmployer(int? id)
         {
             var volunteerID = id;
@@ -266,7 +373,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerEmployer", jobs);
         }
         //***********************************************************************************
-        //Get Econtact
+        //Get Econtact        
         public ActionResult VolunteerEcontact(int? id)
         {
             var volunteerID = id;
@@ -276,7 +383,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         //************************************************************************************
-        //Get Languages
+        //Get Languages        
         [HttpGet]
         public ActionResult VolunteerLanguages(int? id)
         {
@@ -290,7 +397,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerLanguages", speaks);
         }
 
-        //Add Languages
+        //Add Languages        
         [HttpPost]
         public ActionResult VolunteerLanguages([Bind(Include = "speakID, lngID, volID")] int? id, int? langSearch)
         {
@@ -326,6 +433,14 @@ namespace TheWayFreeClinicVMS.Controllers
             return PartialView("_VolunteerLanguages", speaks);
         }
 
+        // View list of Admins        
+        public ActionResult ManageAdmins()
+        {
+            string roleID = db.Roles.Where(r => r.Name == "Admin").Select(s => s.Id).FirstOrDefault();
+            var admins = db.Users.Where(x => x.Roles.Any(y => y.RoleId == roleID)).ToList();
+            return View(admins);
+        }
+
 
         // GET: AdminDashboard/Delete/5
         //public ActionResult Delete(int? id)
@@ -355,8 +470,10 @@ namespace TheWayFreeClinicVMS.Controllers
         //}
 
         //***********************************************************************************************
-                
+
+        
         public ActionResult Report(string searchString, string hiddenDateRange, int? specialtySearch, string active)
+
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
@@ -475,20 +592,45 @@ namespace TheWayFreeClinicVMS.Controllers
             }
 
             ViewBag.grandTotalHours = Math.Round(grandTotalHours, 3);
+            Session["HRFL"] = HoursReportFilteredList;
 
             return View(HoursReportFilteredList);
         }
 
+        
+        public ActionResult ExportHoursReportToCSV()
+        {
+            List<HoursReportVol> Data =  (List<HoursReportVol>)Session["HRFL"];
+            StringWriter sw = new StringWriter();
+
+            sw.WriteLine("\"Last Name\",\"First Name\",\"Specialty\",\"Active\",\"E-mail\",\"Hours\"");
+            string hdr = "attachment;filename=" + DateTime.Now.ToShortDateString() + ".csv";
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", hdr);
+            Response.ContentType = "text/csv";
+
+            foreach (var line in Data)
+            {
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                                           line.volunteer.volLastName,
+                                           line.volunteer.volFirstName,
+                                           line.volunteer.Specialty.spcName,
+                                           line.volunteer.volActive,
+                                           line.volunteer.volEmail,
+                                           line.hours));
+            }
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+
+            return View("Report", Data);
+        }
+        
         public ActionResult AvailabilityReport(string searchString, /*string hiddenDateRange,*/ int? specialtySearch, string active, bool all = false, bool mon = false, bool tue = false, bool wed = false, bool thu = false, bool fri = false, bool sat = false)
         {
             ViewBag.viewName = "index";
             ViewBag.FullName = getUserName();
-            //ViewBag.dateRange = hiddenDateRange;
-
-            //string[] tokens = new string[] { " - " };
-            //string[] dateRange;
-            //long begDateTicks = 0000000000;
-            //long endDateTicks = 0000000000;
 
             List<AvailabilityReportVol> AvailabilityReportFullList = new List<AvailabilityReportVol> { };
             List<AvailabilityReportVol> AvailabilityReportFilteredList = new List<AvailabilityReportVol> { };
@@ -504,32 +646,17 @@ namespace TheWayFreeClinicVMS.Controllers
 
             List<string> daysQuery = new List<string>();
             if (all) { ViewBag.allChkd = "checked"; ViewBag.allActv = "active"; }
-            if (mon) { daysQuery.Add("Monday"); ViewBag.MonChkd = "checked"; ViewBag.MonActv = "active"; }
-            if (tue) { daysQuery.Add("Tuesday"); ViewBag.TueChkd = "checked"; ViewBag.TueActv = "active"; }
-            if (wed) { daysQuery.Add("Wednesday"); ViewBag.WedChkd = "checked"; ViewBag.WedActv = "active"; }
-            if (thu) { daysQuery.Add("Thursday"); ViewBag.ThuChkd = "checked"; ViewBag.ThuActv = "active"; }
-            if (fri) { daysQuery.Add("Friday"); ViewBag.FriChkd = "checked"; ViewBag.FriActv = "active"; }
-            if (sat) { daysQuery.Add("Saturday"); ViewBag.SatChkd = "checked"; ViewBag.SatActv = "active"; }
+            if (mon) { daysQuery.Add("Monday"); ViewBag.MonChkd = "checked"; ViewBag.MonActv = "active"; ViewBag.Mon = true; }
+            if (tue) { daysQuery.Add("Tuesday"); ViewBag.TueChkd = "checked"; ViewBag.TueActv = "active"; ViewBag.Tue = true; }
+            if (wed) { daysQuery.Add("Wednesday"); ViewBag.WedChkd = "checked"; ViewBag.WedActv = "active"; ViewBag.Wed = true; }
+            if (thu) { daysQuery.Add("Thursday"); ViewBag.ThuChkd = "checked"; ViewBag.ThuActv = "active"; ViewBag.Thu = true; }
+            if (fri) { daysQuery.Add("Friday"); ViewBag.FriChkd = "checked"; ViewBag.FriActv = "active"; ViewBag.Fri = true; }
+            if (sat) { daysQuery.Add("Saturday"); ViewBag.SatChkd = "checked"; ViewBag.SatActv = "active"; ViewBag.Sat = true; }
 
             var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
             ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
             int specialtyID = specialtySearch.GetValueOrDefault();
 
-            //parse date range, convert to ticks
-            //if (hiddenDateRange != null && hiddenDateRange != "")
-            //{
-            //    dateRange = hiddenDateRange.Split(tokens, StringSplitOptions.None);
-            //    ViewBag.startDate = dateRange[0];
-            //    ViewBag.endDate = dateRange[1];
-            //    begDateTicks = Convert.ToDateTime(dateRange[0]).Ticks;
-            //    endDateTicks = Convert.ToDateTime(dateRange[1]).AddHours(23).AddMinutes(59).AddSeconds(59).Ticks; // up to last second of selected day
-            //}
-            //else if (hiddenDateRange == "")
-            //{
-            //    return View("AvailabilityReport");
-            //}
-
-            //filtering by first name, last name 
             if (!String.IsNullOrEmpty(searchString))
             {
                 sorts = sorts.Where(s => s.volLastName.Contains(searchString)
@@ -603,8 +730,153 @@ namespace TheWayFreeClinicVMS.Controllers
                     }
                 }
             }
+
+            Session["ARFL"] = AvailabilityReportFilteredList;
                
             return View(AvailabilityReportFilteredList.Distinct());
+        }
+        
+        public ActionResult ExportAvailabilityReportToCSV()
+        {
+            List<AvailabilityReportVol> Data = (List<AvailabilityReportVol>)Session["ARFL"];
+
+            StringWriter sw = new StringWriter();
+
+            sw.WriteLine("\"Last Name\",\"First Name\",\"Specialty\",\"Active\",\"Days\",\"Hours\"");
+            string hdr = "attachment;filename=" + "Availability Report" + DateTime.Now.ToShortDateString() + ".csv";
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", hdr);
+            Response.ContentType = "text/csv";
+
+            foreach (var line in Data.Distinct())
+            {
+                var daysQueriedString = "";
+                var daysString = "";
+                var hoursString = "";
+                var allDaysString = "";
+
+                foreach (var day in line.daysQueried)
+                {                    
+                    daysQueriedString += day + "\n";
+                }
+                foreach (var day in line.days)
+                {
+                    daysString += day + "\n";
+                }
+                foreach(var hours in line.hours)
+                {
+                    hoursString += hours + "\n";
+                }
+
+                if (daysString != null)
+                {
+                    allDaysString = daysQueriedString + daysString;
+                }
+                else
+                {
+                    allDaysString = daysQueriedString;
+                }
+                
+
+                allDaysString = allDaysString.TrimEnd('\n');
+                hoursString = hoursString.TrimEnd('\n');
+
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                                           line.volunteer.volLastName,
+                                           line.volunteer.volFirstName,
+                                           line.volunteer.Specialty.spcName,
+                                           line.volunteer.volActive,
+                                           allDaysString,
+                                           hoursString));
+            }
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+
+            return View("AvailabilityReport", Data);
+        }
+        
+        public ActionResult WorklogData(string sortOrder, string searchString, int? specialtySearch)
+        {
+            ViewBag.FullName = getUserName();
+
+            var volunteers = db.Volunteers.Include(v => v.Specialty);
+            var wlog = db.Worklog;
+            var wlogSorts = (from w in wlog
+                             join v in volunteers on w.volID equals v.volID
+                             select w).OrderBy(w => w.wrkDate);
+            
+
+            var specialties = db.Specialties.OrderBy(q => q.spcName).ToList();
+            ViewBag.specialtySearch = new SelectList(specialties, "spcID", "spcName", specialtySearch);
+            int specialtyID = specialtySearch.GetValueOrDefault();
+
+            //sorting by last name and the starting date
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "name_asc";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            //filtering by first name, last name 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                wlogSorts = wlogSorts.Where(s => s.Volunteer.volLastName.Contains(searchString)
+                                       || s.Volunteer.volFirstName.Contains(searchString)).OrderBy(w => w.wrkDate);
+            }
+
+            if (specialtySearch.HasValue)
+            {
+                wlogSorts = wlogSorts.Where(s => s.Volunteer.spcID == specialtyID).OrderBy(w => w.wrkDate);
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    wlogSorts = wlogSorts.OrderByDescending(w => w.Volunteer.volLastName);
+                    break;
+                case "name_asc":
+                    wlogSorts = wlogSorts.OrderBy(w => w.Volunteer.volLastName);
+                    break;
+                case "Date":
+                    wlogSorts = wlogSorts.OrderBy(w => w.wrkDate);
+                    break;
+                case "date_desc":
+                    wlogSorts = wlogSorts.OrderByDescending(w => w.wrkDate);
+                    break;
+                default:
+                    wlogSorts = wlogSorts.OrderByDescending(w => w.wrkDate);
+                    break;
+            }
+
+            using (StreamReader file = new StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+            {
+                string txt;
+                List<string> msgsNum = new List<string>();
+                List<string> msgsCode = new List<string>();
+
+                while ((txt = file.ReadLine()) != null)
+                {
+                    var msgs = txt.Split(';');
+                    foreach (string item in msgs)
+                    {
+                        if (item != "")
+                        {
+                            item.TrimEnd(';');
+                            var items = item.Split(',');
+                            msgsNum.Add(items[0]);
+                            msgsCode.Add(items[1]);
+                        }
+
+                    }
+
+                    ViewBag.msgNum = msgsNum;
+                    ViewBag.msgCode = msgsCode;
+                }
+
+                file.Close();
+            }
+
+            
+            return View(wlogSorts.ToList());
         }
 
         protected override void Dispose(bool disposing)
@@ -624,12 +896,5 @@ namespace TheWayFreeClinicVMS.Controllers
                                select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
             return fullName;
         }
-
-        //This may not be needed
-        public ActionResult Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

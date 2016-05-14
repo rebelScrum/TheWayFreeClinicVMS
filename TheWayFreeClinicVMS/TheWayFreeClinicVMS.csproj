@@ -49,7 +49,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Office.Interop.Excel">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office15\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -175,7 +176,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminDashboardController.cs" />
-    <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageAvailabilitiesController.cs" />
     <Compile Include="Controllers\ManageContractsController.cs" />
@@ -206,7 +206,7 @@
     <Compile Include="Models\Speak.cs" />
     <Compile Include="Models\Specialty.cs" />
     <Compile Include="Models\Volunteer.cs" />
-    <Compile Include="Models\VolunteerDataViewModel.cs" />
+    <Compile Include="Models\RegisterVolunteerViewModel.cs" />
     <Compile Include="Models\Worktime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -217,7 +217,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\custom.css" />
-    <Content Include="Content\docs\message1.txt" />
+    <Content Include="Content\docs\WorklogDataMessages\WorklogDataFlags.txt" />
     <Content Include="Content\img\Help1_HomePageOverview.png" />
     <Content Include="Content\img\Help_Dashboard_ChooseSpecialty.png" />
     <Content Include="Content\img\Help_Dashboard_ChooseSpecialtyClickFilter.png" />
@@ -371,11 +371,24 @@
     <Content Include="Views\ManageContracts\CreateGroup.cshtml" />
     <Content Include="Views\ManageContracts\IndexGroup.cshtml" />
     <Content Include="Views\ManageContracts\EditGroup.cshtml" />
-    <Content Include="Views\Export\ExportHoursReport.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageAdmins.cshtml" />
+    <Content Include="Views\AdminDashboard\UpdateTimesheet.cshtml" />
+    <Content Include="Views\Account\AddAdmin.cshtml" />
+    <Content Include="Views\Account\DeleteAdmin.cshtml" />
     <Content Include="Views\AdminDashboard\AvailabilityReport.cshtml" />
+    <Content Include="Views\Home\homeAllMessages.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerAvailable.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerLicense.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerContract.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerTimesheet.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerEmployer.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerEcontact.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerLanguages.cshtml" />
+    <Content Include="Views\AdminDashboard\WorklogData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\docs\HomePageMessages\HomePageMessagesArchive\" />
     <Folder Include="Content\img\homePageImg\" />
   </ItemGroup>
   <ItemGroup>

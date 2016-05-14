@@ -6,143 +6,150 @@
 
 <style>
     .box {
-        background-color: #bcebfe;
-        border-style: double;
-        border-color: white;
-        border-width: thick;
-        padding: 20px;
+        background-color: #84b4c4;
+        border: 10px solid transparent;
+        padding: 10px;
+        border-radius: 10px;
+        color: #141111;
     }
-    
-        .box:hover {
-            border-color: blue;
-        }
 
     tr:nth-child(n + 20) {
         visibility: hidden;
         display: none;
     }
+
+    body {
+        background-color: #5c8b9b;
+    }
 </style>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-4" style="background-color:transparent; padding:0; margin-bottom:30px;">
-            <a href="http://www.google.com/">
-                <div class="box">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 class="text-center"><strong>Message from Admin</strong></h2>
-                            <p>@Html.Raw(ViewBag.message)</p>
-                        </div>
-                    </div>
-                </div> 
-            </a>
-            <div class="box">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2 class="text-center"><strong>Image from Admin</strong></h2>
-                            <img class="img-responsive" src="~/Content/img/homePageImg/img.png" alt="" style="margin:auto;" />
-                    </div>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-12 box">
+                    <a href="http://www.google.com/">
+                        <h2 class="text-center"><strong>Message from Admin</strong></h2>
+                    </a>
+                    <p style="color:white;">@Html.Raw(ViewBag.message)</p>
                 </div>
-            </div>
-            <div class="box">
+
+
+                @*<div class="box">
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="text-center"><strong>Something Else</strong></h2>
                         @Html.ActionLink("Report View", "Report", "AdminDashboard");
                     </div>
                 </div>
+            </div>*@
             </div>
-        </div>
 
-        <div class="col-md-3 jumbotron box">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="text-center"><strong>Work Log</strong> <br /></h2>
-                    <p class="text-center" style="margin-top:20px;">Log your volunteered time.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <div class="form-group">
-                            <div>
-                                <input type="text" name="email" placeholder="Email" class="form-control" style="max-width:100%" ; />
+                <div class="col-md-3">
+                    <div class="col-md-12 box">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="text-center"><strong>Sign In/Out</strong> <br /></h2>
+                                <p class="text-center" style="margin-top:20px;">Sign in/out by entering your e-mail.</p>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
 
-                        <button id="submit" type="submit" value="Submit" class="btn btn-info btn-lg" style="background-color:limegreen; width:100%; margin-bottom:20px;">Submit</button>
-                        <span style="font-size:small">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</span>
-                            <p id="confirm"></p>
-                    }
-                    <!-- end form-->
+                                    <div class="form-group">
+                                        <div>
+                                            <input type="text" name="email" placeholder="Email" class="form-control" style="max-width:100%" ; />
+                                        </div>
+                                    </div>
+
+                                    <button id="submit" type="submit" value="Submit" class="btn btn-success btn-lg" style="width:100%; margin-bottom:20px;">Submit</button>
+                                    <span style="font-size:small">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</span>
+                                    <p id="confirm" style="text-align:center; font-size:x-large;"></p>
+                                }
+                                <!-- end form-->
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img class="img-responsive" src="~/Content/img/homePageImg/img.png" alt="" style="margin:auto;" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-            </div>
-            <div class="row">
-                <div class="">
+            <div class="col-md-5">
+                <div class="col-md-12 box">
                     <div class="row">
                         <div class="col-md-12">
-
+                            <h2 class="text-center"><strong>Recent Activity</strong></h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="padding:20px;">
+                            <table class="table table-condense table-striped" style="font-size:small; font-weight:700;">
+                                <tr style="text-decoration:underline;">
+                                    <th>
+                                        Last
+                                    </th>
+                                    <th>
+                                        First
+                                    </th>
+                                    <th>
+                                        In
+                                    </th>
+                                    <th>
+                                        Out
+                                    </th>
+                                    <th>
+                                        Date
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Volunteer.volLastName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Volunteer.volFirstName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.wrkStartTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.wrkEndTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.wrkDate)
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-5 jumbotron box">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="text-center"><strong>Recent Activity</strong></h2>
-                </div>
-            </div>
-            <div class="row">
-                <div>
-                    <table class="recentTable table table-condensed table-hover table-striped" style="font-size:x-small; font-weight:700;">
-                        <tr>
-                            <th>
-                                Last
-                            </th>
-                            <th>
-                                First
-                            </th>
-                            <th>
-                                In
-                            </th>
-                            <th>
-                                Out
-                            </th>
-                        </tr>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Volunteer.volLastName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Volunteer.volFirstName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.wrkStartTime)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.wrkEndTime)
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
+
+<span id="signInMsg" hidden>@ViewBag.SignInMsg</span>
 
 <script>
+
+    window.onload = function () {
+        if (document.getElementById("signInMsg").innerHTML != ""){
+            alert(document.getElementById("signInMsg").innerHTML);
+        }
+    };
+
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("confirm").innerHTML = "@ViewBag.confirm @ViewBag.clock";
-        $('#confirm').delay(3000).fadeOut();
+        $('#confirm').delay(5000).fadeOut();
     });
 
 </script>

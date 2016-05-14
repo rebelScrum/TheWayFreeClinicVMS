@@ -1,0 +1,21 @@
+﻿@model IEnumerable<TheWayFreeClinicVMS.Models.Job>
+
+@if (!Model.Any())
+{
+    @: None
+}
+else
+{
+
+    foreach (var item in Model)
+    {
+        @:Company:
+        @Html.DisplayFor(modelItem => item.Employer.empName) <br />
+        @:Title:
+        @Html.DisplayFor(modelItem => item.jobTitle) <br />
+
+
+    }
+}
+
+

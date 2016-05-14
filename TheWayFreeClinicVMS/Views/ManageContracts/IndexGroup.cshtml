@@ -7,7 +7,7 @@
 <h4>PA Groups</h4>
 
 <p>
-    <a href=@Url.Action("CreateGroup", "ManageContracts") class="btn btn-info btn-sm">New PA Group</a>
+    <a href=@Url.Action("CreateGroup", "ManageContracts") class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New PA Group</a>
 </p>
 
 <table class="table">
@@ -72,11 +72,11 @@
             @Html.DisplayFor(modelItem => item.pgrZip)
         </td>
         <td>
-            <a href=@Url.Action("EditGroup", "ManageContracts", new { id=item.pgrID }) class="btn btn-primary btn-sm">Edit</a>
+            <a href=@Url.Action("EditGroup", "ManageContracts", new { id=item.pgrID }) class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
            
         </td>
     </tr>
 }
 
 </table>
-<a href="@Url.Action("Index", "AdminDashboard")" class="btn btn-success">Back to Admin Dashboard</a>
+<a href="@Url.Action("Index", "AdminDashboard")" class="btn btn-info btn-sm">Back to Admin Dashboard</a>

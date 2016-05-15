@@ -122,8 +122,7 @@ namespace TheWayFreeClinicVMS.Controllers
             //Then, user has no worktime record with empty end time. At next entry query will return null and move to else.
 
             if (time != null) //user still clocked in
-            {
-                time.wrkDate = DateTime.Now;
+            {                
                 time.wrkEndTime = DateTime.Now;
 
                 if (time.wrkEndTime.Value.Date != time.wrkStartTime.Date) //if clocked out the day after clocked in

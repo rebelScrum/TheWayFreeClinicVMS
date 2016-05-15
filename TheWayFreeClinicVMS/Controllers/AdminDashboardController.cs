@@ -307,9 +307,6 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 ViewBag.date = worklog.wrkDate.ToString("yyyy-MM-dd");
             }
-
-            
-            
             return View(worklog);
         }
         // POST: ManageTimesheet/Edit/5
@@ -322,62 +319,106 @@ namespace TheWayFreeClinicVMS.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(worklog).State = EntityState.Modified;
-                
-                //db.Worklog.Add(worklog);
-                db.SaveChanges();
+                List<Worktime> timesheet = db.Worklog.Where(t => t.volID.Equals(worklog.volID)).ToList(); //get all records in vol's timesheet
 
-                List<string> flags = new List<string>();
+                var updatedWorklogTimespanIsAfterRecord = false;
+                var updatedWorklogTimespanIsBeforeRecord = false;
+                var updateSuccessful = false;
+                var updateStartTime = worklog.wrkStartTime;
+                var updateEndTime = worklog.wrkEndTime;
 
-                using (System.IO.StreamReader file = new System.IO.StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                if (updateStartTime == null || updateEndTime == null)
                 {
-                    try
+                    ViewBag.updateTimesheetError = "All fields must be filled.";
+                    return View(worklog);
+                }
+                if (updateStartTime > updateEndTime) //user input error: clockin time after clockout time
+                {
+                    ViewBag.updateTimesheetError = "The sign-out time should be later than sign-in time. /nPlease adjust sign-out time to after sign-in time or adjust sign-in time to before sign-out time.";
+                    return View(worklog);
+                }
+
+                foreach (var record in timesheet)
+                {
+                    if (record.wrkID != worklog.wrkID) //exclude record to be updated
                     {
-                        var txt = "";
-
-                        while ((txt = file.ReadLine()) != null)
+                        if ((updateStartTime > record.wrkStartTime && updateStartTime > record.wrkEndTime) && (updateEndTime > record.wrkStartTime && updateEndTime > record.wrkEndTime))
                         {
-                            var msgs = txt.Split(';');
-                            foreach (var item in msgs)
-                            {
-                                if (item != "")
-                                {
-                                    var id_code = item.Split(',');
+                            updatedWorklogTimespanIsAfterRecord = true; //update is valid
+                        }
+                        if ((updateStartTime < record.wrkStartTime && updateStartTime < record.wrkEndTime) && (updateEndTime < record.wrkStartTime && updateEndTime < record.wrkEndTime))
+                        {
+                            updatedWorklogTimespanIsBeforeRecord = true; //update is valid
+                        }
+                        if (updatedWorklogTimespanIsBeforeRecord == true || updatedWorklogTimespanIsAfterRecord == true) //everything is ok
+                        {
+                            db.Entry(worklog).State = EntityState.Modified;
+                            db.SaveChanges();
+                            updateSuccessful = true;
+                        }
+                        else
+                        {
+                            ViewBag.updateTimesheetError = "This update conflicts with one or more existing timesheet records.";
+                            //report conflicting records
+                            //report the overlap
+                        }
+                    }
+                }
 
-                                    if (id_code[0] != worklog.wrkID.ToString())
+                if (updateSuccessful == true)
+                {
+                    List<string> flags = new List<string>();
+
+                    using (System.IO.StreamReader file = new System.IO.StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                    {
+                        try
+                        {
+                            var txt = "";
+
+                            while ((txt = file.ReadLine()) != null)
+                            {
+                                var msgs = txt.Split(';');
+                                foreach (var item in msgs)
+                                {
+                                    if (item != "")
                                     {
-                                        flags.Add(item);
+                                        var id_code = item.Split(',');
+
+                                        if (id_code[0] != worklog.wrkID.ToString())
+                                        {
+                                            flags.Add(item);
+                                        }
                                     }
                                 }
                             }
+                            file.Close();
                         }
-                        file.Close();      
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                }
-                using (System.IO.StreamWriter newFile = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
-                {
-                    try
-                    {
-                        foreach (var item in flags)
+                        catch (Exception e)
                         {
-                            if (item != "")
-                            {
-                                newFile.Write(item + ";");
-                            }                            
+
                         }
-                        newFile.Close();
                     }
-                    catch (Exception e)
+                    using (System.IO.StreamWriter newFile = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
                     {
+                        try
+                        {
+                            foreach (var item in flags)
+                            {
+                                if (item != "")
+                                {
+                                    newFile.Write(item + ";");
+                                }
+                            }
+                            newFile.Close();
+                        }
+                        catch (Exception e)
+                        {
 
+                        }
                     }
-                }
 
-                return RedirectToAction("Details", new { id = worklog.volID });
+                    return RedirectToAction("Details", new { id = worklog.volID });
+                }
             }
 
             return View(worklog);
@@ -901,6 +942,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult BackupDB()
         {
+            ViewBag.FullName = getUserName();
             return View();
         }
 

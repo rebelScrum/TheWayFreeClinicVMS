@@ -277,6 +277,8 @@ namespace TheWayFreeClinicVMS.Controllers
                 ViewBag.ClockActionBtn = "Click To Clock In";
             }
 
+            timesheet = timesheet.OrderByDescending(t => t.wrkDate).ToList();
+
             return PartialView("_VolunteerTimesheet", timesheet);
         }
 
@@ -316,16 +318,30 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UpdateTimesheet([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] Worktime worklog)
         {
+            ViewBag.FullName = getUserName();
+
+            if (Request.Browser.Browser == "InternetExplorer")
+            {
+                ViewBag.date = worklog.wrkDate.ToShortDateString();
+            }
+            else
+            {
+                ViewBag.date = worklog.wrkDate.ToString("yyyy-MM-dd");
+            }
 
             if (ModelState.IsValid)
             {
-                List<Worktime> timesheet = db.Worklog.Where(t => t.volID.Equals(worklog.volID)).ToList(); //get all records in vol's timesheet
+                List<Worktime> timesheet = db.Worklog.AsNoTracking().Where(t => t.volID.Equals(worklog.volID)).ToList(); //get all records in vol's timesheet
+                Worktime oldWorklog = timesheet.Where(t => t.wrkID.Equals(worklog.wrkID)).FirstOrDefault();
 
-                var updatedWorklogTimespanIsAfterRecord = false;
-                var updatedWorklogTimespanIsBeforeRecord = false;
-                var updateSuccessful = false;
+                worklog.wrkStartTime = worklog.wrkDate.Add(worklog.wrkStartTime.TimeOfDay);
+                worklog.wrkEndTime = worklog.wrkDate.Add(worklog.wrkEndTime.Value.TimeOfDay);
+
                 var updateStartTime = worklog.wrkStartTime;
                 var updateEndTime = worklog.wrkEndTime;
+
+                var updatedRecordIsValid = true;
+                var updateSuccessful = false;                
 
                 if (updateStartTime == null || updateEndTime == null)
                 {
@@ -334,35 +350,33 @@ namespace TheWayFreeClinicVMS.Controllers
                 }
                 if (updateStartTime > updateEndTime) //user input error: clockin time after clockout time
                 {
-                    ViewBag.updateTimesheetError = "The sign-out time should be later than sign-in time. /nPlease adjust sign-out time to after sign-in time or adjust sign-in time to before sign-out time.";
+                    ViewBag.updateTimesheetError = "The clock-out time should be later than clock-in time. Please adjust clock-out to after clock-in or adjust clock-in to before clock-out.";
                     return View(worklog);
                 }
 
                 foreach (var record in timesheet)
                 {
-                    if (record.wrkID != worklog.wrkID) //exclude record to be updated
+                    if (record.wrkID != worklog.wrkID)
                     {
-                        if ((updateStartTime > record.wrkStartTime && updateStartTime > record.wrkEndTime) && (updateEndTime > record.wrkStartTime && updateEndTime > record.wrkEndTime))
+                        bool overlap = worklog.wrkStartTime < record.wrkEndTime && record.wrkStartTime < worklog.wrkEndTime;
+
+                        if (overlap)
                         {
-                            updatedWorklogTimespanIsAfterRecord = true; //update is valid
-                        }
-                        if ((updateStartTime < record.wrkStartTime && updateStartTime < record.wrkEndTime) && (updateEndTime < record.wrkStartTime && updateEndTime < record.wrkEndTime))
-                        {
-                            updatedWorklogTimespanIsBeforeRecord = true; //update is valid
-                        }
-                        if (updatedWorklogTimespanIsBeforeRecord == true || updatedWorklogTimespanIsAfterRecord == true) //everything is ok
-                        {
-                            db.Entry(worklog).State = EntityState.Modified;
-                            db.SaveChanges();
-                            updateSuccessful = true;
-                        }
-                        else
-                        {
-                            ViewBag.updateTimesheetError = "This update conflicts with one or more existing timesheet records.";
-                            //report conflicting records
-                            //report the overlap
+                            updatedRecordIsValid = false;
+                            ViewBag.recordConflict = "Conflicting Record: " + record.wrkDate.Date.ToShortDateString() + " - " + record.wrkStartTime.ToShortTimeString() + " - " + record.wrkEndTime.Value.ToShortTimeString();
                         }
                     }
+                }
+
+                if (updatedRecordIsValid) //everything is ok
+                {
+                    db.Entry(worklog).State = EntityState.Modified;
+                    db.SaveChanges();
+                    updateSuccessful = true;
+                }
+                else
+                {
+                    ViewBag.updateTimesheetError = "This update conflicts with one or more existing timesheet records.";                    
                 }
 
                 if (updateSuccessful == true)

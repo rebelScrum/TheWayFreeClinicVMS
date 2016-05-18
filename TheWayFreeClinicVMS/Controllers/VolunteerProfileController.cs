@@ -19,6 +19,8 @@ namespace TheWayFreeClinicVMS.Controllers
         public ActionResult Index()
         {
             ViewBag.FullName = getUserName();
+            TempData["FullName"] = getUserName();
+
             var vol = db.Volunteers;
             
             var user = (from i in vol where i.volEmail == User.Identity.Name select i.volID).SingleOrDefault();

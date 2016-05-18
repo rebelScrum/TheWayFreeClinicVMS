@@ -46,6 +46,11 @@
                                 <a href="@Url.Action("Edit", "VolunteerProfile",new { id = Model.volID })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> Upload Picture</a>
                             </div>
                         </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div style="text-align:center;">
+                                <a href="@Url.Action("Index", "Manage",new { id = Model.volID })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Manage Account</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -223,7 +228,7 @@
 
         <div class="row">
             <div class="col-md-2">
-                <a href="@Url.Action("Index", "Home")" class="btn btn-info">Clock In/Clock Out</a>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-info">Return to Home Page</a>
             </div>
         </div> <!--end inner row nav buttons-->
 

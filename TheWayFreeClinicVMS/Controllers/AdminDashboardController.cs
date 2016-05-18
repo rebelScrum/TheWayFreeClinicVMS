@@ -17,6 +17,7 @@ using Microsoft.SqlServer;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -1084,6 +1085,15 @@ namespace TheWayFreeClinicVMS.Controllers
             Response.Output.Write(sw.ToString());
             Response.Flush();
             Response.End();
+        }
+        
+        public async Task<ActionResult> ResetPassword(int id)
+        {            
+            var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            var user = db.Volunteers.Where(v => v.volID.Equals(id)).FirstOrDefault();
+
+            return RedirectToAction("ResetPassword", "Manage", new { username = user.volEmail });
         }
 
         protected override void Dispose(bool disposing)

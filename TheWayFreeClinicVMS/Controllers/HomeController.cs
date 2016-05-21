@@ -333,7 +333,8 @@ namespace TheWayFreeClinicVMS.Controllers
                     {
                         try
                         {
-                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
+                            var newFileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss") + ".txt";
+                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/") + (newFileName));
                         }
                         catch (System.IO.IOException e)
                         {

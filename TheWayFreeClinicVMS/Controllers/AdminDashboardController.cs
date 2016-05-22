@@ -971,7 +971,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 DataTable dt = new DataTable();
 
                 //con.ConnectionString = @"Server=MyPC\SqlServer2k8;database=Test;Integrated Security=true;";
-                con.ConnectionString = @"Data Source=99.127.65.108,1433;Initial Catalog=rebelscrumdb;Persist Security Info=True;User ID=rebelNadiia;Password=thewayfreeclinic;";
+                con.ConnectionString = @"Data Source=99.127.65.108,1433;Initial Catalog=rebelscrumdb;Persist Security Info=True;User ID=rebelChris;Password=thewayfreeclinic;";
                 string backupDIR = Server.MapPath("~/Content/docs/Backups/");
                 string fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss");
 
@@ -986,18 +986,18 @@ namespace TheWayFreeClinicVMS.Controllers
                 sqlcmd.ExecuteNonQuery();
                 con.Close();
 
-                if (Server.MapPath("~/Content/docs/Backups/" + fileName + ".Bak") != null)
-                {
-                    byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName + ".Bak");
-                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName + ".Bak");
-                }
+                //if (Server.MapPath("~/Content/docs/Backups/" + fileName + ".Bak") != null)
+                //{
+                //    byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName + ".Bak");
+                //    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName + ".Bak");
+                //}
             }
             catch (Exception ex)
             {
                 ViewBag.BackupMsg = "Error Occured During DB backup process !<br>" + ex.ToString();
             }
 
-            return RedirectToAction("BackupDB");
+            return RedirectToAction("ManageBackups");
         }
 
         [HttpPost]
@@ -1085,6 +1085,52 @@ namespace TheWayFreeClinicVMS.Controllers
             Response.Output.Write(sw.ToString());
             Response.Flush();
             Response.End();
+        }
+
+        public ActionResult ManageBackups()
+        {
+            ViewBag.FullName = getUserName();
+
+            List<FileInfo> fi = new List<FileInfo>();
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/Backups"));
+
+            foreach (var file in d.GetFiles("*.Bak"))
+            {
+                fi.Add(file);
+            }
+            
+            return View(fi);
+        }
+
+        public ActionResult deleteBackup(string fileName, string bakDelete)
+        {
+            string backupDIR = Server.MapPath("~/Content/docs/Backups/");
+
+            switch (bakDelete)
+            {
+                case "download":
+                    if (Server.MapPath("~/Content/docs/Backups/" + fileName) != null)
+                    {
+                        byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName);
+                        return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                    }
+                    break;
+                case "delete":
+                    try
+                    {
+                        System.IO.FileInfo file = new System.IO.FileInfo(Server.MapPath("~/Content/docs/Backups/") + (fileName));
+
+                        file.Delete();
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
+            }
+
+            return RedirectToAction("ManageBackups");
         }
         
         public async Task<ActionResult> ResetPassword(int id)

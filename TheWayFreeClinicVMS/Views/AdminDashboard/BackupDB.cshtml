@@ -16,13 +16,14 @@
                     @Html.AntiForgeryToken()
 
                     <div class="col-md-6">
-                        <div class="jumbotron">
+                        <div class="jumbotron" style="padding-bottom:10px;">
                             <div class="panel panel-heading panel-primary" style="background-color:#ffffff;">Backup Database to .Bak File</div>
 
                             <button type="submit" class="btn btn-default btn-block" style="height:100px; width:100px; margin:auto;">
                                 <span class="glyphicon glyphicon-hdd" style="font-size:xx-large;"></span>
-                            </button>                            
+                            </button>
 
+                            <div style="font-size:large; margin:10px;">@Html.ActionLink("Click here to manage previous backups.", "ManageBackups", "AdminDashboard")</div>                        
                         </div>
                     </div>
                 }
@@ -46,13 +47,9 @@
                             <input name="tableName" type="submit" value="Specialty" class="btn btn-default btn-block" style="margin:auto;" />
                             <input name="tableName" type="submit" value="Volunteer" class="btn btn-default btn-block" style="margin:auto;" />
                             <input name="tableName" type="submit" value="Worktime" class="btn btn-default btn-block" style="margin:auto;" />
-
                         }
-
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

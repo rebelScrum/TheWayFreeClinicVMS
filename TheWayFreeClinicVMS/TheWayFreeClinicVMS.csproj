@@ -389,6 +389,7 @@
     <Content Include="Views\VolunteerProfile\_VolunteerLanguages.cshtml" />
     <Content Include="Views\AdminDashboard\WorklogData.cshtml" />
     <Content Include="Views\AdminDashboard\BackupDB.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageBackups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

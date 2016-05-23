@@ -105,7 +105,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
 
-            ViewBag.confirm = "you are now...";
+            ViewBag.confirm = email + " is now... ";
 
             ViewBag.clock = "";
 
@@ -122,8 +122,7 @@ namespace TheWayFreeClinicVMS.Controllers
             //Then, user has no worktime record with empty end time. At next entry query will return null and move to else.
 
             if (time != null) //user still clocked in
-            {
-                time.wrkDate = DateTime.Now;
+            {                
                 time.wrkEndTime = DateTime.Now;
 
                 if (time.wrkEndTime.Value.Date != time.wrkStartTime.Date) //if clocked out the day after clocked in
@@ -286,23 +285,80 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        public ActionResult homeAllMessages()
+        {
+            string text = "";
+            int maxLength = 100;
+
+            List<HomePageMessage> hpmList = new List<HomePageMessage>();
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/"));
+
+            foreach (var file in d.GetFiles("*.txt"))
+            {
+                HomePageMessage hpm = new HomePageMessage();
+                hpm.filePath = file.FullName;
+                hpm.fileName = file.Name;
+                hpm.fullText = System.IO.File.ReadAllText(file.FullName);
+
+                if (hpm.fullText.Length > maxLength)
+                {
+                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";
+                }
+                else
+                {
+                    hpm.preview = hpm.fullText;
+                }
+
+                hpmList.Add(hpm);
+
+            }
+
+            ViewBag.message = text.Replace(Environment.NewLine, "<br />");
+
+            ViewBag.FullName = getUserName();
+            return View(hpmList);
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult homeMessageDelete(string fileName)
+        public ActionResult homeMessageDelete(string fileName, string removeMessage)
         {
             ViewBag.FullName = getUserName();
 
-            System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
-            try
+            switch (removeMessage)
             {
-                fi.Delete();
-            }
-            catch (System.IO.IOException e)
-            {
-                Console.WriteLine(e.Message);
+                case "restore":
+                    {
+                        try
+                        {
+                            var newFileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss") + ".txt";
+                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/") + (newFileName));
+                        }
+                        catch (System.IO.IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    }
+                case "delete":
+                    {
+                        try
+                        {
+                            System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName));
+
+                            fi.Delete();
+                        }
+                        catch (System.IO.IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    }
             }
 
-            return RedirectToAction("homeMessage");
+            return RedirectToAction("homeAllMessages");
         }
 
         [Authorize(Roles = "Admin")]

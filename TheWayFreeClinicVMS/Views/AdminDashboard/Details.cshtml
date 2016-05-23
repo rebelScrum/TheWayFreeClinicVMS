@@ -42,11 +42,24 @@
                                 <img src="~/Content/img/ProfilePlaceholder.png" alt="volunteer placeholder" class="img-responsive" />
                             </div>
                         </div>
+                        @*<div class="row" style="margin-top:20px;">
+                            <div style="text-align:center;">
+                                <a href="@Url.Action("Details", "AdminDashboard",new { id = Model.volID })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> Upload Picture</a>
+                            </div>
+                        </div>*@
                         <div class="row" style="margin-top:20px;">
                             <div style="text-align:center;">
-                                <a href="@Url.Action("Edit", "AdminDashboard",new { id = Model.volID })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> Upload Picture</a>
+                                <a href="@Url.Action("ResetPassword", "AdminDashboard",new { id = Model.volID })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Reset Password</a>
                             </div>
                         </div>
+                        @if (TempData["passwordReset"] != null)
+                        {
+                        <div class="row" style="margin-top:20px;">
+                            <div style="text-align:center;">
+                                <h4 style="color:#00ff21;">@TempData["passwordReset"]</h4>
+                            </div>
+                        </div>
+                        }
                     </div>
                 </div>
             </div>

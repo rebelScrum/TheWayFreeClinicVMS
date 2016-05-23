@@ -13,6 +13,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
+using Microsoft.SqlServer;
+using System.Data.SqlClient;
+using System.Web.UI.WebControls;
+using System.Web.UI;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -257,6 +262,24 @@ namespace TheWayFreeClinicVMS.Controllers
             var volunteerID = id;
             var timesheet = db.Worklog.Where(s => s.volID == volunteerID).ToList();
 
+            var wlog = db.Worklog.Include(v => v.Volunteer);
+            var volunteers = db.Volunteers;
+
+            //will set Worktime object if Endtime null. i.e., user clocked-in. 
+            Worktime time = (from w in wlog where w.volID == volunteerID && w.wrkEndTime == null select w).SingleOrDefault();
+            if (time != null) //time variable holds a record with wrkEndTime==null, user is still clocked in
+            {
+                ViewBag.ClockStatus = "Clocked In";
+                ViewBag.ClockActionBtn = "Click To Clock Out";
+            }
+            else //user has no record containing null wrkEndTime, user currently clocked out
+            {
+                ViewBag.ClockStatus = "Clocked Out";
+                ViewBag.ClockActionBtn = "Click To Clock In";
+            }
+
+            timesheet = timesheet.OrderByDescending(t => t.wrkDate).ToList();
+
             return PartialView("_VolunteerTimesheet", timesheet);
         }
 
@@ -287,9 +310,6 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 ViewBag.date = worklog.wrkDate.ToString("yyyy-MM-dd");
             }
-
-            
-            
             return View(worklog);
         }
         // POST: ManageTimesheet/Edit/5
@@ -299,65 +319,121 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UpdateTimesheet([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] Worktime worklog)
         {
+            ViewBag.FullName = getUserName();
+
+            if (Request.Browser.Browser == "InternetExplorer")
+            {
+                ViewBag.date = worklog.wrkDate.ToShortDateString();
+            }
+            else
+            {
+                ViewBag.date = worklog.wrkDate.ToString("yyyy-MM-dd");
+            }
 
             if (ModelState.IsValid)
             {
-                db.Entry(worklog).State = EntityState.Modified;
-                
-                //db.Worklog.Add(worklog);
-                db.SaveChanges();
+                List<Worktime> timesheet = db.Worklog.AsNoTracking().Where(t => t.volID.Equals(worklog.volID)).ToList(); //get all records in vol's timesheet
+                Worktime oldWorklog = timesheet.Where(t => t.wrkID.Equals(worklog.wrkID)).FirstOrDefault();
 
-                List<string> flags = new List<string>();
+                worklog.wrkStartTime = worklog.wrkDate.Add(worklog.wrkStartTime.TimeOfDay);
+                worklog.wrkEndTime = worklog.wrkDate.Add(worklog.wrkEndTime.Value.TimeOfDay);
 
-                using (System.IO.StreamReader file = new System.IO.StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                var updateStartTime = worklog.wrkStartTime;
+                var updateEndTime = worklog.wrkEndTime;
+
+                var updatedRecordIsValid = true;
+                var updateSuccessful = false;                
+
+                if (updateStartTime == null || updateEndTime == null)
                 {
-                    try
+                    ViewBag.updateTimesheetError = "All fields must be filled.";
+                    return View(worklog);
+                }
+                if (updateStartTime > updateEndTime) //user input error: clockin time after clockout time
+                {
+                    ViewBag.updateTimesheetError = "The clock-out time should be later than clock-in time. Please adjust clock-out to after clock-in or adjust clock-in to before clock-out.";
+                    return View(worklog);
+                }
+
+                foreach (var record in timesheet)
+                {
+                    if (record.wrkID != worklog.wrkID)
                     {
-                        var txt = "";
+                        bool overlap = worklog.wrkStartTime < record.wrkEndTime && record.wrkStartTime < worklog.wrkEndTime;
 
-                        while ((txt = file.ReadLine()) != null)
+                        if (overlap)
                         {
-                            var msgs = txt.Split(';');
-                            foreach (var item in msgs)
-                            {
-                                if (item != "")
-                                {
-                                    var id_code = item.Split(',');
+                            updatedRecordIsValid = false;
+                            ViewBag.recordConflict = "Conflicting Record: " + record.wrkDate.Date.ToShortDateString() + " - " + record.wrkStartTime.ToShortTimeString() + " - " + record.wrkEndTime.Value.ToShortTimeString();
+                        }
+                    }
+                }
 
-                                    if (id_code[0] != worklog.wrkID.ToString())
+                if (updatedRecordIsValid) //everything is ok
+                {
+                    db.Entry(worklog).State = EntityState.Modified;
+                    db.SaveChanges();
+                    updateSuccessful = true;
+                }
+                else
+                {
+                    ViewBag.updateTimesheetError = "This update conflicts with one or more existing timesheet records.";                    
+                }
+
+                if (updateSuccessful == true)
+                {
+                    List<string> flags = new List<string>();
+
+                    using (System.IO.StreamReader file = new System.IO.StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                    {
+                        try
+                        {
+                            var txt = "";
+
+                            while ((txt = file.ReadLine()) != null)
+                            {
+                                var msgs = txt.Split(';');
+                                foreach (var item in msgs)
+                                {
+                                    if (item != "")
                                     {
-                                        flags.Add(item);
+                                        var id_code = item.Split(',');
+
+                                        if (id_code[0] != worklog.wrkID.ToString())
+                                        {
+                                            flags.Add(item);
+                                        }
                                     }
                                 }
                             }
+                            file.Close();
                         }
-                        file.Close();      
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                }
-                using (System.IO.StreamWriter newFile = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
-                {
-                    try
-                    {
-                        foreach (var item in flags)
+                        catch (Exception e)
                         {
-                            if (item != "")
-                            {
-                                newFile.Write(item + ";");
-                            }                            
+
                         }
-                        newFile.Close();
                     }
-                    catch (Exception e)
+                    using (System.IO.StreamWriter newFile = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
                     {
+                        try
+                        {
+                            foreach (var item in flags)
+                            {
+                                if (item != "")
+                                {
+                                    newFile.Write(item + ";");
+                                }
+                            }
+                            newFile.Close();
+                        }
+                        catch (Exception e)
+                        {
 
+                        }
                     }
-                }
 
-                return RedirectToAction("Details", new { id = worklog.volID });
+                    return RedirectToAction("Details", new { id = worklog.volID });
+                }
             }
 
             return View(worklog);
@@ -877,6 +953,193 @@ namespace TheWayFreeClinicVMS.Controllers
 
             
             return View(wlogSorts.ToList());
+        }
+
+        public ActionResult BackupDB()
+        {
+            ViewBag.FullName = getUserName();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BackupDbToFile()
+        {            
+                SqlConnection con = new SqlConnection();
+                SqlCommand sqlcmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter();
+                DataTable dt = new DataTable();
+
+                //con.ConnectionString = @"Server=MyPC\SqlServer2k8;database=Test;Integrated Security=true;";
+                con.ConnectionString = @"Data Source=99.127.65.108,1433;Initial Catalog=rebelscrumdb;Persist Security Info=True;User ID=rebelChris;Password=thewayfreeclinic;";
+                string backupDIR = Server.MapPath("~/Content/docs/Backups/");
+                string fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss");
+
+                if (!System.IO.Directory.Exists(backupDIR))
+                {
+                    System.IO.Directory.CreateDirectory(backupDIR);
+                }
+            try
+            {
+                con.Open();
+                sqlcmd = new SqlCommand("backup database rebelscrumdb to disk='" + backupDIR + "\\" + fileName + ".Bak'", con);
+                sqlcmd.ExecuteNonQuery();
+                con.Close();
+
+                //if (Server.MapPath("~/Content/docs/Backups/" + fileName + ".Bak") != null)
+                //{
+                //    byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName + ".Bak");
+                //    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName + ".Bak");
+                //}
+            }
+            catch (Exception ex)
+            {
+                ViewBag.BackupMsg = "Error Occured During DB backup process !<br>" + ex.ToString();
+            }
+
+            return RedirectToAction("ManageBackups");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void BackupDBToExcel(string tableName)
+        {
+            string dateCreated = DateTime.Now.ToShortDateString();
+            string fileName = tableName + "_" + dateCreated;
+
+            GridView gv = new GridView();
+
+            switch (tableName)
+            {
+                case "Availability":
+                    {
+                        gv.DataSource = db.Availabilities.ToList();
+                        break;
+                    }
+                case "Contract":
+                    {
+                        gv.DataSource = db.Contracts.ToList();
+                        break;
+                    }
+                case "Econtact":
+                    {
+                        gv.DataSource = db.Econtacts.ToList();
+                        break;
+                    }
+                case "Employer":
+                    {
+                        gv.DataSource = db.Employers.ToList();
+                        break;
+                    }
+                case "Job":
+                    {
+                        gv.DataSource = db.Jobs.ToList();
+                        break;
+                    }
+                case "Language":
+                    {
+                        gv.DataSource = db.Languages.ToList();
+                        break;
+                    }
+                case "License":
+                    {
+                        gv.DataSource = db.Licenses.ToList();
+                        break;
+                    }
+                case "Pagroup":
+                    {
+                        gv.DataSource = db.Pagroups.ToList();
+                        break;
+                    }
+                case "Speak":
+                    {
+                        gv.DataSource = db.Speaks.ToList();
+                        break;
+                    }
+                case "Specialty":
+                    {
+                        gv.DataSource = db.Specialties.ToList();
+                        break;
+                    }
+                case "Volunteer":
+                    {
+                        gv.DataSource = db.Volunteers.ToList();
+                        break;
+                    }
+                case "Worktime":
+                    {
+                        gv.DataSource = db.Worklog.ToList();
+                        break;
+                    }
+            }            
+            
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=" + fileName + ".xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            gv.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+        }
+
+        public ActionResult ManageBackups()
+        {
+            ViewBag.FullName = getUserName();
+
+            List<FileInfo> fi = new List<FileInfo>();
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/Backups"));
+
+            foreach (var file in d.GetFiles("*.Bak"))
+            {
+                fi.Add(file);
+            }
+            
+            return View(fi);
+        }
+
+        public ActionResult deleteBackup(string fileName, string bakDelete)
+        {
+            string backupDIR = Server.MapPath("~/Content/docs/Backups/");
+
+            switch (bakDelete)
+            {
+                case "download":
+                    if (Server.MapPath("~/Content/docs/Backups/" + fileName) != null)
+                    {
+                        byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName);
+                        return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                    }
+                    break;
+                case "delete":
+                    try
+                    {
+                        System.IO.FileInfo file = new System.IO.FileInfo(Server.MapPath("~/Content/docs/Backups/") + (fileName));
+
+                        file.Delete();
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
+            }
+
+            return RedirectToAction("ManageBackups");
+        }
+        
+        public async Task<ActionResult> ResetPassword(int id)
+        {            
+            var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            var user = db.Volunteers.Where(v => v.volID.Equals(id)).FirstOrDefault();
+
+            return RedirectToAction("ResetPassword", "Manage", new { username = user.volEmail });
         }
 
         protected override void Dispose(bool disposing)

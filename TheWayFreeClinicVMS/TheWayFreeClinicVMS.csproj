@@ -249,6 +249,7 @@
     <Content Include="Content\img\Help_LogIn_Overview.png" />
     <Content Include="Content\img\Help_Profile_AddLanguage1.png" />
     <Content Include="Content\img\Help_Profile_AddLanguage2.png" />
+    <Content Include="Content\img\Help_Profile_Availability.png" />
     <Content Include="Content\img\Help_Profile_ClickClockInClockOut - Copy.png" />
     <Content Include="Content\img\Help_Profile_ClickClockInClockOut.png" />
     <Content Include="Content\img\Help_Profile_ClickEdit.png" />

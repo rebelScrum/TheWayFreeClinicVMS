@@ -122,8 +122,7 @@ namespace TheWayFreeClinicVMS.Controllers
             //Then, user has no worktime record with empty end time. At next entry query will return null and move to else.
 
             if (time != null) //user still clocked in
-            {
-                time.wrkDate = DateTime.Now;
+            {                
                 time.wrkEndTime = DateTime.Now;
 
                 if (time.wrkEndTime.Value.Date != time.wrkStartTime.Date) //if clocked out the day after clocked in
@@ -334,7 +333,8 @@ namespace TheWayFreeClinicVMS.Controllers
                     {
                         try
                         {
-                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
+                            var newFileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss") + ".txt";
+                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/") + (newFileName));
                         }
                         catch (System.IO.IOException e)
                         {

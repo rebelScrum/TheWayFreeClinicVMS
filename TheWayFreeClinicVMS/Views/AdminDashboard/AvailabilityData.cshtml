@@ -1,0 +1,355 @@
+﻿
+@{
+    ViewBag.Title = "AvailabilityData";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+
+</style>
+
+<h2>AvailabilityData</h2>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="">
+
+            <ul class="nav nav-tabs" style="">
+                <li class="active"><a data-toggle="tab" href="#mon">Monday</a></li>
+                <li><a data-toggle="tab" href="#tue">Tuesday</a></li>
+                <li><a data-toggle="tab" href="#wed">Wednesday</a></li>
+                <li><a data-toggle="tab" href="#thu">Thursday</a></li>
+                <li><a data-toggle="tab" href="#fri">Friday</a></li>
+                <li><a data-toggle="tab" href="#sat">Saturday</a></li>
+            </ul>
+
+            <div class="tab-content jumbotron" style="padding:20px;">
+
+                <div id="mon" class="tab-pane fade in active">
+                    @foreach (var vol in Model)
+                    {
+
+                        var avail = false;
+
+                        foreach (var av in vol.availabilities)
+                        {
+                            if ((int)av.avDay == 0)
+                            {
+                                avail = true;
+                            }
+                        }
+
+                        if (avail == true)
+                        {
+                            <div class="container-fluid">
+
+                                <div onclick="showAvail(@vol.volunteer.volID, 'mon')" class="btn btn-xs btn-primary btn-group-justified" style="margin-bottom:15px;">
+                                    <div class="row" style="border-style:solid; border-color:#337ab7; border-width:1px; margin:5px; background-color:#337ab7;">
+                                        <div class="col-md-2">
+                                            <div style="color:white;">@vol.volunteer.volLastName, @vol.volunteer.volFirstName</div>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @for (var h = 5; h <= 16; h++)
+                                            {
+                                                <div class="col-md-1" style="background-color:#6cb8fa; color:white; text-align:center; border-width:1px; border-color:#eeeeee; border-style:solid;">
+                                                    @foreach (var av in vol.availabilities)
+                                                    {
+                                                        if ((int)av.avDay == 0)
+                                                        {
+                                                            if (h >= av.avFrom.Hour && h <= av.avUntil.Hour)
+                                                            {
+                                                                @h<span>:00</span>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="@("mon" + vol.volunteer.volID)" style="display:none;">
+                                    @{Html.RenderAction("VolunteerAvailable", new { id = vol.volunteer.volID }); }
+                                </div>
+                            </div>
+                                            }
+
+                                        }
+                </div>
+
+                <div id="tue" class="tab-pane fade in">
+                    @foreach (var vol in Model)
+                    {
+
+                        var avail = false;
+
+                        foreach (var av in vol.availabilities)
+                        {
+                            if ((int)av.avDay == 1)
+                            {
+                                avail = true;
+                            }
+                        }
+
+                        if (avail == true)
+                        {
+                            <div class="container-fluid">
+
+                                <div onclick="showAvail(@vol.volunteer.volID, 'tue')" class="btn btn-xs btn-primary btn-group-justified" style="margin-bottom:15px;">
+                                    <div class="row" style="border-style:solid; border-color:#337ab7; border-width:1px; margin:5px; background-color:#337ab7;">
+                                        <div class="col-md-2">
+                                            <div style="color:white;">@vol.volunteer.volLastName, @vol.volunteer.volFirstName</div>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @for (var h = 5; h <= 16; h++)
+                                            {
+                                                <div class="col-md-1" style="background-color:#6cb8fa; color:white; text-align:center; border-width:1px; border-color:#eeeeee; border-style:solid;">
+                                                    @foreach (var av in vol.availabilities)
+                                                    {
+                                                        if ((int)av.avDay == 1)
+                                                        {
+                                                            if (h >= av.avFrom.Hour && h <= av.avUntil.Hour)
+                                                            {
+                                                                @h<span>:00</span>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="@("tue" + vol.volunteer.volID)" style="display:none;">
+                                    @{Html.RenderAction("VolunteerAvailable", new { id = vol.volunteer.volID }); }
+                                </div>
+                            </div>
+                                            }
+
+                                        }
+                </div>
+
+                <div id="wed" class="tab-pane fade in">
+                    @foreach (var vol in Model)
+                    {
+
+                        var avail = false;
+
+                        foreach (var av in vol.availabilities)
+                        {
+                            if ((int)av.avDay == 2)
+                            {
+                                avail = true;
+                            }
+                        }
+
+                        if (avail == true)
+                        {
+                            <div class="container-fluid">
+
+                                <div onclick="showAvail(@vol.volunteer.volID, 'wed')" class="btn btn-xs btn-primary btn-group-justified" style="margin-bottom:15px;">
+                                    <div class="row" style="border-style:solid; border-color:#337ab7; border-width:1px; margin:5px; background-color:#337ab7;">
+                                        <div class="col-md-2">
+                                            <div style="color:white;">@vol.volunteer.volLastName, @vol.volunteer.volFirstName</div>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @for (var h = 5; h <= 16; h++)
+                                            {
+                                                <div class="col-md-1" style="background-color:#6cb8fa; color:white; text-align:center; border-width:1px; border-color:#eeeeee; border-style:solid;">
+                                                    @foreach (var av in vol.availabilities)
+                                                    {
+                                                        if ((int)av.avDay == 2)
+                                                        {
+                                                            if (h >= av.avFrom.Hour && h <= av.avUntil.Hour)
+                                                            {
+                                                                @h<span>:00</span>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="@("wed" + vol.volunteer.volID)" style="display:none;">
+                                    @{Html.RenderAction("VolunteerAvailable", new { id = vol.volunteer.volID }); }
+                                </div>
+                            </div>
+                                            }
+
+                                        }
+                </div>
+
+                <div id="thu" class="tab-pane fade in">
+                    @foreach (var vol in Model)
+                    {
+
+                        var avail = false;
+
+                        foreach (var av in vol.availabilities)
+                        {
+                            if ((int)av.avDay == 3)
+                            {
+                                avail = true;
+                            }
+                        }
+
+                        if (avail == true)
+                        {
+                            <div class="container-fluid">
+
+                                <div onclick="showAvail(@vol.volunteer.volID, 'thu')" class="btn btn-xs btn-primary btn-group-justified" style="margin-bottom:15px;">
+                                    <div class="row" style="border-style:solid; border-color:#337ab7; border-width:1px; margin:5px; background-color:#337ab7;">
+                                        <div class="col-md-2">
+                                            <div style="color:white;">@vol.volunteer.volLastName, @vol.volunteer.volFirstName</div>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @for (var h = 5; h <= 16; h++)
+                                            {
+                                                <div class="col-md-1" style="background-color:#6cb8fa; color:white; text-align:center; border-width:1px; border-color:#eeeeee; border-style:solid;">
+                                                    @foreach (var av in vol.availabilities)
+                                                    {
+                                                        if ((int)av.avDay == 3)
+                                                        {
+                                                            if (h >= av.avFrom.Hour && h <= av.avUntil.Hour)
+                                                            {
+                                                                @h<span>:00</span>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="@("thu" + vol.volunteer.volID)" style="display:none;">
+                                    @{Html.RenderAction("VolunteerAvailable", new { id = vol.volunteer.volID }); }
+                                </div>
+                            </div>
+                                            }
+
+                                        }
+                </div>
+
+                <div id="fri" class="tab-pane fade in">
+                    @foreach (var vol in Model)
+                    {
+
+                        var avail = false;
+
+                        foreach (var av in vol.availabilities)
+                        {
+                            if ((int)av.avDay == 4)
+                            {
+                                avail = true;
+                            }
+                        }
+
+                        if (avail == true)
+                        {
+                            <div class="container-fluid">
+
+                                <div onclick="showAvail(@vol.volunteer.volID, 'fri')" class="btn btn-xs btn-primary btn-group-justified" style="margin-bottom:15px;">
+                                    <div class="row" style="border-style:solid; border-color:#337ab7; border-width:1px; margin:5px; background-color:#337ab7;">
+                                        <div class="col-md-2">
+                                            <div style="color:white;">@vol.volunteer.volLastName, @vol.volunteer.volFirstName</div>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @for (var h = 5; h <= 16; h++)
+                                            {
+                                                <div class="col-md-1" style="background-color:#6cb8fa; color:white; text-align:center; border-width:1px; border-color:#eeeeee; border-style:solid;">
+                                                    @foreach (var av in vol.availabilities)
+                                                    {
+                                                        if ((int)av.avDay == 4)
+                                                        {
+                                                            if (h >= av.avFrom.Hour && h <= av.avUntil.Hour)
+                                                            {
+                                                                @h<span>:00</span>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="@("fri" + vol.volunteer.volID)" style="display:none;">
+                                    @{Html.RenderAction("VolunteerAvailable", new { id = vol.volunteer.volID }); }
+                                </div>
+                            </div>
+                                            }
+
+                                        }
+                </div>
+
+                <div id="sat" class="tab-pane fade in">
+                    @foreach (var vol in Model)
+                    {
+
+                        var avail = false;
+
+                        foreach (var av in vol.availabilities)
+                        {
+                            if ((int)av.avDay == 5)
+                            {
+                                avail = true;
+                            }
+                        }
+
+                        if (avail == true)
+                        {
+                            <div class="container-fluid">
+
+                                <div onclick="showAvail(@vol.volunteer.volID, 'sat')" class="btn btn-xs btn-primary btn-group-justified" style="margin-bottom:15px;">
+                                    <div class="row" style="border-style:solid; border-color:#337ab7; border-width:1px; margin:5px; background-color:#337ab7;">
+                                        <div class="col-md-2">
+                                            <div style="color:white;">@vol.volunteer.volLastName, @vol.volunteer.volFirstName</div>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @for (var h = 5; h <= 16; h++)
+                                            {
+                                                <div class="col-md-1" style="background-color:#6cb8fa; color:white; text-align:center; border-width:1px; border-color:#eeeeee; border-style:solid;">
+                                                    @foreach (var av in vol.availabilities)
+                                                    {
+                                                        if ((int)av.avDay == 5)
+                                                        {
+                                                            if (h >= av.avFrom.Hour && h <= av.avUntil.Hour)
+                                                            {
+                                                                @h<span>:00</span>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="@("sat" + vol.volunteer.volID)" style="display:none;">
+                                    @{Html.RenderAction("VolunteerAvailable", new { id = vol.volunteer.volID }); }
+                                </div>
+                            </div>
+                                            }
+
+                                        }
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function showAvail(id, day) {
+
+        var elemID = day + id;
+
+        var div = document.getElementById(elemID);
+
+        switch (div.style.display) {
+            case "":
+                div.style.display = "none";
+                break;
+            case "none":
+                div.style.display = "";
+                break;
+        }
+    }
+</script>

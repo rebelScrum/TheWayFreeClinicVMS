@@ -17,6 +17,7 @@ using Microsoft.SqlServer;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -40,7 +41,13 @@ namespace TheWayFreeClinicVMS.Controllers
             public List<string> hours { get; set; }
             public Volunteer volunteer { get; set; }
         }
-       
+
+        public class AvailabilityDataVol
+        {
+            public List<Availability> availabilities { get; set; }
+            public Volunteer volunteer { get; set; }
+        }
+
 
         // GET: AdminDashboard        
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
@@ -277,6 +284,8 @@ namespace TheWayFreeClinicVMS.Controllers
                 ViewBag.ClockActionBtn = "Click To Clock In";
             }
 
+            timesheet = timesheet.OrderByDescending(t => t.wrkDate).ToList();
+
             return PartialView("_VolunteerTimesheet", timesheet);
         }
 
@@ -307,9 +316,6 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 ViewBag.date = worklog.wrkDate.ToString("yyyy-MM-dd");
             }
-
-            
-            
             return View(worklog);
         }
         // POST: ManageTimesheet/Edit/5
@@ -319,65 +325,121 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UpdateTimesheet([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] Worktime worklog)
         {
+            ViewBag.FullName = getUserName();
+
+            if (Request.Browser.Browser == "InternetExplorer")
+            {
+                ViewBag.date = worklog.wrkDate.ToShortDateString();
+            }
+            else
+            {
+                ViewBag.date = worklog.wrkDate.ToString("yyyy-MM-dd");
+            }
 
             if (ModelState.IsValid)
             {
-                db.Entry(worklog).State = EntityState.Modified;
-                
-                //db.Worklog.Add(worklog);
-                db.SaveChanges();
+                List<Worktime> timesheet = db.Worklog.AsNoTracking().Where(t => t.volID.Equals(worklog.volID)).ToList(); //get all records in vol's timesheet
+                Worktime oldWorklog = timesheet.Where(t => t.wrkID.Equals(worklog.wrkID)).FirstOrDefault();
 
-                List<string> flags = new List<string>();
+                worklog.wrkStartTime = worklog.wrkDate.Add(worklog.wrkStartTime.TimeOfDay);
+                worklog.wrkEndTime = worklog.wrkDate.Add(worklog.wrkEndTime.Value.TimeOfDay);
 
-                using (System.IO.StreamReader file = new System.IO.StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                var updateStartTime = worklog.wrkStartTime;
+                var updateEndTime = worklog.wrkEndTime;
+
+                var updatedRecordIsValid = true;
+                var updateSuccessful = false;                
+
+                if (updateStartTime == null || updateEndTime == null)
                 {
-                    try
+                    ViewBag.updateTimesheetError = "All fields must be filled.";
+                    return View(worklog);
+                }
+                if (updateStartTime > updateEndTime) //user input error: clockin time after clockout time
+                {
+                    ViewBag.updateTimesheetError = "The clock-out time should be later than clock-in time. Please adjust clock-out to after clock-in or adjust clock-in to before clock-out.";
+                    return View(worklog);
+                }
+
+                foreach (var record in timesheet)
+                {
+                    if (record.wrkID != worklog.wrkID)
                     {
-                        var txt = "";
+                        bool overlap = worklog.wrkStartTime < record.wrkEndTime && record.wrkStartTime < worklog.wrkEndTime;
 
-                        while ((txt = file.ReadLine()) != null)
+                        if (overlap)
                         {
-                            var msgs = txt.Split(';');
-                            foreach (var item in msgs)
-                            {
-                                if (item != "")
-                                {
-                                    var id_code = item.Split(',');
+                            updatedRecordIsValid = false;
+                            ViewBag.recordConflict = "Conflicting Record: " + record.wrkDate.Date.ToShortDateString() + " - " + record.wrkStartTime.ToShortTimeString() + " - " + record.wrkEndTime.Value.ToShortTimeString();
+                        }
+                    }
+                }
 
-                                    if (id_code[0] != worklog.wrkID.ToString())
+                if (updatedRecordIsValid) //everything is ok
+                {
+                    db.Entry(worklog).State = EntityState.Modified;
+                    db.SaveChanges();
+                    updateSuccessful = true;
+                }
+                else
+                {
+                    ViewBag.updateTimesheetError = "This update conflicts with one or more existing timesheet records.";                    
+                }
+
+                if (updateSuccessful == true)
+                {
+                    List<string> flags = new List<string>();
+
+                    using (System.IO.StreamReader file = new System.IO.StreamReader(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
+                    {
+                        try
+                        {
+                            var txt = "";
+
+                            while ((txt = file.ReadLine()) != null)
+                            {
+                                var msgs = txt.Split(';');
+                                foreach (var item in msgs)
+                                {
+                                    if (item != "")
                                     {
-                                        flags.Add(item);
+                                        var id_code = item.Split(',');
+
+                                        if (id_code[0] != worklog.wrkID.ToString())
+                                        {
+                                            flags.Add(item);
+                                        }
                                     }
                                 }
                             }
+                            file.Close();
                         }
-                        file.Close();      
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                }
-                using (System.IO.StreamWriter newFile = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
-                {
-                    try
-                    {
-                        foreach (var item in flags)
+                        catch (Exception e)
                         {
-                            if (item != "")
-                            {
-                                newFile.Write(item + ";");
-                            }                            
+
                         }
-                        newFile.Close();
                     }
-                    catch (Exception e)
+                    using (System.IO.StreamWriter newFile = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), false))
                     {
+                        try
+                        {
+                            foreach (var item in flags)
+                            {
+                                if (item != "")
+                                {
+                                    newFile.Write(item + ";");
+                                }
+                            }
+                            newFile.Close();
+                        }
+                        catch (Exception e)
+                        {
 
+                        }
                     }
-                }
 
-                return RedirectToAction("Details", new { id = worklog.volID });
+                    return RedirectToAction("Details", new { id = worklog.volID });
+                }
             }
 
             return View(worklog);
@@ -901,6 +963,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
         public ActionResult BackupDB()
         {
+            ViewBag.FullName = getUserName();
             return View();
         }
 
@@ -914,7 +977,7 @@ namespace TheWayFreeClinicVMS.Controllers
                 DataTable dt = new DataTable();
 
                 //con.ConnectionString = @"Server=MyPC\SqlServer2k8;database=Test;Integrated Security=true;";
-                con.ConnectionString = @"Data Source=99.127.65.108,1433;Initial Catalog=rebelscrumdb;Persist Security Info=True;User ID=rebelNadiia;Password=thewayfreeclinic;";
+                con.ConnectionString = @"Data Source=99.127.65.108,1433;Initial Catalog=rebelscrumdb;Persist Security Info=True;User ID=rebelChris;Password=thewayfreeclinic;";
                 string backupDIR = Server.MapPath("~/Content/docs/Backups/");
                 string fileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss");
 
@@ -929,18 +992,18 @@ namespace TheWayFreeClinicVMS.Controllers
                 sqlcmd.ExecuteNonQuery();
                 con.Close();
 
-                if (Server.MapPath("~/Content/docs/Backups/" + fileName + ".Bak") != null)
-                {
-                    byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName + ".Bak");
-                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName + ".Bak");
-                }
+                //if (Server.MapPath("~/Content/docs/Backups/" + fileName + ".Bak") != null)
+                //{
+                //    byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName + ".Bak");
+                //    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName + ".Bak");
+                //}
             }
             catch (Exception ex)
             {
                 ViewBag.BackupMsg = "Error Occured During DB backup process !<br>" + ex.ToString();
             }
 
-            return RedirectToAction("BackupDB");
+            return RedirectToAction("ManageBackups");
         }
 
         [HttpPost]
@@ -1028,6 +1091,84 @@ namespace TheWayFreeClinicVMS.Controllers
             Response.Output.Write(sw.ToString());
             Response.Flush();
             Response.End();
+        }
+
+        public ActionResult ManageBackups()
+        {
+            ViewBag.FullName = getUserName();
+
+            List<FileInfo> fi = new List<FileInfo>();
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/Backups"));
+
+            foreach (var file in d.GetFiles("*.Bak"))
+            {
+                fi.Add(file);
+            }
+            
+            return View(fi);
+        }
+
+        public ActionResult deleteBackup(string fileName, string bakDelete)
+        {
+            string backupDIR = Server.MapPath("~/Content/docs/Backups/");
+
+            switch (bakDelete)
+            {
+                case "download":
+                    if (Server.MapPath("~/Content/docs/Backups/" + fileName) != null)
+                    {
+                        byte[] fileBytes = System.IO.File.ReadAllBytes(backupDIR + fileName);
+                        return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                    }
+                    break;
+                case "delete":
+                    try
+                    {
+                        System.IO.FileInfo file = new System.IO.FileInfo(Server.MapPath("~/Content/docs/Backups/") + (fileName));
+
+                        file.Delete();
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
+            }
+
+            return RedirectToAction("ManageBackups");
+        }
+        
+        public async Task<ActionResult> ResetPassword(int id)
+        {            
+            var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            var user = db.Volunteers.Where(v => v.volID.Equals(id)).FirstOrDefault();
+
+            return RedirectToAction("ResetPassword", "Manage", new { username = user.volEmail });
+        }
+
+        public ActionResult AvailabilityData()
+        {
+            ViewBag.FullName = getUserName();
+
+            List<AvailabilityDataVol> availDataList = new List<AvailabilityDataVol>();
+
+            var volunteers = db.Volunteers.ToList();
+            var availabilities = db.Availabilities.ToList();
+
+            foreach (var vol in volunteers)
+            {
+                AvailabilityDataVol volData = new AvailabilityDataVol();
+
+                volData.volunteer = vol;
+
+                volData.availabilities = db.Availabilities.Where(a => a.volID == volData.volunteer.volID).ToList();       
+
+                availDataList.Add(volData);
+            }            
+
+            return View(availDataList);
         }
 
         protected override void Dispose(bool disposing)

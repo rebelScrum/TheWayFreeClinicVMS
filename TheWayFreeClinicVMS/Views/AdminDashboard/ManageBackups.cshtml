@@ -1,23 +1,26 @@
-﻿@{
-    ViewBag.Title = "homeAllMessages";
+﻿
+@{
+    ViewBag.Title = "ManageBackups";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@using (Html.BeginForm("homeMessageDelete", "Home"))
+<h2>ManageBackups</h2>
+
+@using (Html.BeginForm("deleteBackup", "AdminDashboard"))
 {
     @Html.AntiForgeryToken()
     <div class="panel panel-primary">
-        <div class="panel-heading"><span style="font-size:x-large;">Restore or Delete Messages </span></div>
+        <div class="panel-heading"><span style="font-size:x-large;">Download or Delete Backups </span></div>
         <div class="panel-body">
             <div class="form-group">
                 <div>
                     <table class="table table-condensed table-hover">
                         <tr style="font-size:large;">
                             <th>
-                                Messages
+                                Previous Backups
                             </th>
                             <th>
-                                Preview
+                                Creation Date
                             </th>
                             <th>
 
@@ -27,23 +30,22 @@
                         {
                             <tr>
                                 <td>
-                                    @item.fileName
+                                    @item.Name
                                 </td>
                                 <td>
-                                    @item.preview
-                                    <span id="@item.fileName" hidden>@item.fullText</span>
+                                    @item.CreationTime
                                 </td>
                                 <td style="text-align:right;">
-                                    <a href="#" name="@item.fileName" onclick="return msgRestore(this.name)" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Restore</a>
-                                    <a href="#" name="@item.fileName" onclick="return msgDelete(this.name)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Delete</a>
+                                    <a href="#" name="@item.Name" onclick="return bakDownload(this.name)" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Download</a>
+                                    <a href="#" name="@item.Name" onclick="return bakDelete(this.name)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Delete</a>
                                 </td>
                             </tr>
                         }
                     </table>
                     <input id="fileName" name="fileName" type="text" value="" hidden />
-                    <input id="removeMessage" name="removeMessage" type="text" value="" hidden />
-                    <button id="updateSubmitBtn" type="submit" class="btn btn-success btn-sm" style="margin-top:20px; float:right; display:none;">Restore</button>
-                    
+                    <input id="bakDelete" name="bakDelete" type="text" value="" hidden />
+                    <button id="updateSubmitBtn" type="submit" class="btn btn-success btn-sm" style="margin-top:20px; float:right; display:none;">Download</button>
+
                 </div>
             </div>
         </div>
@@ -51,23 +53,23 @@
 }
 
 <script>
-    function msgRestore(fileName)
+    function bakDownload(fileName)
     {
         document.getElementById('fileName').value = fileName;
 
-        document.getElementById('removeMessage').value = "restore";
+        document.getElementById('bakDelete').value = "download";
 
         document.getElementById("updateSubmitBtn").style.display = "";
         document.getElementById('updateSubmitBtn').classList.remove("btn-danger");
         document.getElementById('updateSubmitBtn').classList.add("btn-success");
-        document.getElementById('updateSubmitBtn').innerHTML = "Restore";
+        document.getElementById('updateSubmitBtn').innerHTML = "Download";
     }
 
-    function msgDelete(fileName)
+    function bakDelete(fileName)
     {
         document.getElementById('fileName').value = fileName;
 
-        document.getElementById('removeMessage').value = "delete";
+        document.getElementById('bakDelete').value = "delete";
 
         document.getElementById('updateSubmitBtn').style.display = "";
         document.getElementById('updateSubmitBtn').classList.remove("btn-success");

@@ -220,6 +220,10 @@
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\docs\WorklogDataMessages\WorklogDataFlags.txt" />
     <Content Include="Content\img\Help1_HomePageOverview.png" />
+    <Content Include="Content\img\Help_CreateAdmin_AdminListing.png" />
+    <Content Include="Content\img\Help_CreateAdmin_ClickCreateAdminOnMenu.png" />
+    <Content Include="Content\img\Help_CreateAdmin_EnterEmail.png" />
+    <Content Include="Content\img\Help_CreateAdmin_Overview.png" />
     <Content Include="Content\img\Help_CreateVol_ClickCreateVol.png" />
     <Content Include="Content\img\Help_CreateVol_Overview.png" />
     <Content Include="Content\img\Help_Dashboard_ChooseSpecialty.png" />

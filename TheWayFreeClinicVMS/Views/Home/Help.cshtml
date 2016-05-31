@@ -246,7 +246,7 @@
         -->
     </div>
 
-    <!-- Using the admin's menu -->
+    <!-- Using the admin menu -->
     <button class="accordion">Using the Administrator Menu</button>
     <div class="accordion-panel">
 
@@ -258,7 +258,7 @@
         <p>Notice that the options in the menu are grouped by category. If you click or tap on one of the categories, it opens to show the options that are inside of it.</p>
         <img class="img-responsive-help" src="~/Content/img/Help_Dashboard_SideMenuViewExpanded.png" />
 
-        <p>All of the options are discussed in sections below.</p>
+        <p>The "View" panel gives you several quick shortcuts to pages that you can acccess from within the Dashboard. Similarly, the "Update" panel gives shortcuts for editing several areas within the Dashboard. It also includes options to update home page messages and the worklog, which we'll discuss below along with everything in the "Create" panel.</p>
 
         <!--<p>You'll see that under "View" the first option is "Volunteers" - That will take you straight to this volunteer list screen that we're currently on. This option is available because you may want to jump back here from a page somewhere else.</p>
 
@@ -283,7 +283,8 @@
         <p>Note also that if you enter something in the wrong format (e.g. phone number without an area code, email address without an "at" symbol), the page will display a red error message beneath each of the relevant fields.</p>
         <img class="img-responsive-help" src="~/Content/img/Help_Profile_EditErrors.png" />
 
-        <!-- What happens now? -->
+        <p>The volunteer should now be created and will show up in any lists of volunteers. Note that this volunteer has a default password...</p>
+        <!-- Discuss password -->
 
     </div>
 
@@ -309,6 +310,7 @@
     <div class="accordion-panel">
 
         <p>As an administrator, you have the ability to display announcements and other info (including images) on the home page in a place where everybody will see it whenever they're clocking in. We've built a page into the system where you can control what's displayed. To get to that page, select "Update" from the side menu, then select "Home Page Messages". </p>
+
 
         <p>Notice now the two boxes in which you can change what's currently displayed. The first box changes the text area in the top left part of the home page. The second box controls what image is shown in the box beneath the first. </p>
 
@@ -348,20 +350,60 @@
         <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_ClickFilter.png" />
         <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_FilterResult.png" />
 
-        <p>If you would like, you may export this result to Excel using the green button on the right. This will produce a pre-formatted Excel sheet for you.</p>
-
+        <p>You can also export these results to Excel using the green button. This will create and download a pre-formatted Excel sheet for you. At the download prompt, choose Open to view the sheet just once or Save to copy it to your computer.</p>
     </div>
 
     <!-- Availability report -->
     <button class="accordion">Generating and Using Availability Reports</button>
     <div class="accordion-panel">
 
+        <p>The availability report shows you when volunteers are available to work at the clinic.</p>
+
+        <p>From the admin menu, open the "Create" panel, and select "New Availability Report".</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_ClickAvailReport.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_Overview.png" />
+
+        <p>Here, you can apply several filters to narrow your results.If you click "Filter" now, you won't get any results. You first need to specify at least a day of the week. For an example, let's say that we want to see the availability of physicians, who are currently active, on Mondays and Wednesdays.</p>
+
+        <p>First, choose Physicians from the dropdown list.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_SelectPhysician.png" />
+
+        <p>Now choose "True" from the Activity dropdown.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_SelectTrue.png" />
+
+        <p>Choose Monday and Wednesday.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_SelectMonday.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_SelectWednesday.png" />
+
+        <p>And lastly, click or tap Filter. You'll see that in this case we get a result of just one physician who is available Mondays, Wednesdays, and Fridays. Notice that Monday and Wednesday are in bold since they're the days you chose to filter by.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_ClickFilter.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_AvailReport_FilterResult.png" />
+
+        <p>You can also export these results to Excel using the green button. This will create and download a pre-formatted Excel sheet for you. At the download prompt, choose Open to view the sheet just once or Save to copy it to your computer.</p>
     </div>
 
     <!-- Creating a backup -->
     <button class="accordion">Creating a Backup</button>
     <div class="accordion-panel">
+        <p>Backups allow you to save copies of the information storied in the VMS database for safekeeping or future reference. We recommend that you backup the database at least once every month. This will allow you to recover in case the database is corrupted, destroyed, or infected with a virus. The last of these three is a scenario that is particularly concerning and has been happening more frequently in recent years. Ransomware is a kind of virus that encrypts your data (putting it in an unusable form) and forces you to pay a ransom to the hackers in order to get it back. It usually gets into a computer when an unsuspecting person opens an infected email attachment. If The Way gets hit with ransomware, though, all that you need to do is restore the database from one of your backups, and you'll be good to go, without being forced to pay the ransom.</p>
 
+        <p>Anyway, to get to the backup page, open the "Create" panel in the admin menu, and select "New Backup Data".</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_Backup_ClickBackup.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_Backup_Overview.png" />
+
+        <p>You have two ways to backup your data from here. You can create a backup of the entire database as a ".bak" file, or save individual parts (tables) of the database as Excel spreadsheets.</p>
+
+        <p>If you select "Backup Database to .Bak File", the system will create the file and then prompt you to download it. Choose "Save File" or "Save Target As" at the prompt to copy the file to your computer.</p>
+        <!-- File download prompt -->
+
+        <p>You can also keep track of your previous backups. Select "Click here to manage previous backups", and you'll be taken to the Manage Backups page.</p>
+        
+        <p>Here you can see a listing of your most recent backups and when they were done.</p> 
+        <!-- Manage Backups page -->
+
+        <p>If you want to download an individual table file, choose the table you need, and when the download prompt opens, chooose "Save File" or "Save Target As" to copy it to your computer, or choose "Open with..." if you just want to view the spreadsheet once.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_Backup_SelectVolunteerTable.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_Backup_VolunteerDownloadPrompt.png" />
     </div>
 
     <!-- Using the worklog -->

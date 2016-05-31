@@ -112,10 +112,27 @@
 
         <p>Notice the Timesheet section on the bottom left of the page. This will show the most recent times that you clocked in or out. You can also clock in or out right now by using the green button. </p>
         <img class="img-responsive-help" src="~/Content/img/Help_Profile_Timesheet.png" />
-        
+
         <p>Finally, there is the "Available for Volunteering" section. This shows the days of the week and times that you have indicated are when you can volunteer at the clinic. To change the times, select "Update Availability". The process will work in a similar way to the employer info process that we discussed above.</p>
         <img class="img-responsive-help" src="~/Content/img/Help_Profile_Availability.png" />
 
+    </div>
+
+    <!-- Changing your password -->
+    <button class="accordion">Changing Your Password, and What To Do If You Forget It</button>
+    <div class="accordion-panel">
+        <p>First of all, if you've forgotten your password, ask an administrator to reset it for you. This will change it to "Password1!", case-sensitive, which you can then use to log in. <strong>IT IS VERY IMPORTANT</strong> that you follow the instructions below to change your password <strong>immediately</strong> after doing this. If you do not, your account will be highly susceptible to unauthorized use by a hacker or another user, since we've just written on this page for all the world to see what your password gets changed to when it's reset. For the safety and privacy of your personal information, and to prevent hack attacks on the system, please change your password immediately. Now, we'll get off the soapbox.</p>
+        <p>To change your password, navigate to your profile page by clicking on "Hello, [your name here]!" at the top right of your screen. Then, inside your profile page, select Manage Account.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_ManageAccount_ClickManageAccount.png" />
+
+        <p>From the Manage Account page, choose "Change Password".</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_ChangePassword_ClickChangePassword.png" />
+
+        <p>On the Change Password Form page, enter your current password and then your desired password. You'll have to enter the new one twice, so that if you make a typo, you'll catch it now, which is a lot better than not being able to log in later!</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_ChangePassword_ChangeForm_ClickChange.png" />
+
+        <p>Lastly, remember that your password must have at least one character that is not a letter. This can be a digit or symbol. The reason for this is that it makes passwords harder to break for a hacker.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_ChangePassword_ChangeForm_Error.png" />
     </div>
 
     <h3>Administrators</h3>
@@ -262,7 +279,7 @@
         <p>Notice that the "Specialty" field is a little different. If the volunteer's specialty (e.g. RN, physician, nutritionist) isn't in the dropdown list that you see there, you might want to add a new one. If you select "Add Specialty", you'll be taken to a page in which you can create a new specialty and save it. After saving a new specialty, you'll be taken back to this page.</p>
         <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_AddSpecialtyClick.png" />
         <img class="img-responsive-help" src="~/Content/img/Help_ViewEdit_AddSpecialtyPage.png" />
-        
+
         <p>Note also that if you enter something in the wrong format (e.g. phone number without an area code, email address without an "at" symbol), the page will display a red error message beneath each of the relevant fields.</p>
         <img class="img-responsive-help" src="~/Content/img/Help_Profile_EditErrors.png" />
 
@@ -288,9 +305,7 @@
     </div>
 
     <!-- Posting home page information-->
-    <button class="accordion">
-        Posting Information on the Home Page
-    </button>
+    <button class="accordion">Posting Information on the Home Page</button>
     <div class="accordion-panel">
 
         <p>As an administrator, you have the ability to display announcements and other info (including images) on the home page in a place where everybody will see it whenever they're clocking in. We've built a page into the system where you can control what's displayed. To get to that page, select "Update" from the side menu, then select "Home Page Messages". </p>
@@ -307,7 +322,33 @@
     <!-- Hours report -->
     <button class="accordion">Generating and Using Hours Reports</button>
     <div class="accordion-panel">
+
+        <p>The hours report shows how many hours have been worked by volunteers meeting certain criteria which you specify. You'll also get the grand total of all hours worked during the time range that you specify.</p>
+
         <p>From the admin menu, open the "Create" panel, and select "New Hours Report".</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_ClickHoursReport.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_Overview.png" />
+
+        <p>Here, you can apply several filters to your report. If you use no filters, you'll get everything - all specialties, all activity statuses, all dates. As an example, let's say that we're trying to get the hours of all support staff which are currently active, between April 12th and May 20th.</p>
+
+        <p>First, choose "Support Staff" from the dropdown list of specialties.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_SelectSupportStaff.png" />
+
+        <p>Then choose "True" from the Activity dropdown.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_SelectTrue.png" />
+
+        <p>Now, open the calendar widget, and choose April 12th as the start date for your range.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_SelectStartingRange.png" />
+
+        <p>Then choose May 20th as the end date, and click Apply.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_SelectEndOfRange.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_DateClickApply.png" />
+
+        <p>Now you're all set. Click "Filter" and watch the magic happen. In this case, we get a result of just one volunteer.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_ClickFilter.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HoursReport_FilterResult.png" />
+
+        <p>If you would like, you may export this result to Excel using the green button on the right. This will produce a pre-formatted Excel sheet for you.</p>
 
     </div>
 
@@ -335,6 +376,7 @@
         <p>From the Dashboard, click or tap "Details" next to the user's name. Once you're in the user's profile page, click "Reset Password" underneath his/her profile picture. The page will then display the message "Password Reset!".</p>
         <img class="img-responsive-help" src="~/Content/img/Help_ResetPassword_ClickResetPassword.png" />
         <img class="img-responsive-help" src="~/Content/img/Help_ResetPassword_PasswordResetResult.png" />
+        <p>The user's password has now been reset to "Password1!", case-sensitive. He or she can now follow the instructions in the "Changing Your Password" section above. Make sure (gently) that he or she understands that it's very important to change his or her password immediately to prevent unauthorized access to his/her personal information, since this page tells for all to see what a password reset will set his or her password to be.</p>
     </div>
 
 </body>

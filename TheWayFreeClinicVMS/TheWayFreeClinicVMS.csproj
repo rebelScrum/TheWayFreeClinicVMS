@@ -246,6 +246,14 @@
     <Content Include="Content\img\Help_Home_ClockIn.png" />
     <Content Include="Content\img\Help_Home_ClockInRecentActivity.png" />
     <Content Include="Content\img\Help_Home_ClockOutRecentActivity.png" />
+    <Content Include="Content\img\Help_HoursReport_ClickFilter.png" />
+    <Content Include="Content\img\Help_HoursReport_ClickHoursReport.png" />
+    <Content Include="Content\img\Help_HoursReport_DateClickApply.png" />
+    <Content Include="Content\img\Help_HoursReport_Overview.png" />
+    <Content Include="Content\img\Help_HoursReport_SelectEndOfRange.png" />
+    <Content Include="Content\img\Help_HoursReport_SelectStartingRange.png" />
+    <Content Include="Content\img\Help_HoursReport_SelectSupportStaff.png" />
+    <Content Include="Content\img\Help_HoursReport_SelectTrue.png" />
     <Content Include="Content\img\Help_LogIn_ClickLogOut.png" />
     <Content Include="Content\img\Help_LogIn_EnterCreds.png" />
     <Content Include="Content\img\Help_LogInOverview.png" />
@@ -272,6 +280,8 @@
     <Content Include="Content\img\Help_Profile_Overview.png" />
     <Content Include="Content\img\Help_Profile_Timesheet.png" />
     <Content Include="Content\img\Help_RecentActivityClockOut.png" />
+    <Content Include="Content\img\Help_ResetPassword_ClickResetPassword.png" />
+    <Content Include="Content\img\Help_ResetPassword_PasswordResetResult.png" />
     <Content Include="Content\img\Help_ViewEdit_AddSpecialtyClick.png" />
     <Content Include="Content\img\Help_ViewEdit_AddSpecialtyPage.png" />
     <Content Include="Content\img\Help_ViewEdit_ClickEditFromDashboard.png" />

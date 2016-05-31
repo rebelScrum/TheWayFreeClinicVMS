@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pgrOfcFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pgrOfcFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pgrOfcFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "John" } })
                 @Html.ValidationMessageFor(model => model.pgrOfcFirstName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -32,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pgrOfcLastName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pgrOfcLastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pgrOfcLastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Doe" } })
                 @Html.ValidationMessageFor(model => model.pgrOfcLastName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -40,7 +40,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pgrPhone, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pgrPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pgrPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "(777)777-7777" } })
                 @Html.ValidationMessageFor(model => model.pgrPhone, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pgrStreet1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pgrStreet1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pgrStreet1, new { htmlAttributes = new { @class = "form-control", placeholder = "777 Main Street" } })
                 @Html.ValidationMessageFor(model => model.pgrStreet1, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -64,7 +64,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pgrCity, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pgrCity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pgrCity, new { htmlAttributes = new { @class = "form-control", placeholder = "Jacksonville" } })
                 @Html.ValidationMessageFor(model => model.pgrCity, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -72,7 +72,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pgrState, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pgrState, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pgrState, new { htmlAttributes = new { @class = "form-control", placeholder = "FL" } })
                 @Html.ValidationMessageFor(model => model.pgrState, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -80,21 +80,21 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pgrZip, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pgrZip, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pgrZip, new { htmlAttributes = new { @class = "form-control", placeholder = "77777" } })
                 @Html.ValidationMessageFor(model => model.pgrZip, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    <a href=@Url.Action("IndexGroup", "ManageContracts") class="btn btn-success btn-sm">All PA Groups</a>
+    <a href=@Url.Action("IndexGroup", "ManageContracts") class="btn btn-info">All PA Groups</a>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

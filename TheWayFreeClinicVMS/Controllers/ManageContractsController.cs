@@ -10,6 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ManageContractsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -109,7 +110,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateEmployer([Bind(Include = "pgrID, pgrName, pgrOfcFirstName, pgrOfcLastName, pgrPhone, pgrStreet1, pgrStreet2, pgrCity, pgrState, pgrZip")] Pagroup group)
+        public ActionResult CreateGroup([Bind(Include = "pgrID, pgrName, pgrOfcFirstName, pgrOfcLastName, pgrPhone, pgrStreet1, pgrStreet2, pgrCity, pgrState, pgrZip")] Pagroup group)
         {
             try
             {

@@ -49,7 +49,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Office.Interop.Excel">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office15\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -216,10 +217,15 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\custom.css" />
+    <Content Include="Content\daterangepicker.css" />
+    <Content Include="Content\docs\WorklogDataMessages\WorklogDataFlags.txt" />
     <Content Include="Content\img\Help1_HomePageOverview.png" />
-    <Content Include="Content\img\Help2_ClockIn.png" />
-    <Content Include="Content\img\Help3_RecentActivityClockIn.png" />
-    <Content Include="Content\img\Help_ClickLogIn.png" />
+    <Content Include="Content\img\Help_CreateAdmin_AdminListing.png" />
+    <Content Include="Content\img\Help_CreateAdmin_ClickCreateAdminOnMenu.png" />
+    <Content Include="Content\img\Help_CreateAdmin_EnterEmail.png" />
+    <Content Include="Content\img\Help_CreateAdmin_Overview.png" />
+    <Content Include="Content\img\Help_CreateVol_ClickCreateVol.png" />
+    <Content Include="Content\img\Help_CreateVol_Overview.png" />
     <Content Include="Content\img\Help_Dashboard_ChooseSpecialty.png" />
     <Content Include="Content\img\Help_Dashboard_ChooseSpecialtyClickFilter.png" />
     <Content Include="Content\img\Help_Dashboard_ChooseSpecialtyResults.png" />
@@ -229,6 +235,7 @@
     <Content Include="Content\img\Help_Dashboard_NameSearchResult.png" />
     <Content Include="Content\img\Help_Dashboard_OrderedByLastName.png" />
     <Content Include="Content\img\Help_Dashboard_OrderedByStartDate1stTime.png" />
+    <Content Include="Content\img\Help_Dashboard_OrderedByStartDate2ndTime.png" />
     <Content Include="Content\img\Help_Dashboard_Overview.png" />
     <Content Include="Content\img\Help_Dashboard_SearchByName.png" />
     <Content Include="Content\img\Help_Dashboard_ShowingOnlyActive.png" />
@@ -236,17 +243,34 @@
     <Content Include="Content\img\Help_Dashboard_SideMenuOverview.png" />
     <Content Include="Content\img\Help_Dashboard_SideMenuViewExpanded.png" />
     <Content Include="Content\img\Help_HomePageAnnouncements.png" />
-    <Content Include="Content\img\Help_LogInEnterCreds.png" />
+    <Content Include="Content\img\Help_Home_ClockIn.png" />
+    <Content Include="Content\img\Help_Home_ClockInRecentActivity.png" />
+    <Content Include="Content\img\Help_Home_ClockOutRecentActivity.png" />
+    <Content Include="Content\img\Help_LogIn_ClickLogOut.png" />
+    <Content Include="Content\img\Help_LogIn_EnterCreds.png" />
     <Content Include="Content\img\Help_LogInOverview.png" />
     <Content Include="Content\img\Help_LogIn_CheckRememberMe.png" />
     <Content Include="Content\img\Help_LogIn_ClickLogInButton.png" />
+    <Content Include="Content\img\Help_LogIn_ClickLogInFromHomePage.png" />
     <Content Include="Content\img\Help_LogIn_InvalidLogInAttempt.png" />
+    <Content Include="Content\img\Help_LogIn_LogOutResult.png" />
     <Content Include="Content\img\Help_LogIn_NowLoggedIn.png" />
+    <Content Include="Content\img\Help_LogIn_Overview.png" />
+    <Content Include="Content\img\Help_Profile_AddLanguage1.png" />
+    <Content Include="Content\img\Help_Profile_AddLanguage2.png" />
+    <Content Include="Content\img\Help_Profile_Availability.png" />
+    <Content Include="Content\img\Help_Profile_ClickClockInClockOut - Copy.png" />
     <Content Include="Content\img\Help_Profile_ClickClockInClockOut.png" />
     <Content Include="Content\img\Help_Profile_ClickEdit.png" />
     <Content Include="Content\img\Help_Profile_EditClickSaveChanges.png" />
     <Content Include="Content\img\Help_Profile_EditErrors.png" />
+    <Content Include="Content\img\Help_Profile_Employment_AddNewEmployment_AddNewEmployer_Overview.png" />
+    <Content Include="Content\img\Help_Profile_Employment_AddNewEmployment_ClickAddNewEmployer.png" />
+    <Content Include="Content\img\Help_Profile_Employment_AddNewEmployment_Overview.png" />
+    <Content Include="Content\img\Help_Profile_Employment_ClickAddEmployment.png" />
+    <Content Include="Content\img\Help_Profile_Employment_Overview.png" />
     <Content Include="Content\img\Help_Profile_Overview.png" />
+    <Content Include="Content\img\Help_Profile_Timesheet.png" />
     <Content Include="Content\img\Help_RecentActivityClockOut.png" />
     <Content Include="Content\img\Help_ViewEdit_AddSpecialtyClick.png" />
     <Content Include="Content\img\Help_ViewEdit_AddSpecialtyPage.png" />
@@ -271,6 +295,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\daterangepicker.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -365,9 +391,21 @@
     <Content Include="Views\Account\DeleteAdmin.cshtml" />
     <Content Include="Views\AdminDashboard\AvailabilityReport.cshtml" />
     <Content Include="Views\Home\homeAllMessages.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerAvailable.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerLicense.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerContract.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerTimesheet.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerEmployer.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerEcontact.cshtml" />
+    <Content Include="Views\VolunteerProfile\_VolunteerLanguages.cshtml" />
+    <Content Include="Views\AdminDashboard\WorklogData.cshtml" />
+    <Content Include="Views\AdminDashboard\BackupDB.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageBackups.cshtml" />
+    <Content Include="Views\AdminDashboard\AvailabilityData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\docs\Backups\" />
     <Folder Include="Content\docs\HomePageMessages\HomePageMessagesArchive\" />
     <Folder Include="Content\img\homePageImg\" />
   </ItemGroup>

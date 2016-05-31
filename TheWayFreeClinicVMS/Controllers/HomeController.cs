@@ -10,7 +10,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TheWayFreeClinicVMS.Models;
-
+ 
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -25,17 +25,42 @@ namespace TheWayFreeClinicVMS.Controllers
 
     public class HomeController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();        
+        
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {
-            string text = "";
+             
+               string text = "";
 
             DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
-            
+
             foreach (var file in d.GetFiles("*.txt"))
             {
-                text += System.IO.File.ReadAllText(file.FullName);
+
+                //only add messages < 30 days old
+                DateTime msgDate = Convert.ToDateTime(file.Name.Replace("-", "/").Remove(file.Name.IndexOf("_")));
+                DateTime expiryDate = msgDate.AddDays(30);
+                List<HomePageMessage> hpmList = new List<HomePageMessage>();
+
+                bool expired = DateTime.Now > expiryDate;
+
+                if (expired)
+                {
+                    try
+                    {
+                        System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/") + (file.Name), Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (file.Name));
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+                else
+                {
+                    text += System.IO.File.ReadAllText(file.FullName);
+                }
+                
             }
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
@@ -44,10 +69,11 @@ namespace TheWayFreeClinicVMS.Controllers
             var wlog = db.Worklog;
 
             var sorts = from s in wlog
-                        select s;                          
+                        select s;
 
             sorts = sorts.OrderByDescending(s => s.wrkDate);
-            return View(sorts.ToList());          
+            sorts = sorts.Take(15);
+            return View(sorts.ToList());
         }
 
         public ActionResult Contact()
@@ -66,6 +92,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "wrkID,volID,wrkDate,wrkStartTime,wrkEndTime")] string email)
         {
+            ViewBag.FullName = getUserName();
 
             string text = "";
 
@@ -78,7 +105,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
 
-            ViewBag.confirm = "you are now...";
+            ViewBag.confirm = email + " is now... ";
 
             ViewBag.clock = "";
 
@@ -86,35 +113,68 @@ namespace TheWayFreeClinicVMS.Controllers
             var volunteers = db.Volunteers;
 
             //get id from email
-            var thisVolID = (from i in volunteers  where i.volEmail == email select i.volID).SingleOrDefault();
+            var thisVolID = (from i in volunteers where i.volEmail == email select i.volID).SingleOrDefault();
 
             //will set Worktime object if Endtime null. i.e., user clocked-in. 
             Worktime time = (from w in wlog where w.volID == thisVolID && w.wrkEndTime == null select w).SingleOrDefault();
-            
+            TimeSpan closingTime = new TimeSpan(17, 00, 00);
             //if wrkEndTime null, user is still clocked in. Update wrkEndTime with timestamp. 
-            //Now user has no worktime record with empty end time. At next entry query will return null and move to else.
-            if (time != null)
+            //Then, user has no worktime record with empty end time. At next entry query will return null and move to else.
+
+            if (time != null) //user still clocked in
             {                
-                time.wrkDate = DateTime.Now;
                 time.wrkEndTime = DateTime.Now;
+
+                if (time.wrkEndTime.Value.Date != time.wrkStartTime.Date) //if clocked out the day after clocked in
+                {
+                    time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 0);
+                    ViewBag.SignInMsg = "You were still signed-in. \n\n Last sign-in occured: " + time.wrkStartTime + "\n\n You are now signed-out for that day (5:00 PM). \n Please enter your e-mail again if you want to sign-in for today";
+
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), true))
+                    {
+                        var flag = time.wrkID + ",2;";
+                        file.Write(flag);
+                    }                    //send notification to admin
+                }
+                else if (time.wrkEndTime.Value.TimeOfDay >= closingTime) //clocked out same day as clock in, but after 5 PM
+                {
+                    time.wrkEndTime = new DateTime(time.wrkStartTime.Year, time.wrkStartTime.Month, time.wrkStartTime.Day, 17, 0, 1);
+                    ViewBag.SignInMsg = "You were still signed-in. \n\n Last sign-in occured: " + time.wrkStartTime + "\n\n You are now signed-out for that day (5:00 PM). \n Please enter your e-mail again if you want to sign-in for today";
+
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Server.MapPath("~/Content/docs/WorklogDataMessages/") + ("WorklogDataFlags.txt"), true))
+                    {
+                        var flag = time.wrkID + ",1;";
+                        file.Write(flag);
+                    }                    //send notification to admin
+                }
+
                 ViewBag.clock = "Clocked Out!";
                 db.SaveChanges();
             }
-            else //this user has no record containing null wrkEndTime
+            else //user has no record containing null wrkEndTime, user currently clocked out
             {
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        Worktime newTime = new Worktime();
+                        if (DateTime.Now.TimeOfDay >= closingTime) // if user tries to clock in after 5pm today
+                        {
+                            ViewBag.confirm = "";
+                            ViewBag.clock = "You cannot sign in after 5 PM. Please see your administrator for more information.";
+                        }
+                        else //normal working hours
+                        {
+                            Worktime newTime = new Worktime();
 
-                        newTime.volID = thisVolID;
-                        newTime.wrkDate = DateTime.Now;
-                        newTime.wrkStartTime = DateTime.Now;
-                        newTime.wrkEndTime = null;                    
-                        db.Worklog.Add(newTime);
-                        db.SaveChanges();
-                        ViewBag.clock = "Clocked In!";                      
+                            newTime.volID = thisVolID;
+                            newTime.wrkDate = DateTime.Now;
+                            newTime.wrkStartTime = DateTime.Now;
+                            newTime.wrkEndTime = null;
+                            db.Worklog.Add(newTime);
+                            db.SaveChanges();
+                            ViewBag.clock = "Clocked In!";
+                        }
+
                     }
                 }
                 catch (DataException)
@@ -129,15 +189,16 @@ namespace TheWayFreeClinicVMS.Controllers
                         select s;
 
             sorts = sorts.OrderByDescending(s => s.wrkDate);
-
+            sorts = sorts.Take(15);
             return View(sorts.ToList());
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult homeMessage()
         {
             string text = "";
             int maxLength = 100;
-            
+
             List<HomePageMessage> hpmList = new List<HomePageMessage>();
 
             DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages"));
@@ -151,14 +212,15 @@ namespace TheWayFreeClinicVMS.Controllers
 
                 if (hpm.fullText.Length > maxLength)
                 {
-                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";  
+                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";
                 }
                 else
                 {
                     hpm.preview = hpm.fullText;
                 }
-                              
-                hpmList.Add(hpm);          
+
+                hpmList.Add(hpm);
+                
             }
 
             ViewBag.message = text.Replace(Environment.NewLine, "<br />");
@@ -167,6 +229,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(hpmList);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult homeMessageAdd(string message)
@@ -184,12 +247,13 @@ namespace TheWayFreeClinicVMS.Controllers
             return RedirectToAction("homeMessage");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult homeMessageUpdate(string message, string fileName, string removeMessage)
         {
             ViewBag.FullName = getUserName();
-            switch(removeMessage)
+            switch (removeMessage)
             {
                 case "":
                     {
@@ -220,25 +284,84 @@ namespace TheWayFreeClinicVMS.Controllers
             return RedirectToAction("homeMessage");
         }
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult homeAllMessages()
+        {
+            string text = "";
+            int maxLength = 100;
+
+            List<HomePageMessage> hpmList = new List<HomePageMessage>();
+
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/"));
+
+            foreach (var file in d.GetFiles("*.txt"))
+            {
+                HomePageMessage hpm = new HomePageMessage();
+                hpm.filePath = file.FullName;
+                hpm.fileName = file.Name;
+                hpm.fullText = System.IO.File.ReadAllText(file.FullName);
+
+                if (hpm.fullText.Length > maxLength)
+                {
+                    hpm.preview = hpm.fullText.Substring(0, maxLength) + "...";
+                }
+                else
+                {
+                    hpm.preview = hpm.fullText;
+                }
+
+                hpmList.Add(hpm);
+
+            }
+
+            ViewBag.message = text.Replace(Environment.NewLine, "<br />");
+
+            ViewBag.FullName = getUserName();
+            return View(hpmList);
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult homeMessageDelete(string fileName)
+        public ActionResult homeMessageDelete(string fileName, string removeMessage)
         {
             ViewBag.FullName = getUserName();
 
-            System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/") + (fileName));
-            try
+            switch (removeMessage)
             {
-                fi.Delete();
-            }
-            catch (System.IO.IOException e)
-            {
-                Console.WriteLine(e.Message);
+                case "restore":
+                    {
+                        try
+                        {
+                            var newFileName = DateTime.Now.ToString("MM-dd-yyyy_HHmmss") + ".txt";
+                            System.IO.File.Move(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName), Server.MapPath("~/Content/docs/HomePageMessages/") + (newFileName));
+                        }
+                        catch (System.IO.IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    }
+                case "delete":
+                    {
+                        try
+                        {
+                            System.IO.FileInfo fi = new System.IO.FileInfo(Server.MapPath("~/Content/docs/HomePageMessages/HomePageMessagesArchive/") + (fileName));
+
+                            fi.Delete();
+                        }
+                        catch (System.IO.IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    }
             }
 
-            return RedirectToAction("homeMessage");
+            return RedirectToAction("homeAllMessages");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult homeMessage(HttpPostedFileBase file)
@@ -268,15 +391,15 @@ namespace TheWayFreeClinicVMS.Controllers
                     {
                         image.Save(renamedImagePath + ".png", System.Drawing.Imaging.ImageFormat.Png);
                     }
-                    image.Dispose();                   
-                    
+                    image.Dispose();
+
                 }
                 else
                 {
                     TempData["error"] = "ModelState Not Valid";
                 }
             }
-            
+
             return RedirectToAction("Index");
         }
 
@@ -296,7 +419,7 @@ namespace TheWayFreeClinicVMS.Controllers
                                where v.volEmail == User.Identity.Name
                                select v.volLastName + ", " + v.volFirstName).FirstOrDefault();
 
-            
+
             return fullName;
         }
     }

@@ -49,12 +49,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    <a href="@Url.Action("Index", "ManageLicenses", new { id = ViewBag.volID })" class="btn btn-info">Back to List</a>
+    <a href="@Url.Action("Index", "ManageLicenses", new { id = Model.volID })" class="btn btn-info">Back to List</a>
 </div>

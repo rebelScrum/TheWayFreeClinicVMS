@@ -25,7 +25,7 @@
 
     <p>Whether you're a new user wanting to get a feel for how this system works or you're more experienced but wanting to improve your knowledge, we hope that this page will be helpful to you. The information here is organized according to the various things you might want to do using the system - for example, clocking in and out. Click one of the large buttons below to start reading about that particular feature. If after reading you still have unanswered questions, please see an administrator for clarification.</p>
 
-    <p> ~ Yours - Nadiia, Chris, and David (Creators of the Volunteer Management System)</p>
+    <p> ~ Yours, Nadiia, Chris, and David (Creators of the Volunteer Management System)</p>
 
     <h3>All Users</h3>
 
@@ -81,11 +81,11 @@
     <!-- Profile page -->
     <button class="accordion">Viewing and Editing your Profile Information</button>
     <div class="accordion-panel">
-        <p>From the home page, if you select "Hello [your name here]!" (assuming that you're logged in), you'll be taken to your profile.</p>
+        <p>From the home page, if you select "Hello [your name here]!" (assuming that you're logged in), you'll be taken to your profile page.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_Profile_Overview1.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_Profile_Overview2.png" />
 
-        <img class="img-responsive-help" src="~/Content/img/Help_Profile_Overview.png" />
-
-        <p>Here you can see your personal information. This information is visible to all administrators, but not by other volunteers. Administrators use this information to keep track of things like when you're available to volunteer, what your specialties are, and whether you're still an active volunteer. </p>
+        <p>Here you can see your personal information. This information is visible to all administrators, but not to other volunteers. Administrators use this information to keep track of things like when you're available to volunteer, what your specialties are, and whether you're still an active volunteer. </p>
 
         <p>If you want to change something in your basic personal details, select Edit.</p>
         <img class="img-responsive-help" src="~/Content/img/Help_Profile_ClickEdit.png" />
@@ -260,6 +260,8 @@
 
         <p>The "View" panel gives you several quick shortcuts to pages that you can acccess from within the Dashboard. Similarly, the "Update" panel gives shortcuts for editing several areas within the Dashboard. It also includes options to update home page messages and the worklog, which we'll discuss below along with everything in the "Create" panel.</p>
 
+        <p>By the way, you won't have access to this menu when you're viewing pages outside of the Dashboard area, such as the Home, Contact, or Help pages. You'll have to navigate to the Dashboard first in order to use it.</p>
+
         <!--<p>You'll see that under "View" the first option is "Volunteers" - That will take you straight to this volunteer list screen that we're currently on. This option is available because you may want to jump back here from a page somewhere else.</p>
 
         <p>Under "Create", you'll see "New Volunteer" and "New Report". Selecting the first will take you to a page where you can enter the info for a new volunteer and register them in the system. See the Creating a Volunteer Profile section for more information. The second option, "New Report", will take you to the Reports page where you can have the system analyze your volunteers and produce a report for you.</p>
@@ -283,9 +285,7 @@
         <p>Note also that if you enter something in the wrong format (e.g. phone number without an area code, email address without an "at" symbol), the page will display a red error message beneath each of the relevant fields.</p>
         <img class="img-responsive-help" src="~/Content/img/Help_Profile_EditErrors.png" />
 
-        <p>The volunteer should now be created and will show up in any lists of volunteers. Note that this volunteer has a default password...</p>
-        <!-- Discuss password -->
-
+        <p>When you're done filling out the form, click or tap the green "Create" button. The volunteer should now be created and will show up in any list of all volunteers. Note that this volunteer currently has a default password consisting of the capitalized first letter of his/her first name, his/her entire last name in lowercase, his/her year of birth, and an exclamation point - e.g. for John Example, the password would be "Jexample1985!". It is important that he or she change this password as soon as reasonably possible to prevent unauthorized access to his/her account by another user or, worse, a hacker. Please make sure that he or she understands this. Instructions for changing one's password are available in the "Changing Your Password" section above.</p>
     </div>
 
     <!-- Creating a new admin -->
@@ -305,20 +305,66 @@
         <img class="img-responsive-help" src="~/Content/img/Help_CreateAdmin_AdminListing.png" />
     </div>
 
-    <!-- Posting home page information-->
-    <button class="accordion">Posting Information on the Home Page</button>
+    <!-- Posting home page information -->
+    <button class="accordion">Posting Messages and Images on the Home Page</button>
     <div class="accordion-panel">
+        <p>As an administrator, you have the ability to display announcements and images on the Home page in a place where everybody will see it whenever they're clocking in. We've built a page into the system in which you can control what's displayed. To get to that page, open the "Update" panel in the side menu, then select "Home Page Messages".</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ClickHomePageMessagesFromMenu.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_Overview1.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_Overview2.png" />
 
-        <p>As an administrator, you have the ability to display announcements and other info (including images) on the home page in a place where everybody will see it whenever they're clocking in. We've built a page into the system where you can control what's displayed. To get to that page, select "Update" from the side menu, then select "Home Page Messages". </p>
+        <p>As you can see, there are four basic functions here: 1) Adding new messages 2) Editing existing messages 3) Archiving old messages and 4) Uploading a new image. To start, let's create a new announcement. Enter your message in the text area and click Submit.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_CreateNew.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_CreateNewResult.png" />
 
+        <p>You can verify that this message is now displayed on the Home page.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_NewMsgDisplayedOnHome.png" />
 
-        <p>Notice now the two boxes in which you can change what's currently displayed. The first box changes the text area in the top left part of the home page. The second box controls what image is shown in the box beneath the first. </p>
+        <p>This message seems a bit incomplete. Let's add more to it using the Edit or Archive Message box. Click or tap "Edit" next to the message. </p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ClickEdit.png" />
 
-        <p>To change the text area, enter your desired message and then click Submit. Your message will now be displayed on the Home page. </p>
+        <p>Now, edit the text of your message, then select "Update".</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_UpdateMsg.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_UpdateMsgResult.png" />
 
-        <p>To change the image, select "Browse...". A new window will appear prompting you to choose an image file from the PC or mobile device that you're currently using. Using this window, navigate to where the image is stored on your device and select it. Assuming that you have at least a moderately strong Internet connection right now, the image will upload to the site. Click Submit and your image will now be displayed on the home page.</p>
+        <p>The message has now been updated on the Home page as well.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_UpdatedMsgOnHome.png" />
 
-        <p>Please keep in mind when making changes to both text and images displayed on the home page that your changes can be undone by another administrator. You may want to check with the other administrators that you won't conflict with something that someone else is going to post soon.</p>
+        <p>Now, what if it's been a long time, and this message no longer is needed? That's where archiving comes in. Archiving this message will remove it from the home page, but leave it in storage so that you have a history of what has been posted.</p>
+
+        <p>Click or tap the "Archive" button. You'll be asked to confirm that you want to archive this message.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ClickArchive.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ConfirmArchive.png" />
+
+        <p>The message has now been removed.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ArchiveResult.png" />
+
+        <p>To see all of your archived messages, select "Click here to manage archived messages". This will take you to the Restore and Delete Messages screen.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ClickManageArchived.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoreDelete_Overview.png" />
+
+        <p>Maybe a mistake was made, and you want to un-archive a message so that it displays like before. Use the "Restore" button. You'll be asked to confirm the restoration.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoreDelete_ClickRestore.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoreDelete_ConfirmRestore.png" />
+
+        <p>The message has disappeared from the archive list and is now displayed as before.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoreDelete_RestoredMsgNowGone.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoredMsgVisible.png" />
+
+        <p>At some point, you'll probably want to delete old messages. Deleting works basically the same way as restoring.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoreDelete_ClickDelete.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoreDelete_ConfirmDelete.png" />
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_RestoreDelete_DeleteResult.png" />
+
+        <p>We move now to images. To change the image currently displayed on the Home page, select "Browse...".</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ImgClickBrowse.png" />
+        
+        <p> A new window will appear prompting you to choose an image file from the PC or mobile device that you're currently using. Using this window, navigate to where the image is stored on your device and select it. We're going to choose the jellyfish picture here, because, as everyone knows, there's nothing better than a jellyfish for relieving stress at the office.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ImgChooseJellyfish.png" />
+
+        <p>Now click or tap "Submit", and your image will be displayed on the Home page.</p>
+        <img class="img-responsive-help" src="~/Content/img/Help_HomePageMsg_ImgClickSubmit.png" />
+        <!-- JELLYFISH RESULT -->
     </div>
 
     <!-- Hours report -->
@@ -422,6 +468,7 @@
     </div>
 
 </body>
+
 <!-- Version 1: Walkthroughs
 <article>
     <p>Whether you're a new user wanting to get a feel for things or you're more experienced but wanting to improve your knowledge, the info on this page should be helpful to you. Here you'll find a tutorial that goes through the relevant pages for both a volunteer user and an administrator. At the end, we've included some anticipated Frequently Asked Questions. If after reading you still have unanswered questions, please see an administrator for clarification.</p>

@@ -221,9 +221,9 @@ namespace TheWayFreeClinicVMS.Controllers
                 if (result != null)
                 {
                     UserManager.AddToRole(user.Id, "Volunteer");
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                   // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home"); // redirect to desired view, needs success message
+                    return RedirectToAction("Index", "AdminDashboard"); // redirect to desired view, needs success message
                 }
                 AddErrors(result);
             }

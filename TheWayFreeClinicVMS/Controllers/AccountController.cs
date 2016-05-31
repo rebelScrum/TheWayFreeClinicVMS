@@ -217,7 +217,17 @@ namespace TheWayFreeClinicVMS.Controllers
             {
                 var user = new ApplicationUser { UserName = vol.volEmail, Email = vol.volEmail };
                 user.Volunteer = vol; //add vol to volunteer table, sets user object's Volunteer attribute to vol
-                var result = await UserManager.CreateAsync(user, "CCsmall22!!"); //create autogen password logic here
+
+                //default password start
+                String firstName = vol.volFirstName.Trim().Substring(0,1).ToUpper();
+                String lastName = vol.volLastName.Trim().Substring(0, 3).ToLower();
+                String year = vol.volDOB.Year.ToString().Trim().Substring(2, 2);
+                String password = String.Concat(firstName, lastName, year, "!");
+                //ToDO: catch an error if last name doesn't have 3 letters, in that case set it to "Password1!"
+
+                //default password end
+
+                var result = await UserManager.CreateAsync(user, password); //create autogen password logic here
                 if (result != null)
                 {
                     UserManager.AddToRole(user.Id, "Volunteer");

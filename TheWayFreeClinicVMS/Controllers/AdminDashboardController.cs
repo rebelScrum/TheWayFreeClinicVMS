@@ -41,7 +41,13 @@ namespace TheWayFreeClinicVMS.Controllers
             public List<string> hours { get; set; }
             public Volunteer volunteer { get; set; }
         }
-       
+
+        public class AvailabilityDataVol
+        {
+            public List<Availability> availabilities { get; set; }
+            public Volunteer volunteer { get; set; }
+        }
+
 
         // GET: AdminDashboard        
         public ActionResult Index(string sortOrder, string searchString, int? specialtySearch)
@@ -1140,6 +1146,29 @@ namespace TheWayFreeClinicVMS.Controllers
             var user = db.Volunteers.Where(v => v.volID.Equals(id)).FirstOrDefault();
 
             return RedirectToAction("ResetPassword", "Manage", new { username = user.volEmail });
+        }
+
+        public ActionResult AvailabilityData()
+        {
+            ViewBag.FullName = getUserName();
+
+            List<AvailabilityDataVol> availDataList = new List<AvailabilityDataVol>();
+
+            var volunteers = db.Volunteers.ToList();
+            var availabilities = db.Availabilities.ToList();
+
+            foreach (var vol in volunteers)
+            {
+                AvailabilityDataVol volData = new AvailabilityDataVol();
+
+                volData.volunteer = vol;
+
+                volData.availabilities = db.Availabilities.Where(a => a.volID == volData.volunteer.volID).ToList();       
+
+                availDataList.Add(volData);
+            }            
+
+            return View(availDataList);
         }
 
         protected override void Dispose(bool disposing)

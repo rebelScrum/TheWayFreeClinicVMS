@@ -220,8 +220,8 @@ namespace TheWayFreeClinicVMS.Controllers
 
                 //default password start
                 String firstName = vol.volFirstName.Trim().Substring(0,1).ToUpper();
-                String lastName = vol.volLastName.Trim().Substring(0, 3).ToLower();
-                String year = vol.volDOB.Year.ToString().Trim().Substring(2, 2);
+                String lastName = vol.volLastName.Trim().ToLower();
+                String year = vol.volDOB.Year.ToString().Trim();
                 String password = String.Concat(firstName, lastName, year, "!");
                 //ToDO: catch an error if last name doesn't have 3 letters, in that case set it to "Password1!"
 

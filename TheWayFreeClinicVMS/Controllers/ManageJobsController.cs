@@ -10,7 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
-    [Authorize(Roles = "Admin")]
+   
     public class ManageJobsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -146,6 +146,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // Employer
         //****************************************************************
         // GET: ManageJobs/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateEmployer()
         {
             ViewBag.FullName = getUserName();
@@ -156,6 +157,7 @@ namespace TheWayFreeClinicVMS.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateEmployer([Bind(Include = "empName,empPhone,empStreet1,empStreet2,empCity,empState,empZip")] Employer employer)
         {
             try
@@ -176,6 +178,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
             return View(employer);    
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult IndexEmployer()
         {
             ViewBag.FullName = getUserName();
@@ -195,6 +198,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return fullName;
         }
         // GET: ManageJobs/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult DetailsEmployer(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -211,6 +215,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: ManageJobs/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult EditEmployer(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -229,6 +234,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // POST: ManageJobs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult EditEmployer([Bind(Include = "empID,empName,empPhone,empStreet1,empStreet2,empCity,empState,empZip")] Employer employer)
         {
             if (ModelState.IsValid)

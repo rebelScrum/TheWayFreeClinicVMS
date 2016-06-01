@@ -10,12 +10,13 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
-    [Authorize(Roles = "Admin, Volunteer")]
+    [Authorize(Roles = "Admin")]
     public class ManageJobsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ManageJobs
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Index(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -30,6 +31,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: ManageJobs/Details/5
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Details(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -46,6 +48,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: ManageJobs/Create
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Create(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -61,6 +64,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Create([Bind(Include = "jobID,volID,empID,jobTitle,jobStartDate,jobEndDate")] Job job)
         {
             if (ModelState.IsValid)
@@ -75,6 +79,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: ManageJobs/Edit/5
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Edit(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -97,6 +102,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Edit([Bind(Include = "jobID,volID,empID,jobTitle,jobStartDate,jobEndDate")] Job job)
         {
             if (ModelState.IsValid)

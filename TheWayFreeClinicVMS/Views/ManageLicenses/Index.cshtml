@@ -46,4 +46,12 @@
 }
 
 </table>
-<a href="@Url.Action("Details", "AdminDashboard", new { id= ViewBag.volID})" class="btn btn-info btn-sm">Back to Detais</a>
+
+@if (this.User.IsInRole("Admin"))
+{
+    <a href="@Url.Action("Details", "AdminDashboard", new { id = ViewBag.volID })" class="btn btn-info btn-sm">Back to Details</a>
+}
+@if (this.User.IsInRole("Volunteer"))
+{
+    <a href="@Url.Action("Index", "VolunteerProfile", new { id = ViewBag.volID })" class="btn btn-info btn-sm">Back to Profile</a>
+}

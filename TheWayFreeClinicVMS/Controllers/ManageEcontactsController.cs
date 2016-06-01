@@ -10,7 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Volunteer")]
     public class ManageEcontactsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

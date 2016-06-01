@@ -229,6 +229,10 @@
     <Content Include="Content\img\HelpPageImages\Help_AvailReport_SelectWednesday.png" />
     <Content Include="Content\img\HelpPageImages\Help_Backup_ClickBackup.png" />
     <Content Include="Content\img\HelpPageImages\Help_Backup_ClickBackupButton.png" />
+    <Content Include="Content\img\HelpPageImages\Help_Backup_ManageBackups_ClickDownload.png" />
+    <Content Include="Content\img\HelpPageImages\Help_Backup_ManageBackups_ConfirmDownload.png" />
+    <Content Include="Content\img\HelpPageImages\Help_Backup_ManageBackups_DownloadPrompt.png" />
+    <Content Include="Content\img\HelpPageImages\Help_Backup_ManageBackups_Overview.png" />
     <Content Include="Content\img\HelpPageImages\Help_Backup_Overview.png" />
     <Content Include="Content\img\HelpPageImages\Help_Backup_SelectVolunteerTable.png" />
     <Content Include="Content\img\HelpPageImages\Help_Backup_VolunteerDownloadPrompt.png" />
@@ -269,6 +273,7 @@
     <Content Include="Content\img\HelpPageImages\Help_HomePageMsg_ImgChooseJellyfish.png" />
     <Content Include="Content\img\HelpPageImages\Help_HomePageMsg_ImgClickBrowse.png" />
     <Content Include="Content\img\HelpPageImages\Help_HomePageMsg_ImgClickSubmit.png" />
+    <Content Include="Content\img\HelpPageImages\Help_HomePageMsg_ImgResult.png" />
     <Content Include="Content\img\HelpPageImages\Help_HomePageMsg_NewMsgDisplayedOnHome.png" />
     <Content Include="Content\img\HelpPageImages\Help_HomePageMsg_Overview1.png" />
     <Content Include="Content\img\HelpPageImages\Help_HomePageMsg_Overview2.png" />

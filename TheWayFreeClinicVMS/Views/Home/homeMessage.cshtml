@@ -12,7 +12,7 @@
                 <div>
                     <textarea name="message" placeholder="Message" class="form-control" style="min-width:100%;"></textarea>
                     @*<input type="text" name="message" placeholder="Message" class="form-control" style="max-width:100%" ; />*@
-                    <button type="submit" class="btn btn-success btn-lg" style="margin-top:20px; float:right;">Submit</button>
+                    <button type="submit" class="btn btn-success btn-sm" style="margin-top:20px; float:right;">Submit</button>
                     @Html.AntiForgeryToken()
                 </div>
             </div>
@@ -23,8 +23,9 @@
 
 @using (Html.BeginForm("homeMessageUpdate", "Home"))
 {
+    @Html.AntiForgeryToken()
     <div class="panel panel-primary">
-        <div class="panel-heading"><span style="font-size:x-large;">Update or Delete Message</span></div>
+        <div class="panel-heading"><span style="font-size:x-large;">Edit or Archive Message </span><span style="font-size:small; font-style:italic;"> (Messages older than 30 days are automatically archived.)</span></div>
         <div class="panel-body">
             <div class="form-group">
                 <div>
@@ -37,7 +38,7 @@
                                 Preview
                             </th>
                             <th>
-                                
+
                             </th>
                         </tr>
                         @foreach (var item in Model)
@@ -51,8 +52,8 @@
                                     <span id="@item.fileName" hidden>@item.fullText</span>
                                 </td>
                                 <td style="text-align:right;">
-                                    <a href="#" name="@item.fileName" onclick="return fillTextArea(this.name)" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Edit</a>
-                                    <a href="#" name="@item.fileName" onclick="return messageRemove(this.name)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Archive</a>
+                                    <a href="#" name="@item.fileName" onclick="return fillTextArea(this.name)" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Edit</a>
+                                    <a href="#" name="@item.fileName" onclick="return messageRemove(this.name)" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Archive</a>
                                 </td>
                             </tr>
                         }
@@ -60,14 +61,14 @@
                     <input id="fileName" name="fileName" type="text" value="" hidden />
                     <input id="removeMessage" name="removeMessage" type="text" value="" hidden />
                     <textarea id='modifyMessage' name="message" class="form-control" style="min-width:100%;" disabled></textarea>
-                    <button id="updateSubmitBtn" type="submit" class="btn btn-success btn-lg" style="margin-top:20px; float:right;">Update</button>
-                    @Html.AntiForgeryToken()
+                    <button id="updateSubmitBtn" type="submit" class="btn btn-success btn-sm" style="margin-top:20px; float:right; display:none;"></button>
+
                 </div>
             </div>
         </div>
+        <div style="font-size:large; margin:10px;">@Html.ActionLink("Click here to manage archived messages.", "homeAllMessages")</div>
     </div>
 }
-
 
 @using (Html.BeginForm("homeMessage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -77,17 +78,18 @@
         <div class="panel-body">
             <div class="">
                 <input type="file" name="file" />
-                <input type="submit" value="Submit" class="btn btn-success btn-lg" style="margin-top:20px; float:right;" />
+                <input type="submit" value="Submit" class="btn btn-success btn-sm" style="margin-top:20px; float:right;" />
                 @Html.AntiForgeryToken()
             </div>
         </div>
-    </div>    
+    </div>
 }
 
 <script>
-    function fillTextArea(fileName)
-    {
+    function fillTextArea(fileName) {
         document.getElementById('fileName').value = fileName;
+
+        document.getElementById('removeMessage').value = "";
 
         document.getElementById('modifyMessage').disabled = false;
 
@@ -97,19 +99,20 @@
         document.getElementById('modifyMessage').value = fullText;
         document.getElementById('modifyMessage').style.height = document.getElementById('modifyMessage').scrollHeight + 'px';
 
+        document.getElementById("updateSubmitBtn").style.display = "";
         document.getElementById('updateSubmitBtn').classList.remove("btn-warning");
         document.getElementById('updateSubmitBtn').classList.add("btn-success");
-        document.getElementById('updateSubmitBtn').innerHTML = "Submit";
+        document.getElementById('updateSubmitBtn').innerHTML = "Update";
     }
 
-    function messageRemove(fileName)
-    {
+    function messageRemove(fileName) {
         document.getElementById('modifyMessage').disabled = true;
 
         document.getElementById('fileName').value = fileName;
 
         document.getElementById('removeMessage').value = "remove";
 
+        document.getElementById("updateSubmitBtn").style.display = "";
         document.getElementById('updateSubmitBtn').classList.remove("btn-success");
         document.getElementById('updateSubmitBtn').classList.add("btn-warning");
         document.getElementById('updateSubmitBtn').innerHTML = "Confirm Archive";

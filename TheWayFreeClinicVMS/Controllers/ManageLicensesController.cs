@@ -10,6 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
+    [Authorize(Roles = "Admin, Volunteer")]
     public class ManageLicensesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -60,6 +61,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: ManageLicenses/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

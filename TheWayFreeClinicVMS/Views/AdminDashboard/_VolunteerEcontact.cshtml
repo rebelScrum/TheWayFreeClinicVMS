@@ -8,9 +8,9 @@ else
 foreach (var item in Model)
 {
     @Html.DisplayFor(modelItem => item.ecLastName)
-    @:, 
+    @: 
     @Html.DisplayFor(modelItem => item.ecFirstName) <br />
     @:Phone: 
-    @Html.DisplayFor(modelItem => item.ecPhone);
-}
+    @Html.DisplayFor(modelItem => item.ecPhone) <br />
+    }
 }

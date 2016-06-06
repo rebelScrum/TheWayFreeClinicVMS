@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TheWayFreeClinicVMS.Models;
+using System.Web.Security;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -54,6 +55,8 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+            ViewBag.FullName = (string)TempData["FullName"];
+
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
@@ -274,6 +277,20 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> ResetPassword(string username)
+        {
+            var user = UserManager.FindByName(username);
+            var userId = user.Volunteer.volID;
+            var newPassword = "Password1!"; //this could be created programmatically based on user info
+
+            string resetToken = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            IdentityResult passwordChangeResult = await UserManager.ResetPasswordAsync(user.Id, resetToken, newPassword);
+
+            TempData["passwordReset"] = "Password Reset!";
+            
+            return RedirectToAction("Details", "AdminDashboard", new { id = userId });
+        }
+
         //
         // GET: /Manage/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
@@ -331,7 +348,7 @@ namespace TheWayFreeClinicVMS.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 

@@ -18,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ecFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ecFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ecFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "John" } })
                 @Html.ValidationMessageFor(model => model.ecFirstName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ecLastName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ecLastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ecLastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Doe" } })
                 @Html.ValidationMessageFor(model => model.ecLastName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -34,14 +34,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ecPhone, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ecPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ecPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "(777)777-7777" } })
                 @Html.ValidationMessageFor(model => model.ecPhone, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add" class="btn btn-primary" />
+                <input type="submit" value="Add" class="btn btn-success" />
             </div>
         </div>
     </div>

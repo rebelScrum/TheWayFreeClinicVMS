@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TheWayFreeClinicVMS.Models;
 using System.Net;
+using System.Web.Security;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
@@ -62,6 +63,7 @@ namespace TheWayFreeClinicVMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            ViewBag.FullName = getUserName();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -73,6 +75,8 @@ namespace TheWayFreeClinicVMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            ViewBag.FullName = getUserName();
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -84,7 +88,35 @@ namespace TheWayFreeClinicVMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    {
+                        ApplicationUser user = db.Users.FirstOrDefault(u => u.UserName.Equals(model.Email, StringComparison.CurrentCultureIgnoreCase));
+
+                        if (user != null)
+                        {
+                            var roles = UserManager.GetRoles(user.Id);
+
+                            if (roles.Contains("Admin"))
+                            {
+                                return RedirectToAction("Index", "AdminDashboard");
+                            }
+                            else if (roles.Contains("Volunteer"))
+                            {
+                                return RedirectToAction("Index", "VolunteerProfile");
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.confirm = "Sign-In Error: See Administrator.";
+                            return RedirectToAction("Index", "Home");
+                        }
+
+                        
+                    }
+                    
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -139,43 +171,75 @@ namespace TheWayFreeClinicVMS.Controllers
             }
         }
 
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
-        }
+        ////
+        //// GET: /Account/Register
+        //[AllowAnonymous]
+        //public ActionResult Register()
+        //{
+        //    return View();
+        //}
 
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        ////
+        //// POST: /Account/Register
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Register(RegisterViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            UserManager.AddToRole(user.Id, "Volunteer");
+        //            await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    
+        //            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+        //            // Send an email with this link
+        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        AddErrors(result);
+        //    }
+
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
+
+        public async Task<ActionResult> RegisterNewVol(Volunteer vol)
         {
-            if (ModelState.IsValid)
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (vol != null)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var user = new ApplicationUser { UserName = vol.volEmail, Email = vol.volEmail };
+                user.Volunteer = vol; //add vol to volunteer table, sets user object's Volunteer attribute to vol
+
+                //default password start
+                String firstName = vol.volFirstName.Trim().Substring(0,1).ToUpper();
+                String lastName = vol.volLastName.Trim().ToLower();
+                String year = vol.volDOB.Year.ToString().Trim();
+                String password = String.Concat(firstName, lastName, year, "!");
+                //ToDO: catch an error if last name doesn't have 3 letters, in that case set it to "Password1!"
+
+                //default password end
+
+                var result = await UserManager.CreateAsync(user, password); //create autogen password logic here
+                if (result != null)
                 {
                     UserManager.AddToRole(user.Id, "Volunteer");
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                   // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "AdminDashboard"); // redirect to desired view, needs success message
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Index", "Home");
         }
 
         //

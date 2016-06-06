@@ -10,7 +10,7 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Volunteer")]
     public class ManageAvailabilitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -99,6 +99,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // GET: ManageAvailabilities/Delete/5
         public ActionResult DeleteAvailability(int? id)
         {
+            ViewBag.FullName = getUserName();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

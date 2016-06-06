@@ -518,6 +518,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // View list of Admins        
         public ActionResult ManageAdmins()
         {
+            ViewBag.FullName = getUserName();
             string roleID = db.Roles.Where(r => r.Name == "Admin").Select(s => s.Id).FirstOrDefault();
             var admins = db.Users.Where(x => x.Roles.Any(y => y.RoleId == roleID)).ToList();
             return View(admins);

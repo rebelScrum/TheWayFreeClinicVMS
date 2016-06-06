@@ -10,12 +10,13 @@ using TheWayFreeClinicVMS.Models;
 
 namespace TheWayFreeClinicVMS.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
     public class ManageContractsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ManageContracts
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Index(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -30,6 +31,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: ManageContracts/Create
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Create(int? id)
         {
             ViewBag.pgrID = new SelectList(db.Pagroups, "pgrID", "pgrName");
@@ -45,6 +47,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Create([Bind(Include = "contrID,ctrNum,volID,pgrID")] Contract contract)
         {
             
@@ -61,6 +64,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: ManageContracts/Edit/5
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Edit(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -83,6 +87,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Volunteer")]
         public ActionResult Edit([Bind(Include = "contrID,ctrNum,volID,pgrID")] Contract contract)
         {
             if (ModelState.IsValid)
@@ -100,6 +105,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // PA Group
         //****************************************************************
         // GET: ManageContracts/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateGroup()
         {
             ViewBag.FullName = getUserName();
@@ -110,6 +116,7 @@ namespace TheWayFreeClinicVMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateGroup([Bind(Include = "pgrID, pgrName, pgrOfcFirstName, pgrOfcLastName, pgrPhone, pgrStreet1, pgrStreet2, pgrCity, pgrState, pgrZip")] Pagroup group)
         {
             try
@@ -131,6 +138,7 @@ namespace TheWayFreeClinicVMS.Controllers
             return View(group);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult IndexGroup()
         {
             ViewBag.FullName = getUserName();
@@ -140,6 +148,7 @@ namespace TheWayFreeClinicVMS.Controllers
         }
 
         // GET: Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult EditGroup(int? id)
         {
             ViewBag.FullName = getUserName();
@@ -158,6 +167,7 @@ namespace TheWayFreeClinicVMS.Controllers
         // POST: ManageJobs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult EditGroup([Bind(Include = "pgrID,pgrName,pgrOfcFirstName,pgrOfcLastName,pgrPhone,pgrStreet1,pgrStreet2,pgrCity,pgrState,pgrZip")] Pagroup group)
         {
             if (ModelState.IsValid)
